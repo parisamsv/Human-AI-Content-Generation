@@ -2,7 +2,7 @@
 
 A LaTeX research paper analyzing platform competition between human content creators and AI generators, with a focus on algorithmic promotion, compensation design, and equilibrium behavior.
 
----
+----
 
 ## Project Structure
 
