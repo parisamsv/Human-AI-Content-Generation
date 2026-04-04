@@ -14,7 +14,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from params import BASELINE
-from model import platform_utility_vec
+from simulator import PlatformRevenueSimulator
 
 
 # ── ordered list used by both plot and report ─────────────────────────────────
@@ -29,7 +29,7 @@ _PAIRS = [
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-def scan_2d(param_x, param_y, grid_size=100, threshold=0.01):
+def scan_2d(type, param_x, param_y, grid_size=100, threshold=0.01):
     """
     Sweep two parameters simultaneously over [0.01, 0.99]^2.
 
@@ -60,7 +60,6 @@ def scan_2d(param_x, param_y, grid_size=100, threshold=0.01):
     """
     xs = np.linspace(0.01, 0.99, grid_size)
     ys = np.linspace(0.01, 0.99, grid_size)
-    betas = np.linspace(0.01, 0.99, 200)
 
     beta_star_grid = np.empty((grid_size, grid_size))
 
@@ -69,16 +68,23 @@ def scan_2d(param_x, param_y, grid_size=100, threshold=0.01):
             params = dict(BASELINE)
             params[param_x] = xv
             params[param_y] = yv
-            utils = platform_utility_vec(betas, **params)
-            beta_star_grid[i, j] = betas[int(np.argmax(utils))]
+            sim = PlatformRevenueSimulator(t=params['t'], alpha=params['alpha'], Q=params['Q'], u_0=params['u0'], delta=params['delta'])
+            # Optimize both settings
+            # result_view = sim.optimize_view_based()
+            if type == "engagement":
+                result_eng = sim.optimize_engagement_based()
+                beta_star_grid[i, j] = result_eng['beta_h']
+            elif type == "view":
+                result_view = sim.optimize_view_based()
+                beta_star_grid[i, j] = result_view['beta_h']    
 
-    is_interior = (beta_star_grid > threshold) & (beta_star_grid < 1.0 - threshold)
+    is_interior = (beta_star_grid > 0) & (beta_star_grid < 1.0)
     interior_share = float(is_interior.mean())
     return beta_star_grid, is_interior, interior_share
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-def plot_interior_regions(results, filename="figures/interior_regions.png"):
+def plot_interior_regions(type, results):
     """
     2x3 grid of beta* heatmaps, one subplot per parameter pair.
 
@@ -131,59 +137,21 @@ def plot_interior_regions(results, filename="figures/interior_regions.png"):
     )
     fig.tight_layout()
 
+    if type == "engagement":
+        filename = "results/interior_regions_engagement.png"
+    elif type == "view":
+        filename = "results/interior_regions_view.png"
+
     out_dir = os.path.dirname(os.path.abspath(filename))
     os.makedirs(out_dir, exist_ok=True)
     plt.savefig(filename, dpi=150, bbox_inches="tight")
     print(f"Saved: {filename}")
     return fig
 
-
-# ─────────────────────────────────────────────────────────────────────────────
-def report_interior_ranges(results):
-    """
-    Print a human-readable summary of interior solution regions.
-
-    For each parameter pair, reports
-    - the interior share
-    - the marginal range of each parameter across all interior grid points
-      (i.e. the projection of the interior region onto each axis).
-
-    Parameters
-    ----------
-    results : dict
-        Same structure as the input to plot_interior_regions.
-    """
-    for px, py in _PAIRS:
-        beta_star_grid, is_interior, interior_share = results[(px, py)]
-
-        grid_size = beta_star_grid.shape[0]
-        xs = np.linspace(0.01, 0.99, grid_size)
-        ys = np.linspace(0.01, 0.99, grid_size)
-
-        print(f"\n{'='*52}")
-        print(f"Pair         : ({px}, {py})")
-        print(f"Interior share: {interior_share:.1%}")
-
-        if is_interior.any():
-            # For param_x: a value xs[i] is "in range" if ANY j gives interior
-            x_has_interior = np.any(is_interior, axis=1)   # shape (grid_size,)
-            # For param_y: a value ys[j] is "in range" if ANY i gives interior
-            y_has_interior = np.any(is_interior, axis=0)   # shape (grid_size,)
-
-            print(f"  {px:8s} interior range: "
-                  f"[{xs[x_has_interior].min():.3f}, "
-                  f"{xs[x_has_interior].max():.3f}]")
-            print(f"  {py:8s} interior range: "
-                  f"[{ys[y_has_interior].min():.3f}, "
-                  f"{ys[y_has_interior].max():.3f}]")
-        else:
-            print("  No interior solutions found in this parameter region.")
-
-
 # ─────────────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     print("Running 2D parameter sweeps (this may take a moment)...")
-    results = {(x, y): scan_2d(x, y) for x, y in _PAIRS}
-    plot_interior_regions(results)
-    report_interior_ranges(results)
-    plt.show()
+    for type in ["engagement", "view"]:
+        results = {(x, y): scan_2d(type, x, y) for x, y in _PAIRS}
+        plot_interior_regions(type, results)
+        plt.show()
