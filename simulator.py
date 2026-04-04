@@ -52,7 +52,7 @@ class PlatformRevenueSimulator:
         Setting 1: View-based revenue (total volume).
         """
         D_h, D_A = self.demands(beta_h, r)
-        return D_A + D_h
+        return D_A + (1 - r) * D_h
     
     def platform_utility_engagement(self, beta_h, r):
         """
@@ -82,13 +82,19 @@ class PlatformRevenueSimulator:
 
         r_opt = numerator / denominator
         return max(0, r_opt)
+
+    def optimal_r_view(self, beta_h):
+        """
+        Setting 1: Analytically derived optimal compensation.
+        """
+        m_H, m_A = self.mismatch_costs(beta_h)
+        
+        return 0.5 * ( 1 + (self.alpha * m_H)/m_A + self.t * m_H * self.u_0 )
     
-    def optimize_view_based(self, r_grid=None):
+    def optimize_view_based(self):
         """
         Setting 1: Optimize view-based revenue.
         """
-        if r_grid is None:
-            r_grid = np.linspace(0.1, 5, 50)
         
         best_utility = -np.inf
         best_beta_h = 0
@@ -97,10 +103,8 @@ class PlatformRevenueSimulator:
         beta_h_values = np.linspace(0, 1, 51)
         
         for beta_h in beta_h_values:
-            utilities = [self.platform_utility_view(beta_h, r) for r in r_grid]
-            max_idx = np.argmax(utilities)
-            r_candidate = r_grid[max_idx]
-            utility_candidate = utilities[max_idx]
+            r_candidate = self.optimal_r_view(beta_h)
+            utility_candidate = self.platform_utility_view(beta_h, r_candidate)
             
             if utility_candidate > best_utility:
                 best_utility = utility_candidate
