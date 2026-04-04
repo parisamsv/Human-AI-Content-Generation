@@ -21,8 +21,6 @@ def create_comparison_plots(Q_values, results_view, results_engagement, save_pat
     configure_plots()
     
     fig, axes = plt.subplots(2, 2, figsize=(12, 10))
-    fig.suptitle(r'Platform Revenue Settings Comparison: View-Based vs. Engagement-Based', 
-                 fontsize=14, fontweight='bold', y=0.995)
     
     # Plot 1: Optimal Promotion Weight
     ax = axes[0, 0]
@@ -74,6 +72,7 @@ def create_comparison_plots(Q_values, results_view, results_engagement, save_pat
     ax.legend(loc='best')
     
     fig.tight_layout()
+    fig.subplots_adjust(hspace=0.4)
     
     if save_path:
         plt.savefig(save_path, dpi=300, bbox_inches='tight', format='pdf')

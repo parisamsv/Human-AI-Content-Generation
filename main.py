@@ -21,8 +21,8 @@ def sweep_Q_values(Q_min, Q_max, n_points, params):
     print(f"{'Q':<8} {'View β_h':<12} {'Eng β_h':<12} {'View u_p':<12} {'Eng u_p':<12}")
     print("-" * 60)
     
-    for Q in Q_values:
-        sim = PlatformRevenueSimulator(Q=Q, **params)
+    for Q_v in Q_values:
+        sim = PlatformRevenueSimulator(Q=Q_v, **params)
         
         # Optimize both settings
         result_view = sim.optimize_view_based()
@@ -33,7 +33,7 @@ def sweep_Q_values(Q_min, Q_max, n_points, params):
             results_view[key].append(result_view[key])
             results_engagement[key].append(result_eng[key])
             
-        print(f"{Q:<8.2f} {result_view['beta_h']:<12.4f} {result_eng['beta_h']:<12.4f} "
+        print(f"{Q_v:<8.2f} {result_view['beta_h']:<12.4f} {result_eng['beta_h']:<12.4f} "
               f"{result_view['utility']:<12.4f} {result_eng['utility']:<12.4f}")
     
     # Convert to numpy arrays

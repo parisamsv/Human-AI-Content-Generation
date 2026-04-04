@@ -116,12 +116,12 @@ def plot_interior_regions(type, results):
             cmap="RdBu_r", vmin=0.0, vmax=1.0, shading="auto",
         )
 
-        # white contour at the interior / corner boundary
-        if is_interior.any() and not is_interior.all():
-            ax.contour(
-                xs, ys, is_interior.T.astype(float),
-                levels=[0.5], colors="white", linewidths=1.5,
-            )
+        # # white contour at the interior / corner boundary
+        # if is_interior.any() and not is_interior.all():
+        #     ax.contour(
+        #         xs, ys, is_interior.T.astype(float),
+        #         levels=[0.5], colors="white", linewidths=1.5,
+        #     )
 
         ax.set_xlabel(px, fontsize=11)
         ax.set_ylabel(py, fontsize=11)

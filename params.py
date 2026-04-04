@@ -8,5 +8,5 @@ BASELINE = {
     'Q':     0.3,   # AI baseline content quality
     'delta': 0.8,   # Platform algorithmic sensitivity
     'u0':    0.6,   # Consumer outside option
-    't':     20.0,   # Consumer transportation cost (held fixed)
+    't':     10.0,   # Consumer transportation cost (held fixed)
 }

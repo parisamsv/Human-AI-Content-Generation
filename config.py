@@ -5,7 +5,7 @@ Stores fixed parameters and settings for the analysis.
 
 # Fixed parameters for the simulation
 PARAMS = {
-    't': 20.0,      # Consumer transportation cost
+    't': 10.0,      # Consumer transportation cost
     'alpha': 0.5,  # AI learning efficiency
     'u_0': 0.6,    # Consumer outside option
     'delta': 0.8   # Platform algorithmic sensitivity
