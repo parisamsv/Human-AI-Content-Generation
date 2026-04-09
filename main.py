@@ -5,13 +5,13 @@ Main entry point for running the platform revenue simulation.
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from config import PARAMS, Q_SWEEP
+from config import PARAMS
 from simulator import PlatformRevenueSimulator
 from plotting import create_comparison_plots
 
 def sweep_Q_values(Q_min, Q_max, n_points, params):
     """
-    Sweep across AI baseline quality values and optimize both settings.
+    Sweep across platform quality values and optimize both settings.
     """
     Q_values = np.linspace(Q_min, Q_max, n_points)
     
@@ -48,11 +48,21 @@ def main():
     print("=" * 60)
     print("Platform Revenue Settings Comparison")
     print("=" * 60)
+
     
     print("\nFixed Parameters:")
+    params_dict = {}
     for key, value in PARAMS.items():
         print(f"  {key}: {value}")
-    print(f"\nVarying AI Baseline Quality (Q) from {Q_SWEEP['min']} to {Q_SWEEP['max']}")
+        params_dict[key] = value
+
+    Q_SWEEP = {
+    'min': 0,
+    'max': 1,
+    'points': 21
+    }
+    
+    print(f"\nVarying Platform Quality (Q) from {Q_SWEEP['min']} to {Q_SWEEP['max']}")
     print("=" * 60)
     
     # Sweep across Q values

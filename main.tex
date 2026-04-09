@@ -116,6 +116,11 @@ The human creator's payoff is revenue minus effort cost:
     \label{eq:uc}
 \end{equation}
 
+
+% -------------------------------------------------------------------
+% View-based Revenue
+% -------------------------------------------------------------------
+
 \section{Equilibrium Analysis (View-based Revenue)}
 \label{sec:analysis}
 \begin{equation}
@@ -135,8 +140,6 @@ The human creator's optimal effort and the AI's induced quality are
 \end{equation}
 \end{proposition}
 
-\noindent The proof is in Appendix~\ref{app:proof_qh}. Human effort increases in $r$ and in $\beta_h$ (since $m_H = 1-\beta_h\delta$ is decreasing in $\beta_h$, so stronger promotion raises the marginal return to quality). Both $q_h^*$ and $q_A^*$ remain finite at both corners: as $\beta_h \to 0$, $q_h^* \to \tfrac{r}{t}$; as $\beta_h \to 1$, $q_h^* \to \tfrac{r}{t(1-\delta)}$. This finiteness at both boundaries is a key consequence of the mismatch floor $1-\delta$ and distinguishes this specification from one where effort explodes at a corner.
-
 \subsection{Stage 1: Platform's Optimal Compensation Rate}
 
 \begin{proposition}[Optimal Compensation Rate]
@@ -149,78 +152,34 @@ The platform's optimal compensation rate is
 \end{equation}
 \end{proposition}
 
-\noindent The proof is in Appendix~\ref{app:proof_rstar}. The rate increases in $\alpha$: stronger human effort raises AI quality and demand, so the platform is willing to pay more to induce effort. At the boundaries: as $\beta_h \to 0$, $r^* \to \tfrac{1}{2}\bigl[1 + \tfrac{\alpha}{1-\delta} + t\,u_0\bigr]$; as $\beta_h \to 1$, $r^* \to \tfrac{1}{2}\bigl[1 + t(1-\delta)\,u_0\bigr]$. Both limits are finite and strictly positive.
 
 \subsection{Stage 1: Platform's Optimal Promotion Weight}
 
-By the Envelope Theorem, the platform's first-order condition with respect to $\beta_h$ is
-\begin{equation}
-    \frac{du_p}{d\beta_h} = \frac{\partial D_A}{\partial\beta_h} + (1-r^*)\frac{\partial D_h}{\partial\beta_h} = 0.
-    \label{eq:foc_beta}
-\end{equation}
-Using $m_A' \equiv \tfrac{dm_A}{d\beta_h} = \delta > 0$ and $m_H' \equiv \tfrac{dm_H}{d\beta_h} = -\delta < 0$, together with $\tfrac{\partial q_h^*}{\partial\beta_h} = \tfrac{r^*\delta}{t\,m_H^2}$, the partial derivatives of demand are:
-\begin{align}
-    \frac{\partial D_A}{\partial\beta_h} &= 
-        -\frac{(q_A^*-u_0)\,\delta}{t\,m_A^2} 
-        + \frac{\alpha r^*\delta}{t^2 m_A\,m_H^2},
-    \label{eq:dDA_dbeta}\\[4pt]
-    \frac{\partial D_h}{\partial\beta_h} &= 
-        \frac{(q_h^*-u_0)\,\delta}{t\,m_H^2} 
-        + \frac{r^*\delta}{t^2 m_H^3}.
-    \label{eq:dDh_dbeta}
-\end{align}
 
-The first term in \eqref{eq:dDA_dbeta} is the \emph{friction drag}: increasing $\beta_h$ raises the AI's mismatch cost $m_A$, reducing AI demand. The second term is the \emph{effort spillover}: stronger promotion induces higher $q_h^*$, which raises $q_A^*$ through learning. The terms in \eqref{eq:dDh_dbeta} are both positive: higher $\beta_h$ reduces $m_H$, directly expanding human demand and further raising $q_h^*$.
+\begin{assumption}\label{ass:params}
+$\alpha \in (0,1]$, $\delta \in (0,1)$, $t > 0$, $u_0 > 0$, $Q \ge 0$, and for $\beta_h = \beta_h^*$
+\[
+\frac{\alpha(1-\beta_h\delta)}{1-\delta(1-\beta_h)} + t(1-\beta_h\delta)\,u_0 < 1.
+\]
+The following condition ensure the above holds for all $\beta_h \in [0,1]$:
+\[
+ t\,u_0 < 1 - \frac{\alpha}{1-\delta}
+\]
+This bounds the AI learning spillover, outside option pressure, and algorithmic influence to be collectively moderate enough that $r^*(\beta_h) \in (0,1)$ and $q_h^* > u_0$ for all $\beta_h \in [0,1]$, ensuring the platform retains a positive margin and the human creator participates.
+\end{assumption}
 
-Since all quantities are finite at both $\beta_h = 0$ and $\beta_h = 1$, the sign of \eqref{eq:foc_beta} at the boundaries is determinate, enabling a clean characterization of the optimal policy.
-
-\begin{proposition}[Optimal Promotion: Corner Solution when $Q \ge u_0$]
-\label{prop:corner}
-If $Q \ge u_0$, the platform's payoff $u_p$ is globally strictly convex in $\beta_h \in [0,1]$. The optimal policy is:
-\begin{equation}
-    \beta_h^* = \begin{cases} 0 & \text{if } u_p(0) \ge u_p(1), \\ 1 & \text{if } u_p(1) > u_p(0), \end{cases}
-    \label{eq:corner}
-\end{equation}
-where
-\begin{align}
-    u_p(0) &= \frac{\frac{\alpha r^*(0)}{t}+Q - u_0}{t(1-\delta)} + \frac{(1-r^*(0))}{t}\left[\frac{r^*(0)}{t} - u_0\right], \label{eq:up0}\\[4pt]
-    u_p(1) &= \frac{\tfrac{\alpha r^*(1)}{t(1-\delta)} + Q - u_0}{t} + \frac{(1-r^*(1))}{t(1-\delta)}\left[\frac{r^*(1)}{t(1-\delta)} - u_0\right], \label{eq:up1}
-\end{align}
-with $r^*(0) = \tfrac{1}{2}\bigl[1 + \tfrac{\alpha}{1-\delta} + t\,u_0\bigr]$ and $r^*(1) = \tfrac{1}{2}\bigl[1 + t(1-\delta)\,u_0\bigr]$.
-\end{proposition}
-
-\begin{proposition}[Optimal Promotion: Interior Solution when $Q < u_0$]
-\label{prop:interior}
-Suppose $Q < u_0$. Define the \emph{survival threshold} $\tilde\beta \in (0,1)$ as the unique solution to $q_A^*(\tilde\beta) = u_0$:
-\begin{equation}
-    \tilde\beta = \frac{1}{\delta}\left(1 - \frac{\alpha r^*(\tilde\beta)}{t(u_0-Q)}\right).
-    \label{eq:betaTilde}
-\end{equation}
-Define the effort ceiling and the friction drag at $\beta_h = 1$:
-\begin{equation}
-    \bar{q}_h = q_h^*(1) = \frac{r^*(1)}{t(1-\delta)}, \qquad
-    \bar{q}_A = \alpha\bar{q}_h + Q,
-    \label{eq:ceilings}
-\end{equation}
-and let $\bar\Omega > 0$ collect all positive terms in $\tfrac{du_p}{d\beta_h}$ evaluated at $\beta_h = 1$:
-\begin{equation}
-    \bar\Omega = \frac{\alpha r^*(1)\delta}{t^2\,m_A(1)\,m_H(1)^2} + (1-r^*(1))\left[\frac{(\bar{q}_h - u_0)\delta}{t\,m_H(1)^2} + \frac{r^*(1)\delta}{t^2\,m_H(1)^3}\right].
-    \label{eq:Omega}
-\end{equation}
-Then:
-\begin{enumerate}[label=(\roman*)]
-    \item An interior optimum $\beta_h^* \in (\tilde\beta, 1)$ exists if and only if the \emph{friction dominance condition} holds:
-    \begin{equation}
-        \frac{(\bar{q}_A - u_0)\,\delta}{t} > \bar\Omega,
-        \label{eq:friction}
-    \end{equation}
-    \item If \eqref{eq:friction} fails, the platform sets $\beta_h^* = 1$.
+\begin{proposition}[Optimal Promotion Weight]\label{prop:combined}
+Under Assumption~\ref{ass:params}, the platform's optimal promotion weight is determined as follows:
+\begin{enumerate}
+\item[\textup{(i)}] If $Q \ge u_0$, the optimum is a corner solution: $\beta_h^* \in \{0,1\}$, chosen by comparing $u_p(0)$ and $u_p(1)$.
+\item[\textup{(ii)}] If $Q < u_0$, define the survival threshold $\tilde\beta \in (0,1)$ as the unique solution to $q_A^*(\tilde\beta) = u_0$. Then either an interior optimum $\beta_h^* \in (\tilde\beta, 1)$ exists, or $\beta_h^* = 1$.
 \end{enumerate}
 \end{proposition}
 
-\noindent The proofs of Propositions~\ref{prop:corner} and~\ref{prop:interior} are in Appendix~\ref{app:proof_beta}.
 
-\paragraph{Economic interpretation.} Condition \eqref{eq:friction} now has a clean finite form. The left-hand side is the marginal friction drag at $\beta_h = 1$: since $m_A(1) = 1$, it simplifies to $(\bar{q}_A - u_0)\delta/t$, which is the loss from further raising the AI's mismatch cost when it is already at its maximum. The right-hand side $\bar\Omega$ captures the effort-incentive and human-demand gains from pushing $\beta_h$ to 1. Because both sides are now finite — a consequence of the mismatch floor $1-\delta$ keeping all effort levels bounded — the condition yields a genuine tradeoff rather than the degenerate dominance that arose under the fully symmetric specification.
+% -------------------------------------------------------------------
+% Engagement-based Revenue
+% -------------------------------------------------------------------
 
 \section{Equilibrium Analysis (Engagement-based Revenue)}
 \label{sec:analysis}
@@ -239,24 +198,45 @@ q_{h}^{*} = \frac{r}{tm_{H}}, \quad q_{A}^{*} = \frac{\alpha r}{tm_{H}} + Q
 \end{equation}
 
 \subsection{Stage 1: Platform's Optimal Compensation Rate}
-
+\begin{assumption}\label{ass:engagement}
+$\alpha \in (0,1]$, $\delta \in (0,1)$, $t > 0$, $u_0 > 0$, $Q \ge 0$, and at the equilibrium $\beta_h^*$:
+\begin{enumerate}
+\item[\textup{(a)}] $\alpha^2 m_H + m_A(1 - tm_H) < 0$.
+ 
+This is the second-order condition (concavity of $u_p$ in $r$). It requires $tm_H > 1$. Since $m_H$ is minimized at $\beta_h = 1$ where $m_H = 1-\delta$, a sufficient condition for all $\beta_h$ is
+\[
+t > \frac{1}{1-\delta} + \alpha^2.
+\]
+ 
+\item[\textup{(b)}] $u_0\,m_A(1 - tm_H) < \alpha\,m_H(2Q - u_0)$.
+ 
+This ensures $r^* > 0$ (both numerator and denominator of $r^*$ are negative). If $2Q \ge u_0$, condition \textup{(b)} is automatic since the left-hand side is negative and the right-hand side is nonnegative. If $2Q < u_0$, the condition is equivalently
+\[
+u_0\,m_A(tm_H - 1) > \alpha\,m_H(u_0 - 2Q).
+\]
+\end{enumerate}
+\end{assumption}
 
 \begin{proposition}[Optimal Compensation Rate under Engagement]
 \label{prop:r(eng)}
 The platform's optimal engagement-based compensation rate is:
 \begin{equation}
-r_{E}^{*} = \frac{tm_{H} [ u_{0}m_{A}(1 - tm_{H}) - \alpha m_{H}(2Q - u_{0}) ]}{2 [ \alpha^{2}tm_{H} + m_{A}(1 - tm_{H}) ]}
+r^{*} = \frac{tm_{H} [ u_{0}m_{A}(1 - tm_{H}) - \alpha m_{H}(2Q - u_{0}) ]}{2 [ \alpha^{2}m_{H} + m_{A}(1 - tm_{H}) ]}
 \end{equation}
-assuming the denominator is strictly positive.
 \end{proposition}
 
-The rate $r_{E}^{*}$ now explicitly depends on the baseline quality $Q$ and learning efficiency $\alpha$ in a more complex manner than the view-based model. The platform is incentivized to adjust compensation to harvest human quality for AI training, weighed against the net marginal cost of that compensation.
+
 
 \subsection{Stage 1: Platform's Optimal Promotion Weight}
 
-\begin{proposition}[Marginal Engagement Returns to Promotion]
+\begin{assumption}\label{ass:eng-promotion}
+Assumptions~\ref{ass:engagement} hold, and the platform has an initial incentive to promote the human creator: $du_p/d\beta_h\big|_{\beta_h=0} > 0$.
+\end{assumption}
+ 
+
+\begin{proposition}[Optimal Promotion Weight]
 \label{prop:beta(eng)}
-Assuming the platform has an initial incentive to promote the human creator $\left( \frac{du_{p}^{E}}{d\beta_{h}} > 0 \text{ at } \beta_{h}=0 \right)$, the optimal promotion weight $\beta_{h}^{*}$ falls into one of two regimes based on the AI's baseline quality $Q$:
+Under Assumption~\ref{ass:eng-promotion},  the optimal promotion weight $\beta_{h}^{*}$ falls into one of two regimes based on the AI's baseline quality $Q$:
 \begin{itemize}
     \item[(i)] \textbf{Interior Solution (High Baseline Quality):} If $Q$ is sufficiently high, there exists a unique interior optimum $\beta_{h}^{*} \in (0, 1)$. The platform balances the marginal engagement gains driven by higher content quality against the marginal engagement losses from worsening the AI's mismatch friction.
     \item[(ii)] \textbf{Corner Solution (Low Baseline Quality):} If $Q$ is sufficiently small, the marginal quality gains globally dominate the AI mismatch penalty. The platform sets $\beta_{h}^{*} = 1$, fully prioritizing the human creator to maximize effort extraction for AI learning.
@@ -264,22 +244,74 @@ Assuming the platform has an initial incentive to promote the human creator $\le
 \end{proposition}
 
 
+\section{Numerical Illustrations}
+ 
+Our analytical results establish that the platform's optimal promotion and compensation policies depend qualitatively on the revenue model (view-based vs.\ engagement-based) and quantitatively on the AI's baseline quality~$Q$, learning efficiency~$\alpha$, and the mismatch environment~$(t, \delta)$. In this section, we use numerical experiments to illustrate these dependencies and draw comparisons across the two regimes.
+ 
+Throughout, we fix a common set of primitive parameters $(\alpha, \delta, u_0)$ and select $t$ separately for each model to satisfy the respective assumptions. The view-based model uses $\alpha = 0.3$, $\delta = 0.5$, $u_0 = 0.2$, and $t = 0.8$ (satisfying Assumption~1: $\alpha/(1-\delta) + tu_0 = 0.76 < 1$). The engagement-based model shares $\alpha$, $\delta$, and $u_0$ but sets $t = 2.5$ (satisfying Assumption~2(a): $t > 1/(1-\delta) + \alpha^2 = 2.09$). Each experiment varies one parameter while holding the others at these baseline values.
+ 
+\subsection{Promotion Policy Across Revenue Models}
+ 
+We first plot the platform's optimal promotion weight $\beta_h^*$ against the AI's baseline quality $Q$ under both revenue models.
+ 
+This comparison is the central question of the paper: how should a platform allocate visibility between human and AI content, and how does this depend on the platform's revenue structure? Our theory predicts qualitatively different behavior. Under view-based revenue, Proposition~3 shows that the platform chooses a corner solution when $Q \geq u_0$ and may admit an interior optimum only when $Q < u_0$. Under engagement-based revenue, Proposition~5 predicts a smooth transition: for low $Q$, the platform fully promotes the human creator ($\beta_h^* = 1$) to extract effort for AI learning, while for high $Q$, an interior solution emerges as the AI's friction drag grows quadratically in $Q$.
+ 
+The numerical results should reveal three features: (i)~the discontinuous, bang-bang character of view-based promotion versus the smoother engagement-based policy; (ii)~the threshold value of $Q$ at which each model transitions between regimes; and (iii)~the direction of the shift---whether stronger AI baseline quality leads to more or less human promotion.
+ 
+\subsection{Compensation Policy Across Revenue Models}
+ 
+We next compare the optimal compensation rate $r^*$ as a function of $Q$ under both models.
+ 
+Compensation is the platform's primary lever for incentivising human effort, and the two models produce structurally different formulas: view-based compensation (Proposition~2) always exceeds $1/2$ and depends on $Q$ only indirectly through $\beta_h^*$, while engagement-based compensation (Proposition~4) can be substantially lower and responds directly to $Q$ through the term $\alpha m_H(2Q - u_0)$ in the numerator. Plotting $r^*$ against $Q$ reveals how the platform's willingness to pay for human content varies with AI capability. In the view-based model, we expect $r^*$ to be relatively stable because the platform's revenue is linear in demand and the marginal value of an additional view is constant. In the engagement-based model, as $Q$ rises, the AI generates high-quality content autonomously, reducing the platform's marginal return to human effort and depressing $r^*$.
+ 
+\subsection{Human Creator Welfare}
+ 
+We plot the human creator's equilibrium payoff $u_c^* = r^* D_h^* - \frac{1}{2}(q_h^*)^2$ against $Q$.
+ 
+Creator welfare captures the net benefit to the human participant after accounting for effort costs. This is policy-relevant: if platforms transition from view-based to engagement-based revenue models, it matters whether human creators are better or worse off. Our theory does not deliver a clean ranking between the two models, making numerical comparison essential. The key tension is that the engagement model demands higher mismatch costs ($t$ large), which in isolation would reduce demand, but the quality weighting of engagement amplifies the returns to high-quality content. The plot should clarify which effect dominates and how creator welfare responds to improvements in AI baseline quality---whether $Q$ acts as a complement (lifting all boats through learning spillovers) or a substitute (crowding out human effort and pay).
+ 
+\subsection{Consumer Surplus}
+ 
+We compute total consumer surplus and plot it against $Q$ under both models. For the partially covered market, consumer surplus from creator $i \in \{A, h\}$ is
+\[
+CS_i = \int_0^{D_i} (q_i - u_0 - t\,x\,m_i)\,dx = \frac{(q_i - u_0)^2}{2\,t\,m_i},
+\]
+and total surplus is $CS = CS_A + CS_h$.
+ 
+Consumer welfare is the standard normative benchmark and the metric most relevant to regulators considering platform intervention. The two revenue models induce different quality--variety tradeoffs: view-based platforms maximise eyeballs and may tolerate lower quality, while engagement-based platforms internalise quality directly. As $Q$ increases, AI content improves exogenously, but the indirect effect on human content quality (through $\alpha$ and the equilibrium $r^*$, $\beta_h^*$) can go either way. The consumer surplus comparison reveals whether engagement-based revenue design, which aligns platform incentives more closely with content quality, translates into measurable welfare gains for consumers.
+ 
+\subsection{Comparative Statics in Learning Efficiency}
+ 
+We vary $\alpha$ and plot $\beta_h^*$, $r^*$, and $u_c^*$ for each model.
+ 
+The AI's learning efficiency $\alpha$ governs the strength of the spillover from human effort to AI quality. In the view-based model, higher $\alpha$ increases the platform's return to human promotion (through the effort spillover term in equation~(12)), but also raises $r^*$ toward its upper bound, tightening Assumption~1. In the engagement-based model, $\alpha$ amplifies both the quality boost and the friction drag in the marginal promotion condition (equation~(28)), with ambiguous net effect. This experiment reveals whether the two models respond monotonically to $\alpha$ or whether non-monotonicities arise---for instance, whether there exists a level of learning efficiency beyond which the platform switches from promoting the human creator to suppressing promotion.
+ 
+\subsection{Comparative Statics in Algorithmic Influence}
+ 
+We vary $\delta$ and plot $\beta_h^*$, $r^*$, and $u_c^*$ for each model.
+ 
+The parameter $\delta$ controls the platform's ability to steer consumers through algorithmic promotion. A larger $\delta$ makes promotion more effective (lowering the floor $1 - \delta$ on mismatch costs) but also makes the competitive landscape more lopsided. This experiment isolates the value of algorithmic power to the platform: does a more influential algorithm benefit the platform by sharpening its promotion tool, or does it destabilise the equilibrium by making the human creator's participation constraint harder to satisfy? Comparing across models reveals whether engagement-based platforms exploit algorithmic influence differently than view-based ones.
+
+
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
 % -------------------------------------------------------------------
 % APPENDIX
 % -------------------------------------------------------------------
-\bibliographystyle{plainnat}
-\bibliography{references}
+
 
 \appendix
 \section*{Appendix}
 
-\subsection*{A\quad Proof of Proposition~\ref{prop:qh}}
+\noindent\textbf{Proof of Proposition~\ref{prop:qh}}
 \label{app:proof_qh}
 \begin{proof}
 The human creator maximizes $u_c = \tfrac{r(q_h - u_0)}{t\,m_H} - \tfrac{1}{2}q_h^2$. The first-order condition $\tfrac{\partial u_c}{\partial q_h} = \tfrac{r}{t\,m_H} - q_h = 0$ gives $q_h^* = \tfrac{r}{t\,m_H}$. The second-order condition $\tfrac{\partial^2 u_c}{\partial q_h^2} = -1 < 0$ confirms a global maximum. Substituting into \eqref{eq:qA} yields $q_A^* = \tfrac{\alpha r}{t\,m_H} + Q$.\hfill$\blacksquare$
 \end{proof}
 
-\subsection*{B\quad Proof of Proposition~\ref{prop:rstar}}
+\noindent\textbf{Proof of Proposition~\ref{prop:rstar}}
 \label{app:proof_rstar}
 \begin{proof}
 Substituting $q_h^*$ and $q_A^*$ into \eqref{eq:up} and differentiating with respect to $r$:
@@ -295,21 +327,17 @@ Substituting and multiplying through by $t^2 m_H^2$:
 \[
     \frac{\alpha\,m_H}{m_A} + (1-r) - r + t\,m_H\,u_0 = 0.
 \]
-Solving for $r$ gives \eqref{eq:rstar}.\hfill$\blacksquare$
+Solving for $r$ gives \eqref{eq:rstar}. Note that the second derivative is -2, which shows $u_p$ is concave in $r$.
+\hfill$\blacksquare$
 \end{proof}
 
 
 
-
-
-\subsection*{C\quad Proof of Propositions~\ref{prop:corner} and~\ref{prop:interior}}
-\label{app:proof_beta}
-
-
-\noindent\textbf{Proof of Proposition~\ref{prop:corner} ($Q \ge u_0$).}
+\noindent\textbf{Proof of Proposition~\ref{prop:combined}}
 \begin{proof}
-\textbf{Step 1: Explicit Construction of the Value Function} \\
-The platform's payoff function is $u_p(r, \beta_h) = D_A + (1-r)D_h$. We first substitute the equilibrium qualities $q_h^* = \frac{r}{tm_H}$ and $q_A^* = \frac{\alpha r}{tm_H} + Q$ into the demand functions:
+Throughout, write $m_A = 1 - \delta(1-\beta_h)$, $m_H = 1 - \beta_h\delta$, and define $y_A = 1/m_A$, $y_H = 1/m_H$, which are strictly convex since $y_A'' = 2\delta^2/m_A^3 > 0$ and $y_H'' = 2\delta^2/m_H^3 > 0$.
+ 
+\medskip\noindent\textbf{Case (i): $Q \ge u_0$.} We first substitute the equilibrium qualities $q_h^* = \frac{r}{tm_H}$ and $q_A^* = \frac{\alpha r}{tm_H} + Q$ into the demand functions:
 \begin{align*}
 D_A &= \frac{\alpha r}{t^2 m_A m_H} + \frac{Q-u_0}{t m_A} \\
 D_h &= \frac{r}{t^2 m_H^2} - \frac{u_0}{t m_H}
@@ -331,13 +359,6 @@ Notice that $A(\beta_h)$ can be factored as $A(\beta_h) = \frac{1}{t m_H} \left(
 V(\beta_h) = \frac{1}{4} \left( \frac{\alpha}{t m_A} + \frac{1}{t m_H} + u_0 \right)^2 + \frac{Q-u_0}{t m_A} - \frac{u_0}{t m_H}
 \end{equation}
 
-\vspace{0.5em}
-\noindent\textbf{Step 2: Defining Convex Components} \\
-Let $y_A(\beta_h) = \frac{1}{m_A(\beta_h)}$ and $y_H(\beta_h) = \frac{1}{m_H(\beta_h)}$. 
-Because $m_A(\beta_h) = 1 - \delta(1-\beta_h)$ and $m_H(\beta_h) = 1 - \beta_h\delta$ are strictly positive linear functions, their reciprocals are strictly convex. Taking the second derivatives confirms this:
-\begin{equation*}
-y_A''(\beta_h) = \frac{2\delta^2}{m_A^3} > 0 \quad \text{and} \quad y_H''(\beta_h) = \frac{2\delta^2}{m_H^3} > 0
-\end{equation*}
 Now, define the core term of the value function as $W(\beta_h) = \frac{\alpha}{t} y_A + \frac{1}{t} y_H + u_0$. Because $W$ is a positive linear combination of strictly convex functions, $W(\beta_h)$ is strictly convex ($W'' > 0$) and strictly positive ($W > 0$).
 
 We can now rewrite the value function compactly:
@@ -345,8 +366,6 @@ We can now rewrite the value function compactly:
 V(\beta_h) = \frac{1}{4} W(\beta_h)^2 + \frac{Q-u_0}{t} y_A(\beta_h) - \frac{u_0}{t} y_H(\beta_h)
 \end{equation}
 
-\vspace{0.5em}
-\noindent\textbf{Step 3: Evaluating the Second Derivative} \\
 Taking the total second derivative of $V(\beta_h)$ with respect to $\beta_h$ yields:
 \begin{equation}
 V''(\beta_h) = \frac{1}{2} (W')^2 + \frac{1}{2} W W'' + \frac{Q-u_0}{t} y_A'' - \frac{u_0}{t} y_H'' \label{eq:V_double_prime}
@@ -360,8 +379,6 @@ Therefore, strict convexity hinges entirely on proving that the remaining terms 
 \frac{1}{2} W W'' - \frac{u_0}{t} y_H'' > 0
 \end{equation}
 
-\vspace{0.5em}
-\noindent\textbf{Step 4: The Participation Constraint Bounds} \\
 To sign this final expression, we invoke the human creator's participation constraint: equilibrium effort $q_h^*$ must exceed the outside option $u_0$. 
 Recall that $q_h^* = \frac{r^*}{t m_H}$. Using our algebraic definitions from Step 1:
 \begin{equation*}
@@ -377,60 +394,35 @@ Substituting this lower bound for $W$ into our critical expression from Step 3:
 \end{align*}
 Because $\alpha > 0$, $u_0 > 0$, $t > 0$, and $y_A'' > 0$, it strictly follows that $\frac{\alpha u_0}{t} y_A'' \ge 0$.
 
-\vspace{0.5em}
-\noindent\textbf{Conclusion} \\
+
 All constituent parts of Equation \eqref{eq:V_double_prime} are non-negative, and the bounds enforced by the participation constraint ensure the sum is strictly greater than zero. Therefore, $V''(\beta_h) > 0$ for all $\beta_h \in [0,1]$. 
 
-Because the platform's value function is globally strictly convex over a closed interval, it must attain its maximum at one of the extreme boundaries. The optimal policy is a corner solution determined by evaluating $u_p(0)$ and $u_p(1)$. \hfill $\blacksquare$
+Because the platform's value function is globally strictly convex over a closed interval, it must attain its maximum at one of the extreme boundaries. The optimal policy is a corner solution determined by evaluating $u_p(0)$ and $u_p(1)$. 
+
+
+\medskip\noindent\textbf{Case (ii): $Q < u_0$.}
+When $Q < u_0$, for sufficiently small $\beta_h$ the AI quality $q_A^* = \alpha r^*/(tm_H) + Q$ falls below $u_0$, yielding $D_A = 0$. Since $q_A^*$ is strictly increasing in $\beta_h$ (because $\partial q_A^*/\partial \beta_h = \alpha r^* \delta/(tm_H^2) > 0$), there exists a unique $\tilde\beta \in (0,1)$ satisfying $q_A^*(\tilde\beta) = u_0$. On $[0, \tilde\beta]$ the platform earns only from human demand and strictly benefits from raising $\beta_h$. The relevant domain is therefore $[\tilde\beta, 1]$.
+ 
+On this domain, the envelope derivative is
+\[
+\frac{du_p}{d\beta_h} = \underbrace{-\frac{(q_A^* - u_0)\,\delta}{t\,m_A^2}}_{\text{friction drag}} + \underbrace{\frac{\alpha r^*\delta}{t^2 m_A m_H^2} + (1-r^*)\!\left(\frac{(q_h^* - u_0)\delta}{t\,m_H^2} + \frac{r^*\delta}{t^2 m_H^3}\right)}_{\equiv\;\Omega(\beta_h)\;>\;0}.
+\]
+At $\beta_h = \tilde\beta$: the friction drag vanishes (since $q_A^* = u_0$), so $du_p/d\beta_h = \Omega(\tilde\beta) > 0$.
+ 
+At $\beta_h = 1$: $m_A = 1$, $m_H = 1-\delta$, and the friction drag equals $(q_A^*(1) - u_0)\delta/t$. Collecting all positive terms into
+\[
+\bar\Omega = \frac{\alpha r^*(1)\,\delta}{t^2\,m_H(1)^2} + (1-r^*(1))\!\left(\frac{(q_h^*(1)-u_0)\,\delta}{t\,m_H(1)^2} + \frac{r^*(1)\,\delta}{t^2\,m_H(1)^3}\right),
+\]
+the derivative at the boundary is $(du_p/d\beta_h)\big|_{\beta_h=1} = -\frac{(q_A^*(1)-u_0)\delta}{t} + \bar\Omega$.
+ 
+Since $du_p/d\beta_h$ is continuous on $(\tilde\beta, 1]$ and positive at $\tilde\beta$:
+\begin{itemize}
+\item If $\frac{(q_A^*(1)-u_0)\delta}{t} > \bar\Omega$, then $du_p/d\beta_h\big|_1 < 0$, and by the Intermediate Value Theorem there exists $\beta_h^* \in (\tilde\beta, 1)$.
+\item Otherwise $du_p/d\beta_h \ge 0$ on the entire interval, giving $\beta_h^* = 1$.
+\end{itemize}
+This completes the proof.\hfill $\blacksquare$
 \end{proof}
-\bigskip
 
-
-
-
-
-
-\noindent\textbf{Proof of Proposition~\ref{prop:interior} ($Q < u_0$).}
-\begin{proof}
-We define the survival threshold $\tilde{\beta} \in (0, 1)$ as the unique solution to $q_A^*(\tilde{\beta}) = u_0$. For any $\beta_h \le \tilde{\beta}$, the AI generates zero demand ($D_A = 0$).
-
-We restrict our analysis of the platform's first-order condition to the active interval $\beta_h \in [\tilde{\beta}, 1]$:
-\begin{equation}
-    \frac{du_p}{d\beta_h} = \frac{\partial D_A}{\partial \beta_h} + (1-r^*)\frac{\partial D_h}{\partial \beta_h}
-\end{equation}
-
-By expanding the partial derivatives of demand, we have:
-\begin{equation}
-    \frac{du_p}{d\beta_h} = -\frac{(q_A^* - u_0)\delta}{tm_A^2}+ \frac{\alpha r^* \delta}{t^2 m_A m_H^2} + (1-r^*) \left[ \frac{(q_h^* - u_0)\delta}{tm_H^2} + \frac{r^* \delta}{t^2 m_H^3} \right]
-\end{equation}
-
-\vspace{0.3cm}
-\noindent \textbf{Step 1: Evaluation at the Survival Threshold ($\beta_h \to \tilde{\beta}^+$)} \\
-By definition of the survival threshold, the AI's quality exactly equals the outside option: $q_A^*(\tilde{\beta}) - u_0 = 0$. Therefore, the negative term evaluates to exactly zero. The platform's marginal utility at this threshold consists strictly of the positive marginal gains:
-\begin{equation}
-    \left. \frac{du_p}{d\beta_h} \right|_{\beta_h = \tilde{\beta}} > 0
-\end{equation}
-Because the marginal utility is strictly positive, the platform has a strict mathematical incentive to push promotion past the threshold.
-
-\vspace{0.3cm}
-\noindent \textbf{Step 2: Evaluation at the Upper Boundary ($\beta_h \to 1$)} \\
-As promotion reaches the upper boundary ($\beta_h = 1$), the human's effort reaches a finite ceiling $\overline{q}_h = \frac{r^*(1)}{t(1-\delta)}$, leading to a finite AI quality $\overline{q}_A = \alpha\overline{q}_h + Q$.
-
-At this boundary, the AI's mismatch cost is maximized ($m_A = 1$). Therefore, the negative friction term simplifies to $-\frac{(\overline{q}_A - u_0)\delta}{t}$. We collect all remaining finite, positive terms into the constant $\overline{\Omega}$. The platform's total marginal utility at the upper boundary is the balance of these forces:
-\begin{equation}
-    \left. \frac{du_p}{d\beta_h} \right|_{\beta_h = 1} = -\frac{(\overline{q}_A - u_0)\delta}{t} + \overline{\Omega}
-\end{equation}
-
-\vspace{0.3cm}
-\noindent \textbf{Step 3: Existence via the Intermediate Value Theorem} \\
-Because $\frac{du_p}{d\beta_h}$ is continuous on $(\tilde{\beta}, 1]$, an interior optimum $\beta_h^* \in (\tilde{\beta}, 1)$ exists if and only if the marginal utility becomes strictly negative at the upper boundary. This requires the friction drag to strictly dominate the positive gains:
-\begin{equation}
-    \frac{(\overline{q}_A - u_0)\delta}{t} > \overline{\Omega}
-\end{equation}
-If this holds, then $\left. \frac{du_p}{d\beta_h} \right|_{1} < 0$. By the Intermediate Value Theorem, because the derivative is positive at $\tilde{\beta}$ and negative at $1$, it must smoothly cross zero at some interior point $\beta_h^* \in (\tilde{\beta}, 1)$.
-
-Conversely, if the condition fails, the positive marginal gains from human effort extraction weakly dominate the friction penalty on the AI's feed. The derivative remains non-negative across the entire active interval, forcing the platform to set $\beta_h^* = 1$. \hfill $\blacksquare$
-\end{proof}
 
 
 
@@ -452,97 +444,66 @@ Taking the partial derivative with respect to $r$:
 Next, evaluating the AI engagement component:
 \begin{align}
 \frac{\partial (q_{A}D_{A})}{\partial r} &= \frac{2q_{A} - u_{0}}{tm_{A}} \frac{\partial q_{A}}{\partial r} = \frac{2\left(\frac{\alpha r}{tm_{H}} + Q\right) - u_{0}}{tm_{A}} \left( \frac{\alpha}{tm_{H}} \right) \nonumber \\
-&= \frac{2\alpha^{2}r}{t^{2}m_{H}^{2}m_{A}} + \frac{\alpha(2Q - u_{0})}{t^{2}m_{H}m_{A}}
+&= \frac{2\alpha^{2}r}{t^{3}m_{H}^{2}m_{A}} + \frac{\alpha(2Q - u_{0})}{t^{2}m_{H}m_{A}}
 \end{align}
 Summing the derivatives and setting to zero:
 \begin{equation}
-\frac{2\alpha^{2}r}{t^{2}m_{H}^{2}m_{A}} + \frac{\alpha(2Q - u_{0})}{t^{2}m_{H}m_{A}} + \frac{2r(1 - tm_{H})}{t^{3}m_{H}^{3}} - \frac{u_{0}(1 - tm_{H})}{t^{2}m_{H}^{2}} = 0
+\frac{2\alpha^{2}r}{t^{3}m_{H}^{2}m_{A}} + \frac{\alpha(2Q - u_{0})}{t^{2}m_{H}m_{A}} + \frac{2r(1 - tm_{H})}{t^{3}m_{H}^{3}} - \frac{u_{0}(1 - tm_{H})}{t^{2}m_{H}^{2}} = 0
 \end{equation}
 Multiply the entire equation by $\frac{t^{3}m_{H}^{3}m_{A}}{2}$ to clear denominators:
 \begin{equation}
-\alpha^{2}tm_{H}r + \frac{1}{2}\alpha tm_{H}^{2}(2Q - u_{0}) + m_{A}(1 - tm_{H})r - \frac{1}{2}u_{0}tm_{H}m_{A}(1 - tm_{H}) = 0
+\alpha^{2}m_{H}r + \frac{1}{2}\alpha tm_{H}^{2}(2Q - u_{0}) + m_{A}(1 - tm_{H})r - \frac{1}{2}u_{0}tm_{H}m_{A}(1 - tm_{H}) = 0
 \end{equation}
 Factoring out $r$ yields:
 \begin{equation}
-r \left[ \alpha^{2}tm_{H} + m_{A}(1 - tm_{H}) \right] = \frac{1}{2}u_{0}tm_{H}m_{A}(1 - tm_{H}) - \frac{1}{2}\alpha tm_{H}^{2}(2Q - u_{0})
+r \left[ \alpha^{2}m_{H} + m_{A}(1 - tm_{H}) \right] = \frac{1}{2}u_{0}tm_{H}m_{A}(1 - tm_{H}) - \frac{1}{2}\alpha tm_{H}^{2}(2Q - u_{0})
 \end{equation}
-Solving for $r$ produces the optimal engagement-based compensation rate $r_{E}^{*}$ provided in Proposition 6. 
+Solving for $r$ produces the optimal engagement-based compensation rate $r^{*}$ provided in Proposition \ref{prop:r(eng)}. 
 \hfill $\blacksquare$
 \end{proof}
 
 \noindent\textbf{Proof of Proposition~\ref{prop:beta(eng)}}
 \begin{proof}
-The platform seeks to maximize its engagement-based utility $u_{p}$ with respect to the human promotion weight $\beta_{h} \in [0, 1]$. By the Envelope Theorem, since the platform optimizes compensation $r$ such that $\frac{\partial u_{p}}{\partial r} = 0$ at $r_{E}^{*}$, the total derivative with respect to $\beta_{h}$ simplifies to the partial derivative:
-\begin{equation}
-\frac{du_{p}}{d\beta_{h}} = \frac{\partial}{\partial\beta_{h}} \Big( q_{A}^{*}D_{A} \Big) + \frac{\partial}{\partial\beta_{h}} \Big( (q_{h}^{*} - r_{E}^{*})D_{h} \Big)
+By the Envelope Theorem, since $\partial u_p/\partial r = 0$ at $r^*$, the total derivative with respect to $\beta_h$ reduces to the partial derivative evaluated at $r = r^*$:
+\[
+\frac{du_p}{d\beta_h} = \frac{\partial}{\partial \beta_h}\bigl(q_A^* D_A\bigr) + \frac{\partial}{\partial \beta_h}\bigl((q_h^* - r^*) D_h\bigr).
+\]
+Holding $r$ fixed, the equilibrium qualities $q_h^* = r/(tm_H)$ and $q_A^* = \alpha r/(tm_H) + Q$ depend on $\beta_h$ through $m_H$ only, with
+\[
+\frac{\partial q_h^*}{\partial \beta_h} = \frac{r^*\delta}{tm_H^2} > 0, \qquad \frac{\partial q_A^*}{\partial \beta_h} = \frac{\alpha r^*\delta}{tm_H^2} > 0.
+\]
+ 
+\medskip\noindent\textbf{AI engagement margin.}
+Differentiating $q_A^* D_A = \bigl((q_A^*)^2 - u_0\,q_A^*\bigr)/(tm_A)$:
+\[
+\Omega_A = \frac{(2q_A^* - u_0)\,\alpha r^*\delta}{t^2 m_A m_H^2} - \frac{q_A^*(q_A^* - u_0)\,\delta}{tm_A^2}.
+\]
+The first term (quality boost) is positive when $q_A^* > u_0/2$; the second term (friction drag) is positive whenever $q_A^* > u_0$.
+ 
+\medskip\noindent\textbf{Human engagement margin.}
+Differentiating $(q_h^* - r^*) D_h = (q_h^* - r^*)(q_h^* - u_0)/(tm_H)$:
+\[
+\Omega_H = \frac{\delta}{tm_H^2}\!\left[\frac{r^*(2q_h^* - r^* - u_0)}{tm_H} + (q_h^* - r^*)(q_h^* - u_0)\right].
+\]
+Under Assumption~2(a), $tm_H > 1$, so $q_h^* = r^*/(tm_H) < r^*$ and the factor $(q_h^* - r^*)$ is negative. Consequently, $\Omega_H$ is \emph{not} guaranteed to be positive: the platform may lose net engagement on the human creator's content (paying $r^*$ per view while the quality-weighted engagement per view is only $q_h^* < r^*$). The sign of $\Omega_H$ depends on parameter values and may change across $\beta_h \in [0,1]$.
+ 
+\medskip\noindent\textbf{Total marginal utility.}
+The full derivative is
+\begin{equation}\label{eq:full-deriv}
+\frac{du_p}{d\beta_h} = \Omega_H + \frac{(2q_A^* - u_0)\,\alpha r^*\delta}{t^2 m_A m_H^2} - \frac{q_A^*(q_A^* - u_0)\,\delta}{tm_A^2}.
 \end{equation}
-
-Recall the mismatch costs and their derivatives with respect to $\beta_{h}$:
-\begin{equation}
-m_{H} = 1 - \beta_{h}\delta, \quad \frac{\partial m_{H}}{\partial\beta_{h}} = -\delta
-\end{equation}
-\begin{equation}
-m_{A} = 1 - (1 - \beta_{h})\delta = 1 - \delta + \beta_{h}\delta, \quad \frac{\partial m_{A}}{\partial\beta_{h}} = \delta
-\end{equation}
-
-Furthermore, the optimal qualities are $q_{h}^{*} = \frac{r_{E}^{*}}{tm_{H}}$ and $q_{A}^{*} = \frac{\alpha r_{E}^{*}}{tm_{H}} + Q$. Their partial derivatives with respect to $\beta_{h}$ are strictly positive due to the reduction in human mismatch friction:
-\begin{equation}
-\frac{\partial q_{h}^{*}}{\partial\beta_{h}} = -\frac{r_{E}^{*}}{tm_{H}^{2}} (-\delta) = \frac{r_{E}^{*}\delta}{tm_{H}^{2}} > 0
-\end{equation}
-\begin{equation}
-\frac{\partial q_{A}^{*}}{\partial\beta_{h}} = \frac{\alpha r_{E}^{*}\delta}{tm_{H}^{2}} > 0
-\end{equation}
-
-\vspace{0.5cm}
-\noindent \textbf{Step 1: Marginal Net Human Engagement Gain ($\Omega_{H}$)}
-
-We differentiate the human engagement component $(q_{h}^{*} - r_{E}^{*})D_{h}$, where $D_{h} = \frac{q_{h}^{*} - u_{0}}{tm_{H}}$:
-\begin{align}
-\Omega_{H} &= \frac{\partial}{\partial\beta_{h}} \left[ (q_{h}^{*} - r_{E}^{*}) \left( \frac{q_{h}^{*} - u_{0}}{tm_{H}} \right) \right] \notag \\
-&  = \frac{\partial q_{h}^{*}}{\partial\beta_{h}} D_{h} + (q_{h}^{*} - r_{E}^{*}) \left[ \frac{\frac{\partial q_{h}^{*}}{\partial\beta_{h}} tm_{H} - (q_{h}^{*} - u_{0})t(-\delta)}{t^{2}m_{H}^{2}} \right]
-\end{align}
-Substituting $\frac{\partial q_{h}^{*}}{\partial\beta_{h}} = \frac{r_{E}^{*}\delta}{tm_{H}^{2}}$ and factoring out $\frac{\delta}{tm_{H}^{2}}$ yields:
-\begin{equation}
-\Omega_{H} = \frac{\delta}{tm_{H}^{2}} \left[ r_{E}^{*} D_{h} + (q_{h}^{*} - r_{E}^{*}) \left( \frac{r_{E}^{*} + tm_{H}(q_{h}^{*} - u_{0})}{tm_{H}} \right) \right]
-\end{equation}
-Because $q_{h}^{*} > r_{E}^{*}$ (for positive net revenue) and $q_{h}^{*} > u_{0}$ (for non-negative demand), every term in the bracket is strictly positive. Therefore, $\Omega_{H} > 0$ for all $\beta_{h} \in [0, 1]$.
-
-\vspace{0.5cm}
-\noindent \textbf{Step 2: Marginal AI Engagement Gain ($\Omega_{A}$)}
-
-Next, we differentiate the AI engagement component $q_{A}^{*}D_{A} = \frac{(q_{A}^{*})^{2} - u_{0}q_{A}^{*}}{tm_{A}}$:
-\begin{equation}
-\Omega_{A} = \frac{\partial}{\partial\beta_{h}} \left[ \frac{(q_{A}^{*})^{2} - u_{0}q_{A}^{*}}{tm_{A}} \right] = \frac{(2q_{A}^{*} - u_{0})}{tm_{A}} \frac{\partial q_{A}^{*}}{\partial\beta_{h}} - \frac{(q_{A}^{*})^{2} - u_{0}q_{A}^{*}}{tm_{A}^{2}} \frac{\partial m_{A}}{\partial\beta_{h}}
-\end{equation}
-Substitute $\frac{\partial q_{A}^{*}}{\partial\beta_{h}} = \frac{\alpha r_{E}^{*}\delta}{tm_{H}^{2}}$ and $\frac{\partial m_{A}}{\partial\beta_{h}} = \delta$:
-\begin{equation}
-\Omega_{A} = \underbrace{\frac{(2q_{A}^{*} - u_{0}) \alpha r_{E}^{*} \delta}{t^{2}m_{A}m_{H}^{2}}}_{\text{AI Quality Boost (>0)}} - \underbrace{\frac{q_{A}^{*}(q_{A}^{*} - u_{0})\delta}{tm_{A}^{2}}}_{\text{AI Friction Drag (<0)}}
-\end{equation}
-
-\vspace{0.5cm}
-\noindent \textbf{Step 3: Conclusion on the Optimal Promotion Weight $\beta_{h}^{*}$}
-
-
-The full marginal utility is the sum of these effects:
-\begin{equation}
-\frac{du_{p}}{d\beta_{h}} = \Omega_{H} + \frac{(2q_{A}^{*} - u_{0}) \alpha r_{E}^{*} \delta}{t^{2}m_{A}m_{H}^{2}} - \frac{q_{A}^{*}(q_{A}^{*} - u_{0})\delta}{tm_{A}^{2}}
-\end{equation}
-
-To characterize the equilibrium $\beta_{h}^{*}$, we evaluate this derivative at the upper boundary $\beta_{h} \to 1$. At this boundary, the AI's mismatch cost is maximized ($m_{A} = 1$). Let $\overline{q}_{A}$ and $\overline{\Omega}_{H}$ denote the respective values evaluated at $\beta_{h} = 1$. The boundary condition is:
-\begin{equation}
-\left. \frac{du_{p}}{d\beta_{h}} \right|_{\beta_{h}=1} = \overline{\Omega}_{H} + \frac{(2\overline{q}_{A} - u_{0}) \alpha r_{E}^{*} \delta}{t^{2}m_{H}^{2}} - \frac{\overline{q}_{A}(\overline{q}_{A} - u_{0})\delta}{t}
-\end{equation}
-
-Assuming the platform has an initial incentive to promote the human creator such that $\left. \frac{du_{p}}{d\beta_{h}} \right|_{\beta_{h}=0} > 0$, we can draw a definitive conclusion on $\beta_{h}^{*}$ based on the Intermediate Value Theorem:
-
+ 
+\medskip\noindent\textbf{Boundary evaluation.}
+By Assumption~\ref{ass:eng-promotion}, $du_p/d\beta_h\big|_{\beta_h = 0} > 0$.
+ 
+At $\beta_h = 1$, we have $m_A = 1$ and $m_H = 1-\delta$. All terms in~\eqref{eq:full-deriv} are finite and continuous. The friction drag term $q_A^*(q_A^* - u_0)\delta/t$ is the only term that grows quadratically in $Q$ (through $q_A^* = \alpha r^*/(t(1-\delta)) + Q$), while all other terms grow at most linearly in $Q$. Therefore:
 \begin{itemize}
-    \item \textbf{Case 1: Interior Solution $\beta_{h}^{*} \in (0, 1)$.} 
-    If the baseline AI quality $Q$ is sufficiently high, the quadratic drag term $\frac{\overline{q}_{A}(\overline{q}_{A} - u_{0})\delta}{t}$ strictly dominates the positive human and AI quality gains at the boundary. Consequently, $\frac{du_{p}}{d\beta_{h}} \big|_{\beta_{h}=1} < 0$. Because the marginal utility is positive at $0$ and negative at $1$, it must smoothly cross zero. Assuming $u_{p}$ is strictly concave in $\beta_{h}$, a unique interior optimum $\beta_{h}^{*}$ exists where the marginal gains of extracting higher human quality exactly equal the marginal engagement losses caused by worsening the AI's mismatch friction.
-    
-    \item \textbf{Case 2: Corner Solution $\beta_{h}^{*} = 1$.}
-    If $Q$ is small, the AI content heavily relies on learning from the human ($\alpha q_{h}^{*}$). In this scenario, the ''AI Quality Boost'' and ''Net Human Engagement Gain'' jointly overwhelm the friction drag for all $\beta_{h}$. The platform's utility remains strictly increasing ($\frac{du_{p}}{d\beta_{h}} > 0$ globally). The platform maximizes engagement by fully prioritizing the human creator ($\beta_{h}^{*} = 1$) to drive up $q_{h}^{*}$, accepting maximum AI friction in exchange for vastly superior content quality.
-\end{itemize} \hfill $\blacksquare$
+\item For $Q$ sufficiently large, the friction drag dominates and $du_p/d\beta_h\big|_{\beta_h=1} < 0$. Since $du_p/d\beta_h$ is continuous on $[0,1]$, positive at $0$, and negative at $1$, the Intermediate Value Theorem yields an interior $\beta_h^* \in (0,1)$.
+\item For $Q$ sufficiently small, the friction drag is weak and $du_p/d\beta_h \geq 0$ on $[0,1]$, giving $\beta_h^* = 1$.
+\end{itemize}
+\hfill $\blacksquare$
 \end{proof}
+
 
 
 \end{document}
