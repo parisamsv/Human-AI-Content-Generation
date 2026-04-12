@@ -6,10 +6,10 @@ Stores fixed parameters and settings for the analysis.
 # Fixed parameters for the simulation
 PARAMS = {
     'alpha': 0.5,  # AI learning efficiency
-    'u_0': 0,    # Consumer outside option
-    'delta': 0.3,   # Platform algorithmic sensitivity
-    't_v': 2.0,   # Transportation cost (will be varied in the analysis)
-    't_e': 2.0
+    'u_0': 0.2,    # Consumer outside option
+    'delta': 0.6,   # Platform algorithmic sensitivity
+    't': 2.0,   # Transportation cost (will be varied in the analysis)
+    'K': 1.0    # Platform preference for human creators
 }
 
 # Matplotlib configuration for plots

@@ -10,12 +10,12 @@ class PlatformRevenueSimulator:
     Simulates two platform revenue settings for human-AI content generation.
     """
     
-    def __init__(self, t_v=1.0, t_e=2.5, alpha=0.6, Q=0.0, u_0=0.5, delta=0.4):
+    def __init__(self, K=1, t=2.5, alpha=0.6, Q=0.0, u_0=0.5, delta=0.4):
         """
         Initialize platform parameters.
         """
-        self.t_v = t_v
-        self.t_e = t_e
+        self.K = K
+        self.t = t
         self.alpha = alpha
         self.Q = Q
         self.u_0 = u_0
@@ -33,11 +33,11 @@ class PlatformRevenueSimulator:
         """
         m_H, _ = self.mismatch_costs(beta_h)
         if type == 'view':
-            q_h = r / (self.t_v * m_H)
-            q_A = (self.alpha * r) / (self.t_v * m_H) + self.Q
+            q_h = r / (self.t * m_H)
+            q_A = (self.alpha * r) / (self.t * m_H) + self.Q
         else:  # type == 'engagement'
-            q_h = r / (self.t_e * m_H)
-            q_A = (self.alpha * r) / (self.t_e * m_H) + self.Q
+            q_h = r / (self.t * m_H)
+            q_A = (self.alpha * r) / (self.t * m_H) + self.Q
         return q_h, q_A
     
     def demands(self, beta_h, r, type):
@@ -48,11 +48,11 @@ class PlatformRevenueSimulator:
         q_h, q_A = self.creator_qualities(beta_h, r, type)
         
         if type == 'view':
-            D_h = max(0, (q_h - self.u_0) / (self.t_v * m_H))
-            D_A = max(0, (q_A - self.u_0) / (self.t_v * m_A))
+            D_h = max(0, (q_h - self.u_0) / (self.t * m_H))
+            D_A = max(0, (q_A - self.u_0) / (self.t * m_A))
         else:  # type == 'engagement'
-            D_h = max(0, (q_h - self.u_0) / (self.t_e * m_H))
-            D_A = max(0, (q_A - self.u_0) / (self.t_e * m_A))
+            D_h = max(0, (q_h - self.u_0) / (self.t * m_H))
+            D_A = max(0, (q_A - self.u_0) / (self.t * m_A))
         
         return D_h, D_A
     
@@ -61,8 +61,8 @@ class PlatformRevenueSimulator:
         Setting 1: View-based revenue (total volume).
         """
         D_h, D_A = self.demands(beta_h, r, type='view')
-        return D_A + (1 - r) * D_h
-    
+        return D_A + (1 - r) * D_h - (self.K/2) * (beta_h-0.5)**2
+
     def platform_utility_engagement(self, beta_h, r):
         """
         Setting 2: Engagement-based revenue.
@@ -70,7 +70,7 @@ class PlatformRevenueSimulator:
         q_h, q_A = self.creator_qualities(beta_h, r, type='engagement')
         D_h, D_A = self.demands(beta_h, r, type='engagement')
         
-        engagement = q_A * D_A + (q_h - r) * D_h
+        engagement = q_A * D_A + q_h * (1 - r) * D_h - (self.K/2) * (beta_h-0.5)**2
         return engagement
     
     def optimal_r_engagement(self, beta_h):
@@ -79,12 +79,12 @@ class PlatformRevenueSimulator:
         """
         m_H, m_A = self.mismatch_costs(beta_h)
         
-        numerator = (self.t_e * m_H * 
-                    (self.u_0 * m_A * (1 - self.t_e * m_H) - 
+        numerator = (self.t * m_H * 
+                    (self.u_0 * m_A * (1 - self.t * m_H) - 
                      self.alpha * m_H * (2 * self.Q - self.u_0)))
         
         denominator = 2 * (self.alpha**2 * m_H + 
-                          m_A * (1 - self.t_e * m_H))
+                          m_A * (1 - self.t * m_H))
         
         if denominator == 0:
             return 0
@@ -102,7 +102,7 @@ class PlatformRevenueSimulator:
         Setting 1: Analytically derived optimal compensation.
         """
         m_H, m_A = self.mismatch_costs(beta_h)
-        r_opt = 0.5 * ( 1 + (self.alpha * m_H)/m_A + self.t_v * m_H * self.u_0 )
+        r_opt = 0.5 * ( 1 + (self.alpha * m_H)/m_A + self.t * m_H * self.u_0 )
         if r_opt > 1:   
             return 1
         elif r_opt < 0:
@@ -168,3 +168,24 @@ class PlatformRevenueSimulator:
             'q_h': q_h,
             'q_A': q_A
         }
+    
+    def optimize_general(self, type):
+        best_utility = -np.inf
+        best_beta_h = 0
+        best_r = 0
+
+        for beta_h in np.linspace(0, 1, 101):
+            # Grid search over r instead of using closed-form
+            for r in np.linspace(0, 1, 101):
+                if type == 'view':
+                    u = self.platform_utility_view(beta_h, r)
+                else:
+                    u = self.platform_utility_engagement(beta_h, r)
+                if u > best_utility:
+                    best_utility = u
+                    best_beta_h = beta_h
+                    best_r = r
+
+        q_h, q_A = self.creator_qualities(best_beta_h, best_r, type)
+        return {'beta_h': best_beta_h, 'r': best_r, 
+                'utility': best_utility, 'q_h': q_h, 'q_A': q_A}

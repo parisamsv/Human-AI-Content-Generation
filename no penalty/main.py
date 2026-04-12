@@ -25,8 +25,10 @@ def sweep_Q_values(Q_min, Q_max, n_points, params):
         sim = PlatformRevenueSimulator(Q=Q_v, **params)
         
         # Optimize both settings
-        result_view = sim.optimize_view_based()
-        result_eng = sim.optimize_engagement_based()
+        # result_view = sim.optimize_view_based()
+        # result_eng = sim.optimize_engagement_based()
+        result_view = sim.optimize_general('view')
+        result_eng = sim.optimize_general('engagement')
         
         # Store results
         for key in results_view:
