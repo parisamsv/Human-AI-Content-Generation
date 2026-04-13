@@ -91,7 +91,7 @@ class PlatformSimulator:
             num = t * mH * (u0 * mA * (1.0 - t * mH)
                             - a * mH * (2.0 * Q - u0))
             r_hat = num / (2.0 * sigma)
-            return np.clip(r_hat, 0.0, 1.0)
+            return min(r_hat, 1.0)
 
     # -- optimise over beta -----------------------------------------------
 
