@@ -2,15 +2,21 @@
 Configuration for the platform model with discrimination penalty.
 """
 
-# View-based: Assumption 1 sufficient condition alpha/(1-delta) + t*u0 < 1
-VIEW_PARAMS = {'alpha': 0.5, 'delta': 0.3, 'u_0': 0, 't': 2.0}
-# Check: 0.5/0.7 + 1.0*0.2 = 0.914 < 1 ✓
-
-# Engagement-based: SOC sufficient condition t > 1/(1-delta) + alpha^2
-ENG_PARAMS = {'alpha': 0.5, 'delta': 0.3, 'u_0': 0, 't': 2.0}
-# Check: 1/0.7 + 0.25 = 1.68 < 2.0 ✓
+PARAMS = {'alpha': 0.5, 'delta': 0.3, 'k': 1.0, 'Q': 0.5}
 
 K_VALUES = [0.0, 1.0, 2.0, 5.0]
+K_COLORS = {0.0:'#1f77b4', 1.0:'#2ca02c', 2.0:"#b28b0b",
+             5.0:'#d62728'}
+
+ALPHA_VALUES = [0.1, 0.2, 0.4, 0.7]
+ALPHA_COLORS = {0.1:'#1f77b4', 0.2:'#2ca02c', 0.4:"#b28b0b",
+                0.7:'#d62728'}
+DELTA_VALUES = [0.1, 0.2, 0.4, 0.8]
+DELTA_COLORS = {0.1:'#1f77b4', 0.2:'#2ca02c', 0.4:"#b28b0b",
+                0.8:'#d62728'}
+
+Q_VALUES = [0.0, 0.2, 0.5, 1.0]
+Q_COLORS = {0.0:'#1f77b4', 0.2:'#2ca02c', 0.5:"#b28b0b", 1.0:'#d62728'}
 
 Q_SWEEP     = {'min': 0.0, 'max': 2.0, 'points': 101}
 K_SWEEP     = {'min': 0.0, 'max': 10.0, 'points': 51}
