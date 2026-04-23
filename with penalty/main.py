@@ -1,11 +1,8 @@
-"""
-Runs all experiments for both models with discrimination penalty.
-r ∈ [0, 1] enforced throughout.
-"""
+
 from config import *
 from data_generation import sweep_Q, sweep_k, sweep_alpha, sweep_delta
 from plotting import (plot_Q_sweep, plot_k_sweep, plot_alpha_sweep,
-                      plot_delta_sweep, plot_cross_model)
+                      plot_delta_sweep, plot_platform_welfare)
 
 
 def exp1_Q_sweep():
@@ -20,6 +17,7 @@ def exp1_Q_sweep():
                             Q_SWEEP['points'], BETA_GRID_POINTS)
             data[k] = d
         plot_Q_sweep(Qs, data, tag, f'exp1_Q_{tag.lower()}.pdf')
+        plot_platform_welfare(Qs, data, tag, f'exp1_platform_{tag.lower()}.pdf')
 
 
 def exp2_k_sweep():
@@ -67,17 +65,17 @@ def exp4_delta():
         plot_delta_sweep(deltas, data, tag, f'exp4_delta_{tag.lower()}.pdf')
 
 
-def exp5_cross_model():
-    print("\n=== Exp 5: cross-model comparison ===")
-    for k in [0.0, 2.0, 5.0]:
-        print(f"  k={k}")
-        Qs_v, dv = sweep_Q('view', VIEW_PARAMS, k,
-                           Q_SWEEP['min'], Q_SWEEP['max'],
-                           Q_SWEEP['points'], BETA_GRID_POINTS)
-        Qs_e, de = sweep_Q('engagement', ENG_PARAMS, k,
-                           Q_SWEEP['min'], Q_SWEEP['max'],
-                           Q_SWEEP['points'], BETA_GRID_POINTS)
-        plot_cross_model(Qs_v, dv, de, k, f'exp5_cross_k{k:.0f}.pdf')
+# def exp5_cross_model():
+#     print("\n=== Exp 5: cross-model comparison ===")
+#     for k in [0.0, 1.0, 2.0, 5.0]:
+#         print(f"  k={k}")
+#         Qs_v, dv = sweep_Q('view', VIEW_PARAMS, k,
+#                            Q_SWEEP['min'], Q_SWEEP['max'],
+#                            Q_SWEEP['points'], BETA_GRID_POINTS)
+#         Qs_e, de = sweep_Q('engagement', ENG_PARAMS, k,
+#                            Q_SWEEP['min'], Q_SWEEP['max'],
+#                            Q_SWEEP['points'], BETA_GRID_POINTS)
+#         plot_cross_model(Qs_v, dv, de, k, f'exp5_cross_k{k:.0f}.pdf')
 
 
 def main():

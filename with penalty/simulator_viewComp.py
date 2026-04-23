@@ -10,7 +10,7 @@ IMPORTANT: r is the per-view compensation ratio and must satisfy r ∈ [0, 1].
 import numpy as np
 
 
-class PlatformSimulator:
+class PlatformSimulator_ViewComp:
     def __init__(self, alpha, delta, t, u_0, Q, k, model):
         self.alpha = alpha
         self.delta = delta
@@ -108,23 +108,23 @@ class PlatformSimulator:
                         'q_h': qh, 'q_A': qA}
         return best
 
-    def optimize_general(self, n_beta=201, n_r=201):
-        """
-        Brute-force grid over (beta, r) ∈ [0,1]^2.
-        No analytical assumptions.  Use for robustness checks.
-        """
-        betas = np.linspace(0.0, 1.0, n_beta)
-        rs = np.linspace(0.0, 1.0, n_r)
-        best = {'beta_h': 0.5, 'r': 0.0, 'utility': -np.inf,
-                'q_h': 0.0, 'q_A': 0.0}
-        for b in betas:
-            for r in rs:
-                u = self.utility(b, r)
-                if u > best['utility']:
-                    qh, qA = self.qualities(b, r)
-                    best = {'beta_h': b, 'r': r, 'utility': u,
-                            'q_h': qh, 'q_A': qA}
-        return best
+    # def optimize_general(self, n_beta=201, n_r=201):
+    #     """
+    #     Brute-force grid over (beta, r) ∈ [0,1]^2.
+    #     No analytical assumptions.  Use for robustness checks.
+    #     """
+    #     betas = np.linspace(0.0, 1.0, n_beta)
+    #     rs = np.linspace(0.0, 1.0, n_r)
+    #     best = {'beta_h': 0.5, 'r': 0.0, 'utility': -np.inf,
+    #             'q_h': 0.0, 'q_A': 0.0}
+    #     for b in betas:
+    #         for r in rs:
+    #             u = self.utility(b, r)
+    #             if u > best['utility']:
+    #                 qh, qA = self.qualities(b, r)
+    #                 best = {'beta_h': b, 'r': r, 'utility': u,
+    #                         'q_h': qh, 'q_A': qA}
+    #     return best
 
     # -- welfare -----------------------------------------------------------
 
