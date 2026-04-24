@@ -32,11 +32,11 @@ def plot_sweep(x, data_by_changing_param, model, main_param, changing_param, fil
               (axes[1,2],'cu','Creator Utility','Creator Utility'),
               (axes[1,0],'te',r'$q_h * D_h + q_A * D_A$','Total Engagement'),
               (axes[1,1],'tv',r'$D_h + D_A$','Total Views'),
-              (axes[0,2],'utility',r'Platform Utility $u_p^*$','Platform Utility')]
+              (axes[0,2],'pu',r'Platform Utility $u_p^*$','Platform Utility')]
     
     for ax, key, yl, ti in panels:
         
-        for param_value, d in sorted(data_by_changing_param.items()):
+        for param_value, d in sorted(data_by_changing_param.items()):   
             ax.plot(x, d[key], '-', color=set_color(changing_param, param_value), lw=2, label=f'{changing_param}={param_value}')
 
         ax.set_xlabel(f'{main_param}')

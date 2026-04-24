@@ -144,7 +144,7 @@ class PlatformSimulator_ViewComp:
 
 
 class PlatformSimulator_EngComp:
-    def __init__(self, alpha, delta, t, u_0, Q, k, model):
+    def __init__(self, alpha, delta, Q, k, model):
         self.alpha = alpha
         self.delta = delta
         self.t = np.ceil(alpha**2 + 1/(1-delta))
@@ -224,7 +224,7 @@ class PlatformSimulator_EngComp:
             r = self.optimal_r(b)
             u = self.utility(b, r)
             if u > best['utility']:
-                qh, qA = self.qualities(b, r)
+                qh, qA = self.qualities(r)
                 best = {'beta_h': b, 'r': r, 'utility': u,
                         'q_h': qh, 'q_A': qA}
         return best
@@ -232,11 +232,11 @@ class PlatformSimulator_EngComp:
     # -- metrics -----------------------------------------------------------
 
     def creator_utility(self, b, r):
-        qh, _ = self.qualities(b, r)
+        qh, _ = self.qualities(r)
         return r * qh - 0.5 * qh ** 2
 
     def total_engagement(self, b, r):
-        qh, qA = self.qualities(b, r)
+        qh, qA = self.qualities(r)
         Dh, DA = self.demands(b, r)
         return qA * DA + qh * Dh
     
