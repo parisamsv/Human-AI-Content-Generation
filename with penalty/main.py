@@ -48,7 +48,7 @@ def exp2_k(changing_param, VALUES):
         data = {}
         if changing_param == 'Q':
             for Q in VALUES:
-                params['k'] = Q
+                params['Q'] = Q
                 Qs, d = sweep_k(rev_model, comp_model, params,
                                 K_SWEEP['min'], K_SWEEP['max'],
                                 K_SWEEP['points'], BETA_GRID_POINTS)
@@ -104,7 +104,7 @@ def exp3_alpha(changing_param, VALUES):
                                 ALPHA_SWEEP['points'], BETA_GRID_POINTS)
                 data[delta] = d
         
-        plot_sweep(Qs, data, tag, 'alpha', changing_param, f'exp2_alpha_{changing_param}_{tag.lower()}.pdf')
+        plot_sweep(Qs, data, tag, 'alpha', changing_param, f'exp3_alpha_{changing_param}_{tag.lower()}.pdf')
 
 
 def exp4_delta(changing_param, VALUES):
@@ -138,7 +138,7 @@ def exp4_delta(changing_param, VALUES):
                                 DELTA_SWEEP['points'], BETA_GRID_POINTS)
                 data[Q] = d
         
-        plot_sweep(Qs, data, tag, 'delta', changing_param, f'exp2_delta_{changing_param}_{tag.lower()}.pdf')
+        plot_sweep(Qs, data, tag, 'delta', changing_param, f'exp4_delta_{changing_param}_{tag.lower()}.pdf')
 
 
 # def exp5_cross_model():
@@ -161,17 +161,17 @@ def main():
     print(f"params:  {PARAMS}")
     print(f"k values:  {K_VALUES}")
 
-    exp1_Q('alpha', ALPHA_VALUES)
-    exp1_Q('k', K_VALUES)
-    exp1_Q('delta', DELTA_VALUES)
+    # exp1_Q('alpha', ALPHA_VALUES)
+    # exp1_Q('k', K_VALUES)
+    # exp1_Q('delta', DELTA_VALUES)
 
-    exp2_k('alpha', ALPHA_VALUES)
-    exp2_k('Q', Q_VALUES)
-    exp2_k('delta', DELTA_VALUES)
+    # exp2_k('alpha', ALPHA_VALUES)
+    # exp2_k('Q', Q_VALUES)
+    # exp2_k('delta', DELTA_VALUES)
 
-    exp3_alpha('k', K_VALUES)
-    exp3_alpha('Q', Q_VALUES)
-    exp3_alpha('delta', DELTA_VALUES)
+    # exp3_alpha('k', K_VALUES)
+    # exp3_alpha('Q', Q_VALUES)
+    # exp3_alpha('delta', DELTA_VALUES)
 
     exp4_delta('k', K_VALUES)
     exp4_delta('alpha', ALPHA_VALUES)

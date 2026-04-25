@@ -45,7 +45,7 @@ def plot_sweep(x, data_by_changing_param, model, main_param, changing_param, fil
 
     # axes[0,0].set_ylim([-0.05,1.05])
     # axes[0,1].set_ylim([-0.05,1.05])
-    axes[1,2].set_visible(False)
+    # axes[1,2].set_visible(False)
 
     fig.tight_layout(); _save(fig, filename); return fig
 
