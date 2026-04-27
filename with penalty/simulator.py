@@ -14,7 +14,7 @@ class PlatformSimulator_ViewComp:
     def __init__(self, alpha, delta, Q, k, model):
         self.alpha = alpha
         self.delta = delta
-        self.t = np.ceil(alpha**2 + 1/(1-delta))
+        self.t = 3.5
         self.u_0 = 0
         self.Q = Q
         self.k = k
@@ -33,11 +33,30 @@ class PlatformSimulator_ViewComp:
         qA = self.alpha * qh + self.Q
         return qh, qA
 
+    # def demands(self, b, r):
+    #     mH, mA = self.mismatch(b)
+    #     qh, qA = self.qualities(b, r)
+    #     Dh = max(0.0, (qh - self.u_0) / (self.t * mH))
+    #     DA = max(0.0, (qA - self.u_0) / (self.t * mA))
+    #     return Dh, DA
+    
     def demands(self, b, r):
         mH, mA = self.mismatch(b)
-        qh, qA = self.qualities(b, r)
-        Dh = max(0.0, (qh - self.u_0) / (self.t * mH))
-        DA = max(0.0, (qA - self.u_0) / (self.t * mA))
+        qh, qA = self.qualities(b, r)  # use self.qualities(r) for EngComp
+        
+        x_A = qA / (self.t * mA)          # AI participation boundary
+        x_H = 1.0 - qh / (self.t * mH)   # Human participation boundary
+        
+        if x_A <= x_H:
+            # Uncovered market: no overlap, local monopoly demands
+            DA = max(0.0, min(x_A, 1.0))
+            Dh = max(0.0, min(qh / (self.t * mH), 1.0))
+        else:
+            # Covered market: competitive Hotelling allocation
+            x_hat = (qA - qh + self.t * mH) / (self.t * (mA + mH))
+            DA = max(0.0, min(x_hat, 1.0))
+            Dh = max(0.0, min(1.0 - x_hat, 1.0))
+        
         return Dh, DA
 
     # -- platform utility (without penalty, for r-optimisation) -----------
@@ -72,10 +91,14 @@ class PlatformSimulator_ViewComp:
         mH, mA = self.mismatch(b)
         a, t, u0, Q = self.alpha, self.t, self.u_0, self.Q
 
+        W_vc = a / (t**2 * mA * mH) + 1.0 / (t**2 * mH**2)
+        r_boundary = (1.0 - Q / (t * mA)) / W_vc 
+        r_boundary = max(0.0, r_boundary)
+
         if self.model == 'view':
             # Unconstrained maximiser (always > 0.5)
             r_hat = 0.5 * (1.0 + a * mH / mA + t * mH * u0)
-            return r_hat
+            return min(r_hat, r_boundary)
 
         else:  # engagement
             sigma = self._sigma(b)
@@ -83,7 +106,7 @@ class PlatformSimulator_ViewComp:
             num = t * mH * (u0 * mA * (1.0 - t * mH)
                             - a * mH * (2.0 * Q - u0))
             r_hat = num / (2.0 * sigma)
-            return r_hat
+            return min(r_hat, r_boundary)
 
     # -- optimise over beta -----------------------------------------------
 
@@ -147,7 +170,7 @@ class PlatformSimulator_EngComp:
     def __init__(self, alpha, delta, Q, k, model):
         self.alpha = alpha
         self.delta = delta
-        self.t = np.ceil(alpha**2 + 1/(1-delta))
+        self.t = 3.5
         self.u_0 = 0
         self.Q = Q
         self.k = k
@@ -165,11 +188,30 @@ class PlatformSimulator_EngComp:
         qA = self.alpha * qh + self.Q
         return qh, qA
 
+    # def demands(self, b, r):
+    #     mH, mA = self.mismatch(b)
+    #     qh, qA = self.qualities(r)
+    #     Dh = max(0.0, (qh - self.u_0) / (self.t * mH))
+    #     DA = max(0.0, (qA - self.u_0) / (self.t * mA))
+    #     return Dh, DA
+
     def demands(self, b, r):
         mH, mA = self.mismatch(b)
-        qh, qA = self.qualities(r)
-        Dh = max(0.0, (qh - self.u_0) / (self.t * mH))
-        DA = max(0.0, (qA - self.u_0) / (self.t * mA))
+        qh, qA = self.qualities(r)  # use self.qualities(r) for EngComp
+        
+        x_A = qA / (self.t * mA)          # AI participation boundary
+        x_H = 1.0 - qh / (self.t * mH)   # Human participation boundary
+        
+        if x_A <= x_H:
+            # Uncovered market: no overlap, local monopoly demands
+            DA = max(0.0, min(x_A, 1.0))
+            Dh = max(0.0, min(qh / (self.t * mH), 1.0))
+        else:
+            # Covered market: competitive Hotelling allocation
+            x_hat = (qA - qh + self.t * mH) / (self.t * (mA + mH))
+            DA = max(0.0, min(x_hat, 1.0))
+            Dh = max(0.0, min(1.0 - x_hat, 1.0))
+        
         return Dh, DA
 
     # -- platform utility (without penalty, for r-optimisation) -----------
@@ -204,15 +246,19 @@ class PlatformSimulator_EngComp:
         mH, mA = self.mismatch(b)
         a, t, u0, Q = self.alpha, self.t, self.u_0, self.Q
 
+        W = a / (t * mA) + 1.0 / (t * mH)
+        r_boundary = (1.0 - Q / (t * mA)) / W 
+        r_boundary = max(0.0, r_boundary)
+
         if self.model == 'view':
             # Unconstrained maximiser (always > 0.5)
-            r_hat = 0.5 * (self.alpha / t * mA + 1 / t * mH)
-            return r_hat
+            r_hat = 0.5 * (self.alpha /( t * mA) + 1 / (t * mH))
+            return min(r_hat, r_boundary)
 
         else:  # engagement
             sigma = self._sigma(b)
             r_hat = self.alpha * self.Q * mH / sigma
-            return r_hat
+            return min(r_hat, r_boundary)
 
     # -- optimise over beta -----------------------------------------------
 

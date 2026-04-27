@@ -161,17 +161,17 @@ def main():
     print(f"params:  {PARAMS}")
     print(f"k values:  {K_VALUES}")
 
-    # exp1_Q('alpha', ALPHA_VALUES)
-    # exp1_Q('k', K_VALUES)
-    # exp1_Q('delta', DELTA_VALUES)
+    exp1_Q('alpha', ALPHA_VALUES)
+    exp1_Q('k', K_VALUES)
+    exp1_Q('delta', DELTA_VALUES)
 
-    # exp2_k('alpha', ALPHA_VALUES)
-    # exp2_k('Q', Q_VALUES)
-    # exp2_k('delta', DELTA_VALUES)
+    exp2_k('alpha', ALPHA_VALUES)
+    exp2_k('Q', Q_VALUES)
+    exp2_k('delta', DELTA_VALUES)
 
-    # exp3_alpha('k', K_VALUES)
-    # exp3_alpha('Q', Q_VALUES)
-    # exp3_alpha('delta', DELTA_VALUES)
+    exp3_alpha('k', K_VALUES)
+    exp3_alpha('Q', Q_VALUES)
+    exp3_alpha('delta', DELTA_VALUES)
 
     exp4_delta('k', K_VALUES)
     exp4_delta('alpha', ALPHA_VALUES)
