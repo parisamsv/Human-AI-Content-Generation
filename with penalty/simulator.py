@@ -2,13 +2,22 @@
 Core simulation for view-based and engagement-based models with
 discrimination penalty k/2 * (beta_h - 0.5)^2.
 
-IMPORTANT: r is the per-view compensation ratio and must satisfy r ∈ [0, 1].
-- View-based:  r* = min(r_hat, 1),  r_hat > 1/2 always so r* > 0 automatic.
-- Engagement:  r* = clip(r_hat, 0, 1).  When SOC fails (Sigma >= 0),
-               we fall back to comparing u_p at r=0 and r=1.
+Four models:
+  ViewComp + ViewRev   (VC+VR)
+  ViewComp + EngRev    (VC+ER)
+  EngComp  + ViewRev   (EC+VR)
+  EngComp  + EngRev    (EC+ER)
+
+Each model has closed-form r* for uncovered and covered regimes.
+We compute the uncovered candidate, check self-consistency, and
+fall back to the covered candidate if needed.
 """
 import numpy as np
 
+
+# =========================================================================
+#  VIEW-BASED COMPENSATION
+# =========================================================================
 
 class PlatformSimulator_ViewComp:
     def __init__(self, alpha, delta, Q, k, model):
@@ -18,7 +27,7 @@ class PlatformSimulator_ViewComp:
         self.u_0 = 0
         self.Q = Q
         self.k = k
-        self.model = model
+        self.model = model  # 'view' (VR) or 'engagement' (ER)
 
     # -- primitives -------------------------------------------------------
 
@@ -27,44 +36,51 @@ class PlatformSimulator_ViewComp:
         mA = 1.0 - self.delta + b * self.delta
         return mH, mA
 
-    def qualities(self, b, r):
-        mH, _ = self.mismatch(b)
-        qh = r / (self.t * mH)
-        qA = self.alpha * qh + self.Q
-        return qh, qA
-
-    # def demands(self, b, r):
-    #     mH, mA = self.mismatch(b)
-    #     qh, qA = self.qualities(b, r)
-    #     Dh = max(0.0, (qh - self.u_0) / (self.t * mH))
-    #     DA = max(0.0, (qA - self.u_0) / (self.t * mA))
-    #     return Dh, DA
-    
-    def demands(self, b, r):
+    def _is_covered(self, b, qh, qA):
+        """Check whether given qualities produce a covered market."""
         mH, mA = self.mismatch(b)
-        qh, qA = self.qualities(b, r)  # use self.qualities(r) for EngComp
-        
-        x_A = qA / (self.t * mA)          # AI participation boundary
-        x_H = 1.0 - qh / (self.t * mH)   # Human participation boundary
-        
-        if x_A <= x_H:
-            # Uncovered market: no overlap, local monopoly demands
-            DA = max(0.0, min(x_A, 1.0))
-            Dh = max(0.0, min(qh / (self.t * mH), 1.0))
+        dA = max(qA - self.u_0, 0) / (self.t * mA)
+        dH = max(qh - self.u_0, 0) / (self.t * mH)
+        return dA + dH > 1.0
+
+    def qualities(self, b, r):
+        """Compute equilibrium qualities, auto-detecting regime."""
+        mH, mA = self.mismatch(b)
+        S = self.t * (mA + mH)
+
+        # Try uncovered first
+        qh_unc = r / (self.t * mH)
+        qA_unc = self.alpha * qh_unc + self.Q
+
+        if not self._is_covered(b, qh_unc, qA_unc):
+            return qh_unc, qA_unc, True  # uncovered
+
+        # Covered
+        qh_cov = r * (1 - self.alpha) / S
+        qA_cov = self.alpha * qh_cov + self.Q
+        return qh_cov, qA_cov, False  # covered
+
+    def demands(self, b, r):
+        """Compute equilibrium demands, consistent with quality regime."""
+        mH, mA = self.mismatch(b)
+        qh, qA, uncovered = self.qualities(b, r)
+
+        if uncovered:
+            DA = max(0.0, (qA - self.u_0) / (self.t * mA))
+            Dh = max(0.0, (qh - self.u_0) / (self.t * mH))
         else:
-            # Covered market: competitive Hotelling allocation
             x_hat = (qA - qh + self.t * mH) / (self.t * (mA + mH))
             DA = max(0.0, min(x_hat, 1.0))
             Dh = max(0.0, min(1.0 - x_hat, 1.0))
-        
-        return Dh, DA
 
-    # -- platform utility (without penalty, for r-optimisation) -----------
+        return Dh, DA, uncovered
+
+    # -- platform utility -------------------------------------------------
 
     def _base_utility(self, b, r):
         """Platform revenue before penalty."""
-        qh, qA = self.qualities(b, r)
-        Dh, DA = self.demands(b, r)
+        qh, qA, _ = self.qualities(b, r)
+        Dh, DA, _ = self.demands(b, r)
         if self.model == 'view':
             return DA + (1.0 - r) * Dh
         else:
@@ -74,39 +90,72 @@ class PlatformSimulator_ViewComp:
         """Platform payoff including penalty."""
         return self._base_utility(b, r) - self.k / 2.0 * (b - 0.5) ** 2
 
-    # -- analytical r* with proper clipping --------------------------------
-
-    def _sigma(self, b):
-        """SOC term for engagement model: alpha^2 * mH + mA * (1 - t*mH)."""
-        mH, mA = self.mismatch(b)
-        return self.alpha ** 2 * mH + mA * (1.0 - self.t * mH)
+    # -- analytical r* ----------------------------------------------------
 
     def optimal_r(self, b):
-        """
-        Closed-form r* clipped to [0, 1].
-        View-based:  always concave in r;  r_hat > 0.5.
-        Engagement:  concave only when Sigma < 0;  fall back to boundary
-                     comparison when Sigma >= 0.
-        """
         mH, mA = self.mismatch(b)
+        S = self.t * (mA + mH)
         a, t, u0, Q = self.alpha, self.t, self.u_0, self.Q
 
-        W_vc = a / (t**2 * mA * mH) + 1.0 / (t**2 * mH**2)
-        r_boundary = (1.0 - Q / (t * mA)) / W_vc 
-        r_boundary = max(0.0, r_boundary)
-
         if self.model == 'view':
-            # Unconstrained maximiser (always > 0.5)
-            r_hat = 0.5 * (1.0 + a * mH / mA + t * mH * u0)
-            return min(r_hat, r_boundary)
+            return self._optimal_r_VR(b, mH, mA, S, a, t, u0, Q)
+        else:
+            return self._optimal_r_ER(b, mH, mA, S, a, t, u0, Q)
 
-        else:  # engagement
-            sigma = self._sigma(b)
+    def _optimal_r_VR(self, b, mH, mA, S, a, t, u0, Q):
+        """VC + VR: Propositions 1 (uncovered) and 2 (covered)."""
+        # Uncovered candidate
+        r_unc = 0.5 * (1.0 + a * mH / mA + t * mH * u0)
+        qh_unc = r_unc / (t * mH)
 
+        if qh_unc < u0:
+            r_unc = 0.0
+
+        # Check regime with uncovered r*
+        if r_unc > 0:
+            qA_unc = a * qh_unc + Q
+            if not self._is_covered(b, qh_unc, qA_unc):
+                return r_unc
+
+        # Covered candidate (Prop 2): requires Q > t*mA
+        if Q <= t * mA:
+            return 0.0
+        r_cov = S * (Q - t * mA) / (2.0 * (1 - a) ** 2)
+        return max(r_cov, 0.0)
+
+    def _optimal_r_ER(self, b, mH, mA, S, a, t, u0, Q):
+        """VC + ER: Propositions 3 (uncovered) and 4 (covered)."""
+        sigma = a ** 2 * mH + mA * (1.0 - t * mH)
+
+        # Uncovered candidate (Prop 3): need sigma < 0 for SOC
+        r_unc = None
+        if sigma < -1e-12:
             num = t * mH * (u0 * mA * (1.0 - t * mH)
                             - a * mH * (2.0 * Q - u0))
-            r_hat = num / (2.0 * sigma)
-            return min(r_hat, r_boundary)
+            r_unc = num / (2.0 * sigma)
+            if r_unc < 0:
+                r_unc = 0.0
+
+        # Check regime
+        if r_unc is not None and r_unc > 0:
+            qh_unc = r_unc / (t * mH)
+            qA_unc = a * qh_unc + Q
+            if not self._is_covered(b, qh_unc, qA_unc):
+                return r_unc
+
+        # Covered candidate (Prop 4)
+        Phi = (1 - a) / S
+        Psi = (1 - a) ** 2 / S
+        if Psi >= 1.0:
+            return 0.0  # SOC fails
+        A = Q + t * mH
+        B = t * mA - Q
+        num = a * Phi * A + (Phi - 1) * B - Q * Psi
+        denom = 2.0 * Psi * (1 - Psi)
+        if abs(denom) < 1e-12:
+            return 0.0
+        r_cov = num / denom
+        return max(r_cov, 0.0)
 
     # -- optimise over beta -----------------------------------------------
 
@@ -118,53 +167,31 @@ class PlatformSimulator_ViewComp:
             r = self.optimal_r(b)
             u = self.utility(b, r)
             if u > best['utility']:
-                qh, qA = self.qualities(b, r)
+                qh, qA, _ = self.qualities(b, r)
                 best = {'beta_h': b, 'r': r, 'utility': u,
                         'q_h': qh, 'q_A': qA}
         return best
 
-    # def optimize_general(self, n_beta=201, n_r=201):
-    #     """
-    #     Brute-force grid over (beta, r) ∈ [0,1]^2.
-    #     No analytical assumptions.  Use for robustness checks.
-    #     """
-    #     betas = np.linspace(0.0, 1.0, n_beta)
-    #     rs = np.linspace(0.0, 1.0, n_r)
-    #     best = {'beta_h': 0.5, 'r': 0.0, 'utility': -np.inf,
-    #             'q_h': 0.0, 'q_A': 0.0}
-    #     for b in betas:
-    #         for r in rs:
-    #             u = self.utility(b, r)
-    #             if u > best['utility']:
-    #                 qh, qA = self.qualities(b, r)
-    #                 best = {'beta_h': b, 'r': r, 'utility': u,
-    #                         'q_h': qh, 'q_A': qA}
-    #     return best
-
     # -- metrics -----------------------------------------------------------
 
-    # def consumer_surplus(self, b, r):
-    #     mH, mA = self.mismatch(b)
-    #     qh, qA = self.qualities(b, r)
-    #     cs_A = max(0.0, (qA - self.u_0)) ** 2 / (2.0 * self.t * mA)
-    #     cs_H = max(0.0, (qh - self.u_0)) ** 2 / (2.0 * self.t * mH)
-    #     return cs_A + cs_H
-
     def creator_utility(self, b, r):
-        Dh, _ = self.demands(b, r)
-        qh, _ = self.qualities(b, r)
+        Dh, _, _ = self.demands(b, r)
+        qh, _, _ = self.qualities(b, r)
         return r * Dh - 0.5 * qh ** 2
 
     def total_engagement(self, b, r):
-        qh, qA = self.qualities(b, r)
-        Dh, DA = self.demands(b, r)
+        qh, qA, _ = self.qualities(b, r)
+        Dh, DA, _ = self.demands(b, r)
         return qA * DA + qh * Dh
-    
+
     def total_view(self, b, r):
-        Dh, DA = self.demands(b, r)
+        Dh, DA, _ = self.demands(b, r)
         return DA + Dh
 
 
+# =========================================================================
+#  ENGAGEMENT-BASED COMPENSATION
+# =========================================================================
 
 class PlatformSimulator_EngComp:
     def __init__(self, alpha, delta, Q, k, model):
@@ -174,7 +201,7 @@ class PlatformSimulator_EngComp:
         self.u_0 = 0
         self.Q = Q
         self.k = k
-        self.model = model
+        self.model = model  # 'view' (VR) or 'engagement' (ER)
 
     # -- primitives -------------------------------------------------------
 
@@ -184,42 +211,44 @@ class PlatformSimulator_EngComp:
         return mH, mA
 
     def qualities(self, r):
+        """EC: q_h = r always (demand-independent)."""
         qh = r
         qA = self.alpha * qh + self.Q
         return qh, qA
 
-    # def demands(self, b, r):
-    #     mH, mA = self.mismatch(b)
-    #     qh, qA = self.qualities(r)
-    #     Dh = max(0.0, (qh - self.u_0) / (self.t * mH))
-    #     DA = max(0.0, (qA - self.u_0) / (self.t * mA))
-    #     return Dh, DA
+    def _is_covered(self, b, qh, qA):
+        """Check whether given qualities produce a covered market."""
+        mH, mA = self.mismatch(b)
+        dA = max(qA - self.u_0, 0) / (self.t * mA)
+        dH = max(qh - self.u_0, 0) / (self.t * mH)
+        return dA + dH > 1.0
 
     def demands(self, b, r):
+        """Compute demands using q_h = r (EC is regime-independent)."""
         mH, mA = self.mismatch(b)
-        qh, qA = self.qualities(r)  # use self.qualities(r) for EngComp
-        
-        x_A = qA / (self.t * mA)          # AI participation boundary
-        x_H = 1.0 - qh / (self.t * mH)   # Human participation boundary
-        
-        if x_A <= x_H:
-            # Uncovered market: no overlap, local monopoly demands
-            DA = max(0.0, min(x_A, 1.0))
-            Dh = max(0.0, min(qh / (self.t * mH), 1.0))
+        qh, qA = self.qualities(r)  # FIX: was self.qualities(b, r)
+
+        dA = max(qA - self.u_0, 0) / (self.t * mA)
+        dH = max(qh - self.u_0, 0) / (self.t * mH)
+
+        if dA + dH <= 1:
+            DA = max(0.0, dA)
+            Dh = max(0.0, dH)
+            uncovered = True
         else:
-            # Covered market: competitive Hotelling allocation
             x_hat = (qA - qh + self.t * mH) / (self.t * (mA + mH))
             DA = max(0.0, min(x_hat, 1.0))
             Dh = max(0.0, min(1.0 - x_hat, 1.0))
-        
-        return Dh, DA
+            uncovered = False
 
-    # -- platform utility (without penalty, for r-optimisation) -----------
+        return Dh, DA, uncovered
+
+    # -- platform utility -------------------------------------------------
 
     def _base_utility(self, b, r):
         """Platform revenue before penalty."""
         qh, qA = self.qualities(r)
-        Dh, DA = self.demands(b, r)
+        Dh, DA, _ = self.demands(b, r)
         if self.model == 'view':
             return DA + Dh - r * qh
         else:
@@ -229,36 +258,62 @@ class PlatformSimulator_EngComp:
         """Platform payoff including penalty."""
         return self._base_utility(b, r) - self.k / 2.0 * (b - 0.5) ** 2
 
-    # -- analytical r* with proper clipping --------------------------------
-
-    def _sigma(self, b):
-        """SOC term for engagement model: alpha^2 * mH + mA * (1 - t*mH)."""
-        mH, mA = self.mismatch(b)
-        return self.t * mH * mA - self.alpha ** 2 * mH - mA
+    # -- analytical r* ----------------------------------------------------
 
     def optimal_r(self, b):
-        """
-        Closed-form r* clipped to [0, 1].
-        View-based:  always concave in r;  r_hat > 0.5.
-        Engagement:  concave only when Sigma < 0;  fall back to boundary
-                     comparison when Sigma >= 0.
-        """
         mH, mA = self.mismatch(b)
+        S = self.t * (mA + mH)
         a, t, u0, Q = self.alpha, self.t, self.u_0, self.Q
 
-        W = a / (t * mA) + 1.0 / (t * mH)
-        r_boundary = (1.0 - Q / (t * mA)) / W 
-        r_boundary = max(0.0, r_boundary)
-
         if self.model == 'view':
-            # Unconstrained maximiser (always > 0.5)
-            r_hat = 0.5 * (self.alpha /( t * mA) + 1 / (t * mH))
-            return min(r_hat, r_boundary)
+            return self._optimal_r_VR(b, mH, mA, S, a, t, u0, Q)
+        else:
+            return self._optimal_r_ER(b, mH, mA, S, a, t, u0, Q)
 
-        else:  # engagement
-            sigma = self._sigma(b)
-            r_hat = self.alpha * self.Q * mH / sigma
-            return min(r_hat, r_boundary)
+    def _optimal_r_VR(self, b, mH, mA, S, a, t, u0, Q):
+        """EC + VR: Propositions 5 (uncovered) and 6 (covered, r*=0)."""
+        # Uncovered candidate
+        r_unc = 0.5 * (a / (t * mA) + 1.0 / (t * mH))
+        qh, qA = self.qualities(r_unc)
+
+        if qh < u0:
+            return 0.0
+
+        if not self._is_covered(b, qh, qA):
+            return r_unc
+
+        # Covered: r* = 0 (Prop 6)
+        return 0.0
+
+    def _optimal_r_ER(self, b, mH, mA, S, a, t, u0, Q):
+        """EC + ER: Propositions 7 (uncovered) and 8 (covered)."""
+        # FIX: use paper's denominator directly (was sign-flipped)
+        sigma = a ** 2 * mH + mA * (1.0 - t * mH)
+
+        # Uncovered candidate (Prop 7): need sigma < 0 for SOC
+        r_unc = None
+        if sigma < -1e-12:
+            num = u0 * mA - a * (2.0 * Q - u0) * mH
+            r_unc = num / (2.0 * sigma)  # neg/neg = positive
+            if r_unc < 0:
+                r_unc = 0.0
+
+        # Check regime
+        if r_unc is not None and r_unc > 0:
+            qh, qA = self.qualities(r_unc)
+            if not self._is_covered(b, qh, qA):
+                return r_unc
+
+        # Covered candidate (Prop 8)
+        Psi = (1 - a) ** 2
+        if S <= Psi:
+            return 0.0  # SOC fails
+        num = t * (a * mH + mA) - 2.0 * (1 - a) * Q
+        denom = 2.0 * (S - Psi)
+        if abs(denom) < 1e-12:
+            return 0.0
+        r_cov = num / denom
+        return max(r_cov, 0.0)
 
     # -- optimise over beta -----------------------------------------------
 
@@ -283,9 +338,9 @@ class PlatformSimulator_EngComp:
 
     def total_engagement(self, b, r):
         qh, qA = self.qualities(r)
-        Dh, DA = self.demands(b, r)
+        Dh, DA, _ = self.demands(b, r)
         return qA * DA + qh * Dh
-    
+
     def total_view(self, b, r):
-        Dh, DA = self.demands(b, r)
+        Dh, DA, _ = self.demands(b, r)
         return DA + Dh
