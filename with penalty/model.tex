@@ -1,0 +1,427 @@
+\documentclass[mnsc,nonblindrev]{informs3_NoOR} 
+\OneAndAHalfSpacedXI
+\usepackage{thmtools}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{verbatim}
+\usepackage{multirow}
+\usepackage{float} 
+\usepackage{endnotes}   
+\usepackage{enumitem}   	 
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+\usepackage{mathtools}
+\usepackage{url} 
+\usepackage{subcaption} 
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{lmodern} 
+\usepackage{bbm}
+\usepackage{lscape}
+\usepackage{scalerel}
+\usepackage{xr, xr-hyper}
+\usepackage{hyperref}
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+\usepackage{regexpatch}
+\makeatletter
+\xpatchcmd{\@todo}{\setkeys{todonotes}{#1}}{\setkeys{todonotes}{inline,#1}}{}{}
+\makeatother
+\hypersetup{
+    colorlinks,
+    linkcolor={red!50!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+\usepackage{natbib}
+ \bibpunct[, ]{(}{)}{,}{a}{}{,}%
+ \def\bibfont{\small}%
+ \def\bibsep{\smallskipamount}%
+ \def\bibhang{24pt}%
+ \def\newblock{\ }%
+ \def\BIBand{and}%
+\TheoremsNumberedThrough 
+\ECRepeatTheorems
+\EquationsNumberedThrough   
+\MANUSCRIPTNO{NoNumber}
+\usepackage{soul}
+\sethlcolor{yellow}
+
+\begin{document}
+
+\TITLE{Content Generation: Human Creators, AI Learning, and Platform Design}
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Model}\label{sec:model}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+We analyze a platform model in which a human creator and an AI content generator compete for consumer attention. The platform sets strategic parameters in Stage~1; the human creator chooses effort in Stage~2. We solve by backward induction.
+ 
+\subsection{Content Generation and Quality}
+ 
+The human creator exerts effort $q_h \geq 0$ at cost $C(q_h) = \tfrac{1}{2}q_h^2$. The AI generates content of quality
+\begin{equation}\label{eq:qA}
+q_A = \alpha\, q_h + Q,
+\end{equation}
+where $\alpha \in (0,1]$ is the AI's learning efficiency and $Q \geq 0$ is its baseline quality.
+ 
+\subsection{Consumer Demand}
+ 
+Consumers are uniformly distributed on $[0,1]$, with location~$x$ indexing proximity to the AI (at~0) relative to the human (at~1). Consumer utility is
+\begin{equation}\label{eq:utility}
+u_A = q_A - u_0 - t\,x\,m_A, \qquad u_h = q_h - u_0 - t(1-x)\,m_H,
+\end{equation}
+where $u_0$ is the utility of an outside option, $t > 0$ is the mismatch cost, $\beta_h \in [0,1]$ is the platform's promotion weight for human content, $\delta \in (0,1)$ scales algorithmic influence, and
+\begin{equation}\label{eq:mismatch}
+m_A(\beta_h) = 1 - \delta(1-\beta_h), \qquad m_H(\beta_h) = 1 - \beta_h\delta.
+\end{equation}
+Both lie in $[1-\delta,\,1]$. Increasing $\beta_h$ raises $m_A$ (penalizing AI) and lowers $m_H$ (favoring human). The demand functions are
+\begin{equation}
+        D_A, D_h =
+        \begin{cases}
+       \frac{(q_A - u_0)^+}{t\,m_A}, \ \frac{(q_h -u_0)^+}{t\,m_H}
+        & \text{if } \frac{(q_A - u_0)^+}{t\,m_A} +  \frac{(q_h -u_0)^+}{t\,m_H} \leq 1
+        \quad \text{(uncovered)}, \\[1em]
+        \hat{x}, \ 1-\hat{x}
+        & \text{if } \frac{(q_A - u_0)^+}{t\,m_A} +  \frac{(q_h -u_0)^+}{t\,m_H} > 1
+        \quad \text{(covered)}.
+        \end{cases}
+        \end{equation}
+        where $
+        \hat{x} = \frac{q_A - q_h + t m_H}{t(m_A + m_H)}
+        $
+        is the indifferent consumer.
+ 
+\subsection{Two Compensation Structures}
+ 
+\textbf{View-based compensation (VC).} The creator earns $r$ per unit of demand (per view):
+\[
+u_c^{VC} = r\,D_h - \tfrac{1}{2}q_h^2 = \frac{r\,(q_h - u_0)^+}{t\,m_H} - \tfrac{1}{2}q_h^2.
+\]
+If $q_h\geq u_0$, the first-order condition $r/(t\,m_H) - q_h = 0$ yields:
+\begin{equation}\label{eq:effort-vc}
+q_h^{*VC} = \frac{r}{t\,m_H}, \qquad q_A^{*VC} = \frac{\alpha\,r}{t\,m_H} + Q, \qquad u_c^{*VC} = \frac{r^2}{2\,t^2 m_H^2}.
+\end{equation}
+ Otherwise, $q_h = 0$ and $u_c^{*VC}=0$.
+
+
+ In the covered market $D_h = 1 - \hat{x}$ and $q_A - q_h = Q - (1-\alpha)q_h$, so
+\begin{equation}\label{eq:Dh-covered}
+D_h = \frac{tm_A + (1-\alpha)q_h - Q}{t(m_A+m_H)}.
+\end{equation}
+The creator's covered-market payoff is $u_c = r\,D_h - q_h^2/2$, giving the first-order condition
+\begin{equation}\label{eq:VC-covered-stage2}
+q_h^{VC,\text{cov}}(r) = \frac{r(1-\alpha)}{t(m_A+m_H)},
+\end{equation}
+which replaces $q_h = r/(tm_H)$ from the uncovered case.
+
+ 
+\textbf{Engagement-based compensation (EC).} The creator earns $r$ per unit of effort:
+\[
+u_c^{EC} = r\,q_h - \tfrac{1}{2}q_h^2.
+\]
+The first-order condition $r - q_h = 0$ yields:
+\begin{equation}\label{eq:effort-ec}
+q_h^{*EC} = r, \qquad q_A^{*EC} = \alpha\,r + Q, \qquad u_c^{*EC} = \frac{r^2}{2}.
+\end{equation}
+
+The creator's payoff is demand-independent, so $q_h^{EC}(r) = r$ in both covered and uncovered market.
+ 
+\subsection{Two Revenue Models}
+ 
+\textbf{View-based revenue (VR).} The platform earns from total views:
+\begin{align}
+u_p^{VR,VC} &= D_A + (1-r)\,D_h - \tfrac{k}{2}(\beta_h - \tfrac{1}{2})^2, \label{eq:upVV}\\
+u_p^{VR,EC} &= D_A + D_h - r\,q_h - \tfrac{k}{2}(\beta_h - \tfrac{1}{2})^2. \label{eq:upVE}
+\end{align}
+ 
+\textbf{Engagement-based revenue (ER).} The platform earns from total engagement:
+\begin{align}
+u_p^{ER,VC} &= q_A D_A + (q_h - r)\,D_h - \tfrac{k}{2}(\beta_h - \tfrac{1}{2})^2, \label{eq:upEV}\\
+u_p^{ER,EC} &= q_A D_A + q_h\,D_h - r\,q_h - \tfrac{k}{2}(\beta_h - \tfrac{1}{2})^2. \label{eq:upEE}
+\end{align}
+
+
+\vfill
+\pagebreak
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Equilibrium Analysis: View-Based Compensation}\label{sec:view}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\subsection{View-Based Revenue (VC\,+\,VR)}
+ 
+\subsubsection{Stage 2: Creator's Optimal Effort}
+ 
+Given $r$ and $ m_H$, the creator's first-order condition under VC yields
+$q_h(r) = {r}/({t m_H})$ (uncovered) or $q_h(r) = r(1-\alpha)/[t(m_A+m_H)]$ (covered).
+ 
+\subsubsection{Stage 1: Optimal Compensation}
+ 
+\begin{proposition}[VC\,+\,VR, Uncovered]\label{prop:VCVR-unc}
+Under view-based compensation, view-based revenue, and the uncovered market, the equilibrium per-view rate and qualities are
+\begin{equation}\label{eq:rVCVR}
+r^{*} = \frac{1}{2}\!\left(1 + u_0\,t m_H + \frac{\alpha m_H}{ m_A}\right),
+\end{equation}
+\begin{equation}\label{eq:qhVCVR}
+q_h^{*} = \frac{1}{2\,t m_H}\!\left(1 + u_0\,t m_H + \frac{\alpha m_H}{ m_A}\right), \qquad
+q_A^{*} = \frac{\alpha}{2\,t m_H}\!\left(1 + u_0\,t m_H + \frac{\alpha m_H}{ m_A}\right) + Q,
+\end{equation}
+provided $q_h^* \geq u_0$ and the uncovered-market condition holds.
+\end{proposition}
+ 
+\begin{proposition}[VC\,+\,VR, Covered]\label{prop:VCVR-cov}
+Under view-based compensation, view-based revenue, and the covered market, the creator does not participate: $r^* = 0$ and $q_h^* = 0$. AI content monopolizes the market with $D_A = \min\{Q/(tm_A),\, 1\}$.
+\end{proposition}
+
+
+ \vfill
+ \pagebreak
+\subsection{Engagement-Based Revenue (VC\,+\,ER)}
+ 
+\subsubsection{Stage 2: Creator's Optimal Effort}
+ 
+As above, $q_h(r) = {r}/({t m_H})$ (uncovered) or $q_h(r) = r(1-\alpha)/[t(m_A+m_H)]$ (covered).
+ 
+\subsubsection{Stage 1: Optimal Compensation}
+ 
+\begin{proposition}[VC\,+\,ER, Uncovered]\label{prop:VCER-unc}
+Under view-based compensation, engagement-based revenue, and the uncovered market, the equilibrium per-view rate satisfies
+\begin{equation}\label{eq:rVCER}
+r^{*} = \frac{t m_H\bigl[\,u_0\, m_A(1-t m_H) - \alpha m_H(2Q - u_0)\bigr]} {2\bigl[\alpha^2  m_H +  m_A(1-t m_H)\bigr]},
+\end{equation}
+with $q_h^{*} = r^*/(t m_H)$ and $q_A^{*} = \alpha\, r^*/(t m_H) + Q$.
+An interior maximum with $r^* > 0$ requires that the second-order condition hold and the numerator and denominator both be negative:
+\[
+    \alpha^2 m_H + m_A(1 - t m_H) < 0, \qquad u_0\, m_A(1-t m_H) - \alpha m_H(2Q - u_0) < 0.
+\]
+When either condition fails, the platform sets $r^* = 0$.
+\end{proposition}
+ 
+\begin{proposition}[VC\,+\,ER, Covered]\label{prop:VCER-cov}
+Under view-based compensation, engagement-based revenue, and the covered market, the creator does not participate: $r^* = 0$ and $q_h^* = 0$. AI content monopolizes with $D_A = \min\{Q/(tm_A),\, 1\}$ and platform revenue $q_A \cdot D_A = Q \cdot \min\{Q/(tm_A),\, 1\}$.
+\end{proposition}
+ 
+ \vfill
+ \pagebreak
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Equilibrium Analysis: Engagement-Based Compensation}\label{sec:eng}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\subsection{View-Based Revenue (EC\,+\,VR)}
+ 
+\subsubsection{Stage 2: Creator's Optimal Effort}
+ 
+Under engagement-based compensation, $q_h(r) = r$ regardless of whether the market is covered or uncovered. The AI quality is $q_A(r) = \alpha r + Q$.
+ 
+\subsubsection{Stage 1: Optimal Compensation}
+ 
+\begin{proposition}[EC\,+\,VR, Uncovered]\label{prop:ECVR-unc}
+Under engagement-based compensation, view-based revenue, and the uncovered market, the equilibrium per-effort rate and human quality are
+\begin{equation}\label{eq:rECVR}
+r^{*} = q_h^{*} = \frac{1}{2}\!\left(\frac{\alpha}{t m_A} + \frac{1}{t m_H}\right), \qquad
+q_A^{*} = \frac{\alpha}{2}\!\left(\frac{\alpha}{t m_A} + \frac{1}{t m_H}\right) + Q,
+\end{equation}
+provided $q_h^* \geq u_0$ and the uncovered-market condition holds.
+\end{proposition}
+ 
+\begin{proposition}[EC\,+\,VR, Covered]\label{prop:ECVR-cov}
+Under engagement-based compensation, view-based revenue, and the covered market, the platform's payoff reduces to $u_p = 1 - r^2$ and the optimal compensation is $r^* = 0$.
+\end{proposition}
+ 
+ 
+\subsection{Engagement-Based Revenue (EC\,+\,ER)}
+ 
+\subsubsection{Stage 2: Creator's Optimal Effort}
+ 
+As above, $q_h(r) = r$ and $q_A(r) = \alpha r + Q$ in both regimes.
+ 
+\subsubsection{Stage 1: Optimal Compensation}
+ 
+\begin{proposition}[EC\,+\,ER, Uncovered]\label{prop:ECER-unc}
+Under engagement-based compensation, engagement-based revenue, and the uncovered market, the equilibrium per-effort rate satisfies
+\begin{equation}\label{eq:rECER}
+r^{*} = q_h^{*} = \frac{u_0\, m_A - \alpha(2Q - u_0) m_H} {2\bigl[\alpha^2  m_H +  m_A(1-t m_H)\bigr]}, \qquad
+q_A^{*} = \alpha\, r^* + Q.
+\end{equation}
+An interior maximum with $r^* > 0$ requires
+\begin{equation}\label{eq:ECERcond}
+\frac{u_0\, m_A}{ m_H} < \alpha(2Q - u_0) \quad \text{and} \quad \alpha^2  m_H +  m_A(1-t m_H) < 0,
+\end{equation}
+so that the numerator and denominator of~\eqref{eq:rECER} are both negative. When either condition fails, the platform sets $r^* = 0$.
+\end{proposition}
+ 
+\begin{proposition}[EC\,+\,ER, Covered]\label{prop:ECER-cov}
+Under engagement-based compensation, engagement-based revenue, and the covered market, the equilibrium per-effort rate and qualities are
+\begin{equation}\label{eq:rECER-cov}
+r^{*} = q_h^{*} = \frac{t(\alpha m_H +  m_A) - 2(1-\alpha)\,Q}{2\bigl[t(m_A+ m_H) - (1-\alpha)^2\bigr]},
+\end{equation}
+\begin{equation}\label{eq:qAECER-cov}
+q_A^{*} = \alpha \cdot \frac{t(\alpha m_H +  m_A) - 2(1-\alpha)\,Q}{2\bigl[t(m_A+ m_H) - (1-\alpha)^2\bigr]} + Q.
+\end{equation}
+An interior solution $r^* > 0$ requires
+\begin{equation}\label{eq:ECERcov-cond}
+t(\alpha m_H +  m_A) > 2(1-\alpha)\,Q \quad \text{and} \quad t(m_A+ m_H) > (1-\alpha)^2.
+\end{equation}
+\end{proposition}
+ 
+ 
+\bibliographystyle{plainnat}
+\bibliography{references}
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\appendix
+\section{Proofs}\label{app:proofs}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\subsection*{Uncovered-Market Proofs}
+ 
+\begin{proof}[Proof of Proposition~\ref{prop:VCVR-unc}]
+\textit{Stage~2.} Under view-based compensation, the creator maximizes
+$u_c = r(q_h - u_0)^+/(t m_H) - q_h^2/2$.
+For $q_h \geq u_0$ the first-order condition is $r/(t m_H) - q_h = 0$, giving $q_h(r) = r/(t m_H)$. The second-order condition $-1 < 0$ is satisfied.
+ 
+\textit{Stage~1.} Substituting $q_h = r/(t m_H)$ and $q_A = \alpha r/(t m_H) + Q$ into the uncovered-market demands, the platform's objective (suppressing the $\beta_h$-cost term) is
+\[
+u_p = \frac{\alpha r/(t m_H) + Q - u_0}{t m_A} + (1-r)\,\frac{r/(t m_H) - u_0}{t m_H}.
+\]
+Differentiating with respect to $r$:
+\[
+\frac{\partial u_p}{\partial r} = \frac{\alpha}{t^2 m_H m_A} + \frac{1 + u_0\,t m_H - 2r}{t^2 m_H^2}.
+\]
+Setting this to zero and solving:
+\[
+2r = 1 + u_0\,t m_H + \frac{\alpha m_H}{ m_A},
+\]
+which yields \eqref{eq:rVCVR}.
+The second-order condition $\partial^2 u_p/\partial r^2 = -2/(t^2 m_H^2) < 0$ confirms a maximum.
+\end{proof}
+ 
+\begin{proof}[Proof of Proposition~\ref{prop:VCER-unc}]
+\textit{Stage~2.} Identical to Proposition~\ref{prop:VCVR-unc}: $q_h(r) = r/(t m_H)$.
+ 
+\textit{Stage~1.} Under engagement-based revenue, the platform's objective is
+\[
+u_p = q_A \cdot \frac{q_A - u_0}{t m_A} + (q_h - r)\cdot\frac{q_h - u_0}{t m_H},
+\]
+where $q_h = r/(t m_H)$ and $q_A = \alpha r/(t m_H) + Q$. Let $\eta = 1/(t m_H)$, so $q_h = \eta r$, $q_A = \alpha\eta r + Q$, and $q_h - r = r(\eta - 1)$.
+ 
+Differentiating with respect to $r$:
+\begin{align*}
+\frac{\partial u_p}{\partial r} &= \frac{\alpha\eta(q_A - u_0)}{t m_A} + \frac{\alpha\eta\, q_A}{t m_A} + \frac{(\eta - 1)(q_h - u_0)}{t m_H} + \frac{(q_h - r)\eta}{t m_H} \\
+&= \frac{\alpha\eta(2q_A - u_0)}{t m_A} + \frac{(\eta - 1)(2q_h - u_0)}{t m_H}.
+\end{align*}
+Setting this to zero, substituting $q_h = \eta r$ and $q_A = \alpha\eta r + Q$, and multiplying through by $t^2 m_H^2 m_A$:
+\[
+2r\bigl[\alpha^2 m_H +  m_A(1 - t m_H)\bigr]/(t m_H) = u_0 m_A(1 - t m_H) - \alpha m_H(2Q - u_0),
+\]
+which gives \eqref{eq:rVCER}. The second-order condition is
+$\partial^2 u_p/\partial r^2 = 2[\alpha^2 m_H +  m_A(1 - t m_H)]/(t^3 m_H^3 m_A)$,
+which is negative when $\alpha^2 m_H +  m_A(1 - t m_H) < 0$.
+\end{proof}
+ 
+\begin{proof}[Proof of Proposition~\ref{prop:ECVR-unc}]
+\textit{Stage~2.} Under engagement-based compensation, $u_c = rq_h - q_h^2/2$, giving $q_h(r) = r$.
+ 
+\textit{Stage~1.} Substituting $q_h = r$ and $q_A = \alpha r + Q$:
+\[
+u_p = \frac{\alpha r + Q - u_0}{t m_A} + \frac{r - u_0}{t m_H} - r^2.
+\]
+Differentiating:
+$\partial u_p/\partial r = \alpha/(t m_A) + 1/(t m_H) - 2r = 0$,
+giving \eqref{eq:rECVR} immediately.
+The second-order condition $-2 < 0$ is satisfied.
+\end{proof}
+ 
+\begin{proof}[Proof of Proposition~\ref{prop:ECER-unc}]
+\textit{Stage~2.} As in Proposition~\ref{prop:ECVR-unc}: $q_h(r) = r$.
+ 
+\textit{Stage~1.} Under engagement-based revenue:
+\[
+u_p = \frac{(\alpha r + Q)(\alpha r + Q - u_0)}{t m_A} + \frac{r(r - u_0)}{t m_H} - r^2.
+\]
+Differentiating:
+\[
+\frac{\partial u_p}{\partial r} = \frac{\alpha[2(\alpha r + Q) - u_0]}{t m_A} + \frac{2r - u_0}{t m_H} - 2r.
+\]
+Setting to zero and collecting terms in $r$:
+\[
+2r\!\left[\frac{\alpha^2}{t m_A} + \frac{1}{t m_H} - 1\right] = \frac{u_0}{t m_H} - \frac{\alpha(2Q - u_0)}{t m_A}.
+\]
+Multiplying by $t m_A m_H$ yields \eqref{eq:rECER}.
+The second-order condition is $2[\alpha^2 m_H +  m_A(1 - t m_H)]/(t m_A m_H) < 0$ iff $\alpha^2 m_H +  m_A(1 - t m_H) < 0$.
+\end{proof}
+ 
+ 
+\subsection*{Covered-Market Proofs}
+ 
+\begin{proof}[Proof of Proposition~\ref{prop:VCVR-cov}]
+In the covered market under VR, $D_A + D_h = 1$, so $u_p = D_A + (1-r)D_h = 1 - rD_h$. With the covered-market effort response $q_h = r(1-\alpha)/[t(m_A+m_H)]$, human demand is
+\[
+D_h = \frac{t m_A - Q + r(1-\alpha)^2/[t(m_A+m_H)]}{t(m_A+m_H)}.
+\]
+The creator's participation constraint requires $D_h \geq 0$ for positive creator utility; otherwise the creator deviates to $q_h = 0$. At $q_h = 0$, $D_h = (tm_A - Q)/[t(m_A + m_H)]$, which is non-positive whenever $Q \geq tm_A$. In this case the AI monopolizes the market ($D_h = 0$, $D_A = 1$) and the platform achieves $u_p = 1$ without paying the creator.
+
+Moreover, even if the platform induces positive $q_h$ via $r > 0$, the FOC solution $r^* = t(m_A + m_H)(Q - tm_A)/[2(1-\alpha)^2]$ satisfies $r^* = r_{\min}/2$ where $r_{\min}$ is the value at which $D_h = 0$. Since $r^* < r_{\min}$, the FOC solution lies in the region where $D_h < 0$ and must be discarded. For any $r < r_{\min}$, $D_h$ is clamped to zero and $u_p = 1$; for $r > r_{\min}$, $D_h > 0$ and $u_p = 1 - rD_h < 1$. The platform therefore sets $r^* = 0$.
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:VCER-cov}]
+Under VC with covered-market demands, the creator's effort response is $q_h = r(1-\alpha)/[t(m_A+m_H)] \equiv \Phi\,r$, and human demand is $D_h = (tm_A - Q + \Psi\,r)/[t(m_A+m_H)]$ where $\Psi = (1-\alpha)^2/[t(m_A+m_H)]$. The creator's covered-market utility is
+\[
+u_c = r\,D_h - \tfrac{1}{2}q_h^2 = \frac{r(tm_A - Q)}{t(m_A+m_H)} + \frac{r^2(1-\alpha)^2}{2[t(m_A+m_H)]^2}.
+\]
+The first term is non-positive when $Q \geq tm_A$ and the second term is positive. At any FOC candidate~$r^*$, both $D_h < 0$ and $u_c < 0$ obtain (the argument parallels Proposition~\ref{prop:VCVR-cov}: the FOC solution always lies in the region where $D_h$ must be clamped to zero). The creator therefore deviates to $q_h = 0$, and the platform optimally sets $r^* = 0$.
+
+With $q_h = 0$ and $q_A = Q$, AI demand is $D_A = \min\{Q/(tm_A),\,1\}$ and platform revenue is $Q \cdot D_A$.
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:ECVR-cov}]
+\textit{Stage~2.} Under EC, $q_h = r$ regardless of the market regime.
+ 
+\textit{Stage~1.} In a covered market under VR, $D_A + D_h = 1$, so
+$u_p = D_A + D_h - r q_h = 1 - r^2$.
+This is strictly decreasing in $r$ for $r > 0$, so $r^* = 0$.
+\end{proof}
+ 
+\begin{proof}[Proof of Proposition~\ref{prop:ECER-cov}]
+\textit{Stage~2.} Under EC, $q_h = r$ and $q_A = \alpha r + Q$.
+ 
+\textit{Stage~1.} The covered-market demands with $q_A - q_h = Q - (1-\alpha)r$ are:
+\[
+D_A = \frac{Q - (1-\alpha)r + t m_H}{t(m_A+m_H)}, \qquad D_h = \frac{t m_A + (1-\alpha)r - Q}{t(m_A+m_H)}.
+\]
+The platform's objective is $u_p = q_A\,D_A + q_h\,D_h - r^2$.
+Differentiating with respect to $r$, using $\partial q_A/\partial r = \alpha$, $\partial q_h/\partial r = 1$, $\partial D_A/\partial r = -(1-\alpha)/[t(m_A+m_H)]$, $\partial D_h/\partial r = (1-\alpha)/[t(m_A+m_H)]$:
+\begin{align*}
+\frac{\partial u_p}{\partial r} &= \alpha\,D_A - \frac{(1-\alpha)q_A}{t(m_A+m_H)} + D_h + \frac{(1-\alpha)q_h}{t(m_A+m_H)} - 2r \\[4pt]
+&= \alpha\,D_A + D_h - \frac{(1-\alpha)(q_A - q_h)}{t(m_A+m_H)} - 2r.
+\end{align*}
+Substituting the demand expressions and $q_A - q_h = Q - (1-\alpha)r$:
+\begin{align*}
+\frac{\partial u_p}{\partial r} &= \frac{\alpha[Q - (1-\alpha)r + t m_H]}{t(m_A+m_H)} + \frac{t m_A + (1-\alpha)r - Q}{t(m_A+m_H)} \\
+&\quad - \frac{(1-\alpha)Q - (1-\alpha)^2 r}{t(m_A+m_H)} - 2r.
+\end{align*}
+Collecting terms in the numerator:
+\[
+\alpha Q - Q - (1-\alpha)Q = -2(1-\alpha)Q,
+\]
+\[
+-\alpha(1-\alpha)r + (1-\alpha)r + (1-\alpha)^2 r = 2(1-\alpha)^2 r,
+\]
+and the constant terms give $\alpha\,t m_H + t m_A = t(\alpha m_H + m_A)$. Thus
+\[
+\frac{\partial u_p}{\partial r} = \frac{-2(1-\alpha)Q + t(\alpha m_H +  m_A) + 2(1-\alpha)^2 r}{t(m_A+m_H)} - 2r.
+\]
+Setting to zero:
+\[
+2r\!\left[1 - \frac{(1-\alpha)^2}{t(m_A+m_H)}\right] = \frac{t(\alpha m_H +  m_A) - 2(1-\alpha)Q}{t(m_A+m_H)},
+\]
+which gives \eqref{eq:rECER-cov}.
+ 
+The second-order condition is $2[(1-\alpha)^2/[t(m_A+m_H)] - 1] < 0$, i.e., $(1-\alpha)^2 < t( m_A +  m_H)$.
+
+Under EC, the creator's participation constraint $u_c = r^2/2 \geq 0$ is always satisfied, so no additional feasibility check is needed.
+\end{proof}
+ 
+
+\end{document}

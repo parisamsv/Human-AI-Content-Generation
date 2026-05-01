@@ -2,7 +2,7 @@
 Configuration for the platform model with discrimination penalty.
 """
 
-PARAMS = {'alpha': 0.5, 'delta': 0.3, 'k': 1.0, 'Q': 0.3}
+PARAMS = {'alpha': 0.4, 'delta': 0.4, 'Q': 0.3, 'k': 1.0, 'u_0': 0.2}
 
 K_VALUES = [0.0, 1.0, 2.0, 5.0]
 K_COLORS = {0.0:"#1c80ab", 1.0:"#d6ca25", 2.0:"#c98622",
