@@ -87,20 +87,38 @@ class PlatformSimulator_ViewComp:
         mA = 1.0 - self.delta + b * self.delta
         return mH, mA
 
+    def _coverage_sum(self, b, qh, qA):
+        mH, mA = self.mismatch(b)
+        dA = max(qA - self.u_0, 0) / (self.t * mA)
+        dH = max(qh - self.u_0, 0) / (self.t * mH)
+        return dA + dH
+
+    def _is_covered(self, b, qh, qA):
+        return self._coverage_sum(b, qh, qA) > 1.0
+
     def qualities(self, b, r):
         mH, mA = self.mismatch(b)
         S = self.t * (mA + mH)
         qh_unc = r / (self.t * mH)
         qA_unc = self.alpha * qh_unc + self.Q
-        return qh_unc, qA_unc
-    
+        if not self._is_covered(b, qh_unc, qA_unc):
+            return qh_unc, qA_unc
+        qh_cov = r * (1 - self.alpha) / S
+        qA_cov = self.alpha * qh_cov + self.Q
+        return qh_cov, qA_cov
+
     def demands(self, b, r):
         mH, mA = self.mismatch(b)
         qh, qA = self.qualities(b, r)
         dA = max(qA - self.u_0, 0) / (self.t * mA)
         dH = max(qh - self.u_0, 0) / (self.t * mH)
-        return max(0.0, min(dH, 1.0)), max(0.0, min(dA, 1.0))
-        
+        if dA + dH <= 1:
+            return max(0.0, min(dH, 1.0)), max(0.0, min(dA, 1.0))
+        else:
+            x_hat = (qA - qh + self.t * mH) / (self.t * (mA + mH))
+            DA = max(0.0, min(x_hat, 1.0))
+            return max(0.0, 1.0 - DA), DA
+
     def _base_utility(self, b, r):
         qh, qA = self.qualities(b, r)
         Dh, DA = self.demands(b, r)
@@ -112,14 +130,73 @@ class PlatformSimulator_ViewComp:
     def utility(self, b, r):
         return self._base_utility(b, r) - self.k / 2.0 * (b - 0.5) ** 2
 
+    def _vc_creator_utility(self, qh, r, Dh):
+        return r * Dh - 0.5 * qh ** 2
+
     def optimal_r(self, b):
         mH, mA = self.mismatch(b)
         a, t, u0, Q = self.alpha, self.t, self.u_0, self.Q
+        if self.model == 'view':
+            return self._optimal_r_VR(b, mH, mA, a, t, u0, Q)
+        else:
+            return self._optimal_r_ER(b, mH, mA, a, t, u0, Q)
+
+    def _vc_boundary_r(self, mH, mA, a, t, u0, Q):
+        """Compute r at which coverage_sum = 1 exactly (uncovered VC qualities).
+        At this r the uncovered formulas are still valid (market just barely uncovered).
+        """
+        W = a / (t**2 * mH * mA) + 1.0 / (t**2 * mH**2)
+        if W < 1e-12:
+            return None
+        r_val = (1.0 - (Q - u0) / (t * mA) + u0 / (t * mH)) / W
+        if r_val <= 0:
+            return None
+        qh = r_val / (t * mH)
+        if qh < u0:
+            return None
+        Dh = (qh - u0) / (t * mH)
+        if self._vc_creator_utility(qh, r_val, Dh) < -1e-12:
+            return None
+        return r_val
+
+    def _optimal_r_VR(self, b, mH, mA, a, t, u0, Q):
         # Uncovered candidate only — no boundary needed for VR
         r_unc = 0.5 * (1.0 + u0 * t * mH + a * mH / mA)
-        r_bnd = max(t * mH**2 * (t * mA - Q) / (mA + a * mH), 0)
-        return min(r_unc, r_bnd)
-    
+        qh_unc = r_unc / (t * mH)
+        qA_unc = a * qh_unc + Q
+        if not self._is_covered(b, qh_unc, qA_unc):
+            Dh_unc = max(qh_unc - u0, 0) / (t * mH)
+            if self._vc_creator_utility(qh_unc, r_unc, Dh_unc) >= -1e-12:
+                return r_unc
+        return 0.0
+
+    def _optimal_r_ER(self, b, mH, mA, a, t, u0, Q):
+        sigma = a ** 2 * mH + mA * (1.0 - t * mH)
+
+        # Uncovered candidate
+        r_unc = None
+        if sigma < -1e-12:
+            num = t * mH * (u0 * mA * (1.0 - t * mH)
+                            - a * mH * (2.0 * Q - u0))
+            r_val = num / (2.0 * sigma)
+            if r_val > 0:
+                qh_unc = r_val / (t * mH)
+                qA_unc = a * qh_unc + Q
+                if not self._is_covered(b, qh_unc, qA_unc):
+                    Dh_unc = max(qh_unc - u0, 0) / (t * mH)
+                    if self._vc_creator_utility(qh_unc, r_val, Dh_unc) >= -1e-12:
+                        r_unc = r_val
+
+        # Boundary candidate
+        r_bnd = self._vc_boundary_r(mH, mA, a, t, u0, Q)
+
+        candidates = [(0.0, self.utility(b, 0.0))]
+        if r_unc is not None:
+            candidates.append((r_unc, self.utility(b, r_unc)))
+        if r_bnd is not None:
+            candidates.append((r_bnd, self.utility(b, r_bnd)))
+        return max(candidates, key=lambda x: x[1])[0]
+
     # def optimize(self, n_beta=1001):
     #     return _optimize_beta(self, n_beta, comp='vc')
     
@@ -131,7 +208,7 @@ class PlatformSimulator_ViewComp:
             r = self.optimal_r(b)
             u = self.utility(b, r)
             if u > best['utility']:
-                qh, qA = self.qualities(b, r)
+                qh, qA, _ = self.qualities(b, r)
                 best = {'beta_h': b, 'r': r, 'utility': u,
                         'q_h': qh, 'q_A': qA}
         return best
@@ -211,7 +288,21 @@ class PlatformSimulator_EngComp:
         mH, mA = self.mismatch(b)
         S = self.t * (mA + mH)
         a, t, u0, Q = self.alpha, self.t, self.u_0, self.Q
-        
+        if self.model == 'view':
+            return self._optimal_r_VR(b, mH, mA, S, a, t, u0, Q)
+        else:
+            return self._optimal_r_ER(b, mH, mA, S, a, t, u0, Q)
+
+    def _optimal_r_VR(self, b, mH, mA, S, a, t, u0, Q):
+        r_unc = 0.5 * (a / (t * mA) + 1.0 / (t * mH))
+        qh, qA = self.qualities(r_unc)
+        if qh < u0:
+            return 0.0
+        if not self._is_covered(b, qh, qA):
+            return r_unc
+        return 0.0
+
+    def _optimal_r_ER(self, b, mH, mA, S, a, t, u0, Q):
         sigma = a ** 2 * mH + mA * (1.0 - t * mH)
 
         # --- Uncovered candidate (Prop 7) ---
@@ -227,14 +318,15 @@ class PlatformSimulator_EngComp:
         # --- Covered candidate (Prop 8) ---
         r_cov = None
         Psi = (1 - a) ** 2
-        num = t * (a * mH + mA) - 2.0 * (1 - a) * Q
-        denom = 2.0 * (S - Psi)
-        if abs(denom) > 1e-12:
-            r_val = num / denom
-            if r_val > 0:
-                qh, qA = self.qualities(r_val)
-                if self._is_covered(b, qh, qA):
-                    r_cov = r_val
+        if S > Psi:
+            num = t * (a * mH + mA) - 2.0 * (1 - a) * Q
+            denom = 2.0 * (S - Psi)
+            if abs(denom) > 1e-12:
+                r_val = num / denom
+                if r_val > 0:
+                    qh, qA = self.qualities(r_val)
+                    if self._is_covered(b, qh, qA):
+                        r_cov = r_val
 
         # --- Boundary candidate: r at which market is exactly covered ---
         # Handles the gap where both formulas fail self-consistency
@@ -267,7 +359,7 @@ class PlatformSimulator_EngComp:
             r = self.optimal_r(b)
             u = self.utility(b, r)
             if u > best['utility']:
-                qh, qA = self.qualities(r)
+                qh, qA, _ = self.qualities(b, r)
                 best = {'beta_h': b, 'r': r, 'utility': u,
                         'q_h': qh, 'q_A': qA}
         return best

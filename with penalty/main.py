@@ -7,9 +7,9 @@ from plotting import plot_sweep
 def exp1_Q(changing_param, VALUES):
     print("\n=== Exp 1: Q sweep ===")
     for rev_model, comp_model, tag in [ ('view', 'view','Rev_View_Comp_View'),
-                                        ('engagement', 'engagement', 'Rev_Engagement_Comp_Engagement'),
-                                        ('view', 'engagement', 'Rev_View_Comp_Engagement'),
-                                        ('engagement', 'view', 'Rev_Engagement_Comp_View')]:
+                                        ('engagement', 'engagement', 'Rev_Engagement_Comp_Engagement')]:
+                                        # ('view', 'engagement', 'Rev_View_Comp_Engagement'),
+                                        # ('engagement', 'view', 'Rev_Engagement_Comp_View')]:
         params = PARAMS.copy()
         data = {}
         if changing_param == 'k':
@@ -41,9 +41,9 @@ def exp1_Q(changing_param, VALUES):
 def exp2_k(changing_param, VALUES):
     print("\n=== Exp 2: k sweep ===")
     for rev_model, comp_model, tag in [ ('view', 'view','Rev_View_Comp_View'),
-                                        ('engagement', 'engagement', 'Rev_Engagement_Comp_Engagement'),
-                                        ('view', 'engagement', 'Rev_View_Comp_Engagement'),
-                                        ('engagement', 'view', 'Rev_Engagement_Comp_View')]:
+                                        ('engagement', 'engagement', 'Rev_Engagement_Comp_Engagement')]:
+                                        # ('view', 'engagement', 'Rev_View_Comp_Engagement'),
+                                        # ('engagement', 'view', 'Rev_Engagement_Comp_View')]:
         params = PARAMS.copy()
         data = {}
         if changing_param == 'Q':
@@ -76,9 +76,9 @@ def exp2_k(changing_param, VALUES):
 def exp3_alpha(changing_param, VALUES):
     print("\n=== Exp 3: alpha sweep ===")
     for rev_model, comp_model, tag in [ ('view', 'view','Rev_View_Comp_View'),
-                                        ('engagement', 'engagement', 'Rev_Engagement_Comp_Engagement'),
-                                        ('view', 'engagement', 'Rev_View_Comp_Engagement'),
-                                        ('engagement', 'view', 'Rev_Engagement_Comp_View')]:
+                                        ('engagement', 'engagement', 'Rev_Engagement_Comp_Engagement')]:
+                                        # ('view', 'engagement', 'Rev_View_Comp_Engagement'),
+                                        # ('engagement', 'view', 'Rev_Engagement_Comp_View')]:
         params = PARAMS.copy()
         data = {}
         if changing_param == 'k':
@@ -110,9 +110,9 @@ def exp3_alpha(changing_param, VALUES):
 def exp4_delta(changing_param, VALUES):
     print("\n=== Exp 4: delta sweep ===")
     for rev_model, comp_model, tag in [ ('view', 'view','Rev_View_Comp_View'),
-                                        ('engagement', 'engagement', 'Rev_Engagement_Comp_Engagement'),
-                                        ('view', 'engagement', 'Rev_View_Comp_Engagement'),
-                                        ('engagement', 'view', 'Rev_Engagement_Comp_View')]:
+                                        ('engagement', 'engagement', 'Rev_Engagement_Comp_Engagement')]:
+                                        # ('view', 'engagement', 'Rev_View_Comp_Engagement'),
+                                        # ('engagement', 'view', 'Rev_Engagement_Comp_View')]:
         params = PARAMS.copy()
         data = {}
         if changing_param == 'k':
@@ -162,20 +162,20 @@ def main():
     print(f"k values:  {K_VALUES}")
 
     exp1_Q('alpha', ALPHA_VALUES)
-    # exp1_Q('k', K_VALUES)
-    # exp1_Q('delta', DELTA_VALUES)
+    exp1_Q('k', K_VALUES)
+    exp1_Q('delta', DELTA_VALUES)
 
-    # exp2_k('alpha', ALPHA_VALUES)
-    # exp2_k('Q', Q_VALUES)
-    # exp2_k('delta', DELTA_VALUES)
+    exp2_k('alpha', ALPHA_VALUES)
+    exp2_k('Q', Q_VALUES)
+    exp2_k('delta', DELTA_VALUES)
 
-    # exp3_alpha('k', K_VALUES)
-    # exp3_alpha('Q', Q_VALUES)
-    # exp3_alpha('delta', DELTA_VALUES)
+    exp3_alpha('k', K_VALUES)
+    exp3_alpha('Q', Q_VALUES)
+    exp3_alpha('delta', DELTA_VALUES)
 
-    # exp4_delta('k', K_VALUES)
-    # exp4_delta('alpha', ALPHA_VALUES)
-    # exp4_delta('Q', Q_VALUES)
+    exp4_delta('k', K_VALUES)
+    exp4_delta('alpha', ALPHA_VALUES)
+    exp4_delta('Q', Q_VALUES)
 
     print("\n" + "=" * 60)
     print("All experiments complete.")
