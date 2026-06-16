@@ -1,0 +1,208 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Numerical Study}\label{sec:numerical}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The previous sections characterize the equilibrium in closed form and
+derive thresholds that determine the platform's compensation rate,
+algorithmic promotion decision, and the creator's effort. This section
+shows numerically how these equilibrium objects move with the main
+model parameters. The goal is: (i) to illustrate the
+comparative statics implied by the theory and (ii) to map the regions in
+which the platform and the creator prefer each monetization base.
+
+Section~\ref{subsec:numerics-design} describes the setup and parameter
+choices. Section~\ref{subsec:numerics-Q} varies AI baseline quality.
+Section~\ref{subsec:numerics-alpha} varies AI learning efficiency.
+Section~\ref{subsec:numerics-delta} varies algorithmic influence.
+Section~\ref{subsec:numerics-regions} maps the regions in which each
+party prefers view-based or engagement-based monetization.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Setup}
+\label{subsec:numerics-design}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+For each parameter vector $\theta=(Q,\alpha,\delta,t,k)$, we compute
+the equilibrium under both monetization bases. The platform's problem
+admits candidate solutions in the uncovered and covered demand
+regimes. For each candidate, we check the regime-consistency
+conditions and keep only those that satisfy them. Among the surviving
+candidates, we select the one that gives the highest platform payoff.
+This procedure ensures that the reported equilibrium is consistent
+with both the platform's optimization problem and the demand regime
+it induces.
+
+We track four equilibrium outcomes:
+\begin{itemize}
+    \item platform utility $u_P$,
+    \item creator utility $u_H$,
+    \item total views $\mathrm{TV}=D_A+D_H$, and
+    \item total engagement $\mathrm{TE}=q_A D_A+q_H D_H$.
+\end{itemize}
+We report each outcome under view-based monetization (superscript $V$)
+and under engagement-based monetization (superscript $E$).
+
+Table~\ref{tab:baseline-parameters} reports the baseline parameter
+values and the ranges used in the experiments. The baseline values
+satisfy Assumptions~\ref{ass:nonsat} and~\ref{ass:concavity-E} and lie
+in an economically interesting region: AI baseline quality is
+moderate, so neither side of the market trivially dominates; the AI's
+learning rate is positive but well below one, so human effort matters
+without fully determining AI quality; and algorithmic influence is
+intermediate, so the platform's promotion lever is meaningful but
+bounded. When we vary one parameter, we hold the others at their
+baseline values.
+
+\begin{table}[ht]
+\centering
+\caption{Baseline parameters and ranges used in the numerical study}
+\label{tab:baseline-parameters}
+\begin{tabular}{lccc}
+\toprule
+Parameter & Description & Baseline & Range \\
+\midrule
+$Q$      & AI baseline quality           & $0.30$ & $[0.05,1.20]$ \\
+$\alpha$ & AI learning efficiency        & $0.30$ & $[0.10,0.60]$ \\
+$\delta$ & Algorithmic influence         & $0.40$ & $[0.10,0.50]$ \\
+$t$      & Mismatch cost                 & $2.50$ & - \\
+$k$      & Algorithmic-neutrality cost   & $1.00$ & - \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+We run four sets of experiments. The first three vary one parameter
+at a time: $Q$, then $\alpha$, then $\delta$. The fourth constructs
+two-dimensional maps showing which monetization base each party
+prefers across pairs of parameters.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{The Effect of AI Baseline Quality}
+\label{subsec:numerics-Q}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+AI baseline quality $Q$ enters the model in two ways. It shifts the
+AI's quality through $q_A=\alpha q_H+Q$, and it shifts the demand for
+AI content directly. Raising $Q$ therefore makes AI content more
+attractive on its own and weakens the platform's reliance on the human
+creator. We expect the platform to lower the creator's compensation,
+shift promotion toward AI, and let creator effort fall. The
+interesting question is whether these forces play out the same way
+under both monetization bases.
+
+Figure~\ref{fig:Q-comparative-statics} plots four equilibrium objects
+as $Q$ varies, holding $(\alpha,\delta,t,k)$ at their baseline values: platform
+utility $u_P$, creator utility $u_H$, total views $\mathrm{TV}$, and
+total engagement $\mathrm{TE}$. Each panel shows two lines, one for
+each monetization base.
+
+\begin{figure}[ht]
+\centering
+\textcolor{red}{[Insert six-panel figure: $\beta_H^*$, $q_H^*$, $u_P$,
+$u_H$, $\mathrm{TV}$, $\mathrm{TE}$ as functions of $Q$. One line per
+monetization base.]}
+\caption{Equilibrium outcomes as AI baseline quality $Q$ varies.}
+\label{fig:Q-comparative-statics}
+\end{figure}
+
+\textcolor{red}{[To fill in: At what value of $Q$ does $u_P^E$ overtake
+$u_P^V$? Does $u_H$ fall in $Q$ under view-based monetization? Does
+$\beta_H^*$ move toward AI content faster under view-based
+monetization? At what $Q$ does the ranking between the contracts
+flip?]}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{The Effect of AI Learning Efficiency}
+\label{subsec:numerics-alpha}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+AI learning efficiency $\alpha$ measures how much the AI's quality
+improves with the creator's effort. When $\alpha$ is small, the
+creator's effort barely affects AI quality, and the platform's only
+reason to compensate or promote her is direct human demand. When
+$\alpha$ is large, the creator becomes valuable through a second
+channel: every unit of her effort also raises the AI's quality. We
+expect the platform to promote the creator more as $\alpha$ increases, and we expect this effect to be stronger under
+engagement-based monetization, since engagement responds directly to
+quality.
+
+Figure~\ref{fig:alpha-comparative-statics} plots the same four
+equilibrium objects as functions of $\alpha$, holding $(Q,\delta,t,k)$
+at their baseline values.
+
+\begin{figure}[ht]
+\centering
+\textcolor{red}{[Insert six-panel figure: $\beta_H^*$, $q_H^*$, $u_P$,
+$u_H$, $\mathrm{TV}$, $\mathrm{TE}$ as functions of $\alpha$. One line
+per monetization base.]}
+\caption{Equilibrium outcomes as AI learning efficiency $\alpha$
+varies.}
+\label{fig:alpha-comparative-statics}
+\end{figure}
+
+\textcolor{red}{[To fill in: Does $\beta_H^*$ fall in $\alpha$ under
+view-based monetization and rise under engagement-based monetization?
+Does creator utility rise under both contracts, or only under
+engagement-based monetization? Does total engagement rise faster under
+engagement-based monetization?]}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{When Do the Platform and the Creator Agree?}
+\label{subsec:numerics-regions}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+We ask when the platform and the creator agree on the
+monetization base and when they disagree. For each parameter vector,
+we compute the equilibrium under both bases and check the signs of
+$u_P^E-u_P^V$ and $u_H^E-u_H^V$. This produces four regions:
+
+\begin{itemize}
+    \item \textbf{Region I:} both parties prefer view-based monetization.
+    \item \textbf{Region II:} both parties prefer engagement-based monetization.
+    \item \textbf{Region III:} the platform prefers engagement-based monetization, the creator prefers view-based.
+    \item \textbf{Region IV:} the creator prefers engagement-based monetization, the platform prefers view-based.
+\end{itemize}
+
+Regions III and IV are the disagreement regions. They identify
+parameter combinations under which the choice of monetization base is
+a source of conflict between the two parties.
+
+We first build the preference map over $(Q,\alpha)$, which connects
+directly to the thresholds in Theorems~\ref{lem:creator-choice}
+and~\ref{lem:platform-choice}. The theory predicts that view-based
+monetization is more attractive when AI baseline quality is low,
+while engagement-based monetization becomes more attractive as $Q$ and
+$\alpha$ rise.
+
+\begin{figure}[ht]
+\centering
+\textcolor{red}{[Insert heatmap over $(Q,\alpha)$ with the four
+preference regions in four colors. Overlay the theoretical thresholds
+$\bar Q$ and $Q^*$.]}
+\caption{Platform and creator monetization preferences over AI
+baseline quality and AI learning efficiency.}
+\label{fig:preference-map-Q-alpha}
+\end{figure}
+
+\textcolor{red}{[To fill in: How large is each region? Is there a
+substantial Region III (platform wants engagement, creator wants
+views)? How well do the numerical region boundaries match the
+theoretical thresholds $\bar Q$ and $Q^*$?]}
+
+We then repeat the exercise over $(Q,\delta)$ and $(\alpha,\delta)$ to
+ask how algorithmic influence reshapes the preference regions.
+
+\begin{figure}[ht]
+\centering
+\textcolor{red}{[Insert two heatmaps over $(Q,\delta)$ and
+$(\alpha,\delta)$ showing the four preference regions.]}
+\caption{Platform and creator monetization preferences as algorithmic
+influence varies.}
+\label{fig:preference-map-delta}
+\end{figure}
+
+\textcolor{red}{[To fill in: Does the disagreement region grow with
+$\delta$? Does higher $\delta$ make view-based monetization more
+attractive to the platform when $Q$ is high? Does engagement-based
+monetization dominate when both $\alpha$ and $\delta$ are high?]}

@@ -127,21 +127,43 @@ def M_view(beta_H: float, Q: float, alpha: float,
 # ---------------------------------------------------------------------------
 # Solving for beta_H*
 # ---------------------------------------------------------------------------
-
+ 
+def _u_P_view(beta_H: float, Q: float, alpha: float,
+              delta: float, t: float, k: float) -> float:
+    """
+    Platform utility under view-based at a given beta_H.
+ 
+    u_P = TV - r*D_H - (k/2)*(beta_H - 0.5)^2
+    """
+    mA = m_A(beta_H, delta)
+    mH = m_H(beta_H, delta)
+    r   = r_star_view(beta_H, Q, alpha, delta, t)
+    q_H = r / (t * mH)
+    q_A = alpha * q_H + Q
+    D_A = q_A / (t * mA)
+    D_H = q_H / (t * mH)
+    TV  = D_A + D_H
+    return TV - r * D_H - 0.5 * k * (beta_H - 0.5) ** 2
+ 
+ 
 def solve_beta_star_view(Q: float, alpha: float,
                          delta: float, t: float, k: float) -> float:
     """
     Find the optimal algorithmic weight beta_H* for view-based.
-
-    Calls solver.find_beta_star with M_view as the marginal revenue function.
+ 
+    Calls solver.find_beta_star with M_view as the marginal revenue function
+    and _u_P_view as the utility function for corner comparison.
     beta_H* is the unique solution to:
         M(beta_H*) = k*(beta_H* - 0.5)
     clipped to [0, 1].
     """
     def Mf(b: float) -> float:
         return M_view(b, Q, alpha, delta, t)
-
-    return find_beta_star(Mf, k)
+ 
+    def Uf(b: float) -> float:
+        return _u_P_view(b, Q, alpha, delta, t, k)
+ 
+    return find_beta_star(Mf, k, Uf)
 
 
 # ---------------------------------------------------------------------------

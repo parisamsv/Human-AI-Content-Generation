@@ -55,15 +55,11 @@ plt.rcParams.update({
 
 
 # ── Colour scheme ─────────────────────────────────────────────────────────────
-COL_VIEW = "#2171b5"   # blue       – view-based
-COL_ENG  = "#e6550d"   # red-orange – engagement-based
+COL_VIEW = "#8f07aa"   # pink       – view-based
+COL_ENG  = "#0f21b0"   # blue – engagement-based
 
 # Preference-region colours (Regions I–IV)
-#   I   both prefer View        → steel blue
-#   II  both prefer Engagement  → burnt orange
-#   III Platform→E, Creator→V   → green
-#   IV  Platform→V, Creator→E   → purple
-REGION_COLORS = ["#4292c6", "#f16913", "#41ab5d", "#9e9ac8"]
+REGION_COLORS = ["#4292c6", "#f16913", "#41ab5d", "#5d36a0"]
 REGION_LABELS = [
     "Region I: both prefer View",
     "Region II: both prefer Engagement",
@@ -142,11 +138,11 @@ def _pref_code(dp: float, dh: float) -> int:
         code 2  Region III – Platform→E, Creator→V  (dp > 0, dh ≤ 0)
         code 3  Region IV  – Platform→V, Creator→E  (dp ≤ 0, dh > 0)
     """
-    if dp > 0 and dh > 0:
+    if dp > 0.0001 and dh > 0.0001:
         return 1
-    elif dp > 0:
+    elif dp > 0.0001 and dh <= -0.0001:
         return 2
-    elif dh > 0:
+    elif dh > 0.0001 and dp <= -0.0001:
         return 3
     else:
         return 0

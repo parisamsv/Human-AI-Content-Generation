@@ -1,0 +1,413 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Comparison of View-based vs Engagement-based Setting}\label{sec:comparison}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\paragraph{Metrics.} We study how changes in the exogenous parameters
+($Q,\,\alpha,\,\delta$) affect four equilibrium outcomes:
+\[
+\text{Total Views (TV)} = D_A + D_H, \qquad
+\text{Total Engagement (TE)} = q_A D_A + q_H D_H,
+\qquad u_H, \qquad u_P.
+\]
+
+\paragraph{Methodology.} The platform chooses $(r^*, \beta_H^*)$ to
+maximize its objective. For any exogenous parameter
+$\theta \in \{Q, \alpha, \delta\}$, the total effect on an outcome $Y$
+at the equilibrium is
+\begin{equation}\label{eq:decomp}
+\frac{dY}{d\theta}
+=\;\underbrace{\frac{\partial Y}{\partial \theta}\bigg|_{\beta_H = \beta_H^*}}_{\text{direct effect}}
+\;+\;\underbrace{\frac{\partial Y}{\partial \beta_H}\bigg|_{\theta}\cdot\frac{d\beta_H^*}{d\theta}}_{\text{promotion effect}},
+\end{equation}
+where $r$ is already evaluated at the platform's optimal rate
+$r^*(\beta_H)$ inside each partial. Two properties simplify the
+analysis. First, by the envelope theorem,
+$du_P/d\theta = \partial u_P/\partial\theta\big|_{r=r^*,\,\beta_H=\beta_H^*}$,
+so platform utility responds only through the direct channel. Second,
+implicit differentiation of the FOC
+$M(\beta_H) = k(\beta_H - \tfrac12)$ gives
+\begin{equation}\label{eq:implicit-beta}
+\frac{d\beta_H^*}{d\theta}
+=\frac{\partial M/\partial\theta}{k - \partial M/\partial\beta_H},
+\end{equation}
+with positive denominator under the relevant concavity threshold. Throughout this section, we assume that $k$ is large enough so the denominator is positive (Platform utility function is concave).
+
+Note that for direct effect to dominate, we need
+\[
+\left| \frac{\partial Y}{\partial \theta} \right| \geq \left| \frac{\partial Y}{\partial \beta_H} \cdot \frac{\partial M/\partial\theta}{k - \partial M/\partial\beta_H} \right|.
+\]
+This can be written as 
+\begin{equation}
+\label{eq:general_k_threshold}
+k \geq \left| \frac{\partial M}{\partial \beta_H} \right| + \left| \frac{\partial M/\partial \theta}{\partial Y/\partial \theta} \cdot \frac{\partial Y}{\partial \beta_H} \right|.
+\end{equation}
+
+A unifying preliminary observation is that the creator's equilibrium
+utility takes the same form in both contracts.
+
+
+\begin{corollary}[Creator utility is a square of effort]\label{lem:uc}
+Under both contracts, the creator's equilibrium utility satisfies $u_H^* = (q_H^*)^2/2$. The creator strictly prefers the contract that induces higher equilibrium effort $q_H^*$.
+\end{corollary}
+Under both view-based and engagement-based setting, optimizing effort leads to the same payoff form: half the square of her chosen quality level. So whichever contract pushes her to work harder also makes her better off.
+
+
+
+\subsection{Impact of AI Baseline Quality $Q$}\label{subsec:comp-Q}
+
+We now ask how a stronger AI, captured by a higher baseline quality
+$Q$, changes the four equilibrium outcomes. 
+The next four corollaries
+state the sign of $dY/dQ$ for each metric; all proofs are in
+Appendix~\ref{app:proofs}.
+ 
+\begin{corollary}[Effect of $Q$ on platform utility]\label{cor:Q_up}
+The platform's equilibrium utility is strictly increasing in the AI
+baseline quality in both settings:
+\[
+\frac{d u_P}{dQ}>0.
+\]
+\end{corollary}
+ 
+A higher $Q$ raises AI content quality at no extra cost. In the
+view-based setting this either pulls in new viewers (low-$Q$ region when market is not covered yet) or lets
+the platform pay the creator less while keeping the market full
+(high-$Q$ region when the market is covered already); in the engagement-based setting it directly lifts the
+revenue $q_A=\alpha r+Q$ earned on every AI viewer. Because the
+platform has already optimized over $\beta_H$, the envelope theorem
+removes the promotion channel, and the AI is, in effect, a free input
+the platform always welcomes.
+
+\begin{definition}[Coverage threshold]\label{def:coverage}
+Fix an algorithmic weight $\beta_H$, with multipliers $\mA=1-\delta(1-\beta_H)$ and
+$\mH=1-\delta\beta_H$. The \emph{coverage threshold} $Q^{\sf c}(\beta_H)$ is the
+level of AI baseline quality at which the market the platform induces is exactly
+full, i.e.\ the equilibrium demands satisfy $D_A+D_H=1$ with equality. It is
+\[
+    Q^{\sf c}(\beta_H)=
+    \begin{cases}
+        \displaystyle Q_V^c\coloneq t\mA-\frac{(\mA+\alpha\mH)^{2}}{2\,t\,\mA\,\mH^{2}}, & \text{(view-based)},\\[12pt]
+        \displaystyle Q_E^c \coloneq\frac{t\,\Gamma}{t\mH-1+\alpha}, & \text{(engagement-based)},
+    \end{cases}
+\]
+where $\Gamma=\mA(t\mH-1)-\alpha^{2}\mH$.
+\end{definition}
+
+\medskip
+The first threshold is derived by setting $\frac{m_A + \alpha m_H}{2m_A}= \frac{t m_H^2 (t m_A - Q)}{m_A + \alpha m_H}$ from Proposition~\ref{prop:optimal:r_beta:View-Based}.
+The second threshold is derived by setting $\frac{\alpha Q \mH}{\Gamma}=r_b$ from Proposition \ref{prop:optimal:r_beta:Eng-Based}.
+
+\begin{definition}[Competition threshold]\label{def:competition}
+Fix an algorithmic weight $\beta_H$, with multipliers $\mA=1-\delta(1-\beta_H)$ and
+$\mH=1-\delta\beta_H$. In the engagement-based setting, the \emph{competition
+threshold} is the level of AI baseline quality at which the platform's interior
+covered optimum $r_{\mathrm{cov}}=N_c/(2\Lambda)$ coincides with the saturation
+rate $r_b$:
+\[
+    Q_E^{\sf c'}(\beta_H)
+    \;=\;
+    \frac{t\bigl(2\Lambda\,\mA\mH - (\mA+\alpha\mH)^{2}\bigr)}{2\,(2-\delta)\,(t\mH-1+\alpha)},
+\]
+where $\Lambda=t(2-\delta)-(1-\alpha)^{2}$.
+\end{definition}
+The competition threshold $Q_E^{\sf c'}$ sits above the coverage threshold,
+$Q_E^{\sf c}(\beta_H)\le Q_E^{\sf c'}(\beta_H)$, and the two cutoffs split
+AI baseline quality into three regimes. For $Q<Q_E^{\sf c}$ the market is
+uncovered and the platform pays the interior uncovered rate. For
+$Q_E^{\sf c}<Q<Q_E^{\sf c'}$ the market is exactly covered, and the platform pays
+only the minimum rate $r_b$ needed to fill it---raising pay further would just
+move already-captured viewers between the two providers. Once $Q$ exceeds
+$Q_E^{\sf c'}$, the AI-learning channel is valuable enough that the platform
+pays strictly above $r_b$: the market stays covered, but the platform now competes
+for the marginal viewer rather than merely covering the market.
+
+
+
+\begin{corollary}[Effect of AI baseline quality on creator utility]\label{cor:Q_uh}
+For sufficiently large $k$, the equilibrium creator utility
+responds to the AI baseline quality $Q$ as follows.
+
+\begin{enumerate}
+    \item \textbf{View-based.}
+    \[
+    \operatorname{sgn}\left(\frac{du_H^*}{dQ}\right)=
+    \begin{cases}
+    \operatorname{sgn}(\alpha\mH^2-\mA^2) & \text{if } Q<Q^{c}_{V},\\[4pt]
+    - & \text{if } Q> Q^{c}_{V}.
+    \end{cases}
+    \]
+    \item \textbf{Engagement-based.} 
+    \[
+    \operatorname{sgn}\left(\frac{du_H^*}{dQ}\right)=
+    \begin{cases}
+    + & \text{if } Q<Q^{c}_{E},\\[4pt]
+    - & \text{if } Q> Q^{c}_{E}.
+    \end{cases}
+    \]
+    Creator utility is therefore maximized at
+    $Q=Q^{c}_E$.
+\end{enumerate}
+\end{corollary}
+
+The intuition underlying the two patterns is driven by the structure of the creator’s compensation scheme. Under view-based compensation, the creator’s payoff is proportional to audience size, so the platform’s objective depends only on her share of viewers rather than on content quality per se. In this setting, an increase in the AI baseline quality $Q$ does not raise the value of the creator’s own audience. When $Q$ is sufficiently low such that the market remains uncovered, higher $Q$ increases the relative attractiveness of the AI content to the platform, while once the market is fully covered it enables the AI to directly substitute for the creator’s audience, thereby reducing the compensation required to prevent further cannibalization. In both regimes, the creator is weakly worse off, and her payoff is maximized when $Q$ is minimal. Under engagement-based compensation, the mechanism differs because platform revenue depends on content quality, and the creator’s effort contributes to AI quality through a learning channel. When the market is not yet fully covered, an increase in $Q$ strengthens the marginal return to this learning effect, leading the platform to increase compensation, which in turn induces higher effort and raises the creator’s payoff. This effect persists only until market coverage is complete. Beyond that point, further increases in $Q$ no longer expand total engagement but instead intensify substitution away from the creator, leading the platform to reduce compensation and decreasing the creator’s utility. The interaction of these forces generates a hump-shaped relationship, with the creator attaining maximum utility at the threshold at which the market becomes fully covered.
+
+
+\begin{corollary}[Effect of AI baseline quality on total views]\label{cor:Q_TV}
+For sufficiently large $k$, total views $\mathrm{TV}=D_A+D_H$ are non-decreasing in $Q$
+in both settings: $dTV/dQ>0$ as long as $Q<{Q}^c$ and $dTV/dQ=0$ once the AI baseline quality hits the threshold and $\mathrm{TV}=1$. Hence $\mathrm{TV}$ rises with
+$Q$ up to the coverage cutoff and is flat (at its maximum) thereafter.
+\end{corollary}
+
+The reason total views evolve in such a simple manner is that they depend solely on whether the market is fully covered, rather than on the identity of the content provider. When the market is not yet fully covered, a subset of marginal consumers remains inactive, in the sense that they do not consume either AI- or human-generated content due to insufficient attractiveness on both sides. An increase in the AI baseline quality $Q$ raises the attractiveness of AI content and induces some of these previously inactive consumers to participate, thereby expanding total viewership. Under engagement-based compensation, this effect is further amplified, as higher AI quality strengthens the value of the learning channel, leading the platform to increase the creator’s compensation and thereby inducing additional effort that further expands human-side engagement. However, this expansion is bounded. Once $Q$ is sufficiently large that the market becomes fully covered, all consumers are already allocated to either AI or human content, and no additional viewers can be attracted. In this regime, further increases in $Q$ only reallocate consumers across the two sources without affecting total viewership. Consequently, total views increase with $Q$ up to the coverage threshold and remain constant thereafter, with the kink occurring precisely at the market saturation cutoff, which also determines equilibrium effort.
+
+\begin{corollary}[Effect of AI baseline quality on total engagement]\label{cor:Q_TE}
+Let
+$Q^{\dagger}:=\frac{(1-\alpha)\,t\,\mA\,\mH}{2-\delta}$ be the quality-parity level
+($q_A=q_H$) of the boundary regime. For sufficiently large $k$, the equilibrium total engagement responds to the AI baseline quality $Q$ as follows.
+
+\textbf{View-based.} 
+\[
+\operatorname{sgn}\left(\frac{dTE}{dQ}\right)=
+\begin{cases}
++
+ & \text{if } Q<Q^{\sf c}_V \text{ or } Q>Q^{\dagger},\\[6pt]
+-
+ & \text{if } Q^{\sf c}_V< Q < Q^{\dagger},
+\end{cases}
+\]
+
+\textbf{Engagement-based.} 
+\[
+\operatorname{sgn}\left(\frac{dTE}{dQ}\right)=
+\begin{cases}
++
+ & \text{if } Q<Q^{\sf c}_E \text{ or } Q^{\dagger}<Q<Q_E^{\sf c'},\\[6pt]
+-
+ & \text{if }Q^{\sf c}_E < Q < Q^{\dagger},\\[6pt]
+ \operatorname{sgn}(Q - \frac{(1-\alpha)N_c\big(t(2-\delta)+\Lambda\big)}{2\Lambda^2} \;-\; \frac{t\mH}{2}) & \text{if }Q>Q_E^{\sf c'}
+\end{cases}
+\]
+    where $N_c = t(\alpha\mH + \mA) - 2(1-\alpha)Q$ and
+    $\Lambda = t(2-\delta) - (1-\alpha)^2$.
+\end{corollary}
+
+Corollary \ref{cor:Q_TE} shows that improving the AI's baseline quality $Q$ does not necessarily increase total engagement. Instead, total engagement can be non-monotonic in $Q$. The key threshold is the quality-parity level $Q^{\dagger}$, at which AI and human content provide the same quality ($q_A=q_H$). Below $Q^{\dagger}$, AI content is of lower quality than human content; above $Q^{\dagger}$, it becomes the higher-quality alternative.
+
+The intuition differs across uncovered and covered markets. When the market is not fully covered ($Q<Q^{\sf c}_V$ or $Q<Q^{\sf c}_E$), an increase in $Q$ attracts additional engagement without substantially displacing human consumption. Consequently, total engagement increases with AI quality.
+
+Once the market becomes covered, however, total audience size is fixed and higher AI quality primarily reallocates attention between AI and human content. In this region, the effect of $Q$ depends on the quality gap between the two content types. If $q_A<q_H$ (i.e., $Q<Q^{\dagger}$), greater AI quality shifts engagement away from higher-quality human content toward lower-quality AI content, reducing total engagement. In contrast, when $q_A>q_H$ (i.e., $Q>Q^{\dagger}$), the same reallocation improves the average quality of consumed content and therefore increases total engagement. This generates the non-monotonic pattern described in the corollary.
+
+The quality-parity threshold $Q^{\dagger}$ governs both platform designs because, along the boundary regime, they induce the same equilibrium content qualities. The engagement-based design introduces an additional high-$Q$ region in which the market remains fully covered, yielding the additional condition reported in the corollary. Finally, the assumption of sufficiently large $k$ ensures that promotional adjustments are limited, allowing the direct quality-reallocation effect to determine the sign of $dTE/dQ$.
+
+
+
+\begin{corollary}[How $Q$ moves the promotion weight]\label{cor:Q_beta}
+\textbf{View-based setting.} Let
+\[
+\widehat Q_{V}\;=\;\frac{t\bigl(2\mA^{2}+\mA\mH-\alpha\mH^{2}\bigr)}{2(2-\delta)} .
+\]
+Then
+\[
+\operatorname{sgn}\left(\frac{d\beta_H^*}{dQ}\right)=
+\begin{cases}
+- & \text{if } Q<Q^{c}_{V},\\[4pt]
+\operatorname{sgn}\!\bigl(Q-\widehat Q_{V}\bigr) & \text{if } Q>Q^{c}_{V}.
+\end{cases}
+\]
+
+\smallskip
+\textbf{Engagement-based setting.} Let
+\[
+    \widehat Q_{E}=\frac{t(\mA+\alpha\mH)^{2}+(\alpha+\Psi)\,t\bigl(\mA^{2}-\alpha\mH^{2}\bigr)+(2-\delta)\,t\Gamma}
+{2(2-\delta)(\alpha+\Psi)}
+\]
+where $\Psi=t\mH-1$. Then
+\[
+\operatorname{sgn}\left(\frac{d\beta_H^*}{dQ}\right)=
+\begin{cases}
+\operatorname{sgn}\!\bigl(\alpha^{2}-\Psi^{2}\bigr)
+ & \text{if } Q<Q^{c}_{E} ,\\[6pt]
+\operatorname{sgn}\!\bigl(Q-\widehat Q_{E}\bigr)
+ & \text{if } Q^{c}_{E}< Q<Q^{c'}_{E} ,\\[6pt]
+-
+ & \text{if } Q> Q^{c'}_{E},
+\end{cases}
+\]
+\end{corollary}
+
+Corollary~\ref{cor:Q_beta} shows how the platform readjusts its algorithm as the
+AI baseline quality $Q$ improves. Consider the view-based setting first. The
+main force is crowding out: a higher $Q$ lets the AI serve more consumers on its
+own, so the platform needs the human creator less and shifts promotion back
+toward the AI. This force operates alone in the uncovered region, so $d\beta_H^*/dQ < 0$ throughout. In
+the boundary region a second, opposing force appears. There the platform holds
+the market exactly at full coverage, and a higher $Q$ lets it reach that point
+while paying the creator a lower rate. Because the platform pays on every human
+view, cheaper human views eventually make promoting the creator worthwhile
+again. The sign therefore flips from negative to positive once $Q$ rises past
+$\widehat Q_V$.
+
+In the engagement-based setting the learning channel now drives how $Q$ moves
+the algorithm. Because human effort also trains the AI ($q_A = \alpha q_H + Q$),
+a larger baseline can raise the value of that training material and push the
+platform to pay and promote the creator more. This effect is clearest in the
+uncovered region, where the optimal rate rises with $Q$: the threshold is then
+on learning efficiency itself, with $\beta_H^*$ increasing in $Q$ exactly when
+$\alpha$ exceeds $\Psi = t\mH - 1$ and decreasing otherwise. The boundary region
+works differently. There the platform holds the market at full coverage, and the
+mechanism mirrors the view-based boundary: a higher $Q$ lets the platform sustain
+coverage with a cheaper creator, so the sign turns on the level of $Q$ rather
+than on learning strength, flipping at the threshold $\widehat Q_E$. Once the market is fully covered, the learning from creator can no longer expand
+demand, so a higher $Q$ only makes the AI a stronger standalone option than the
+human and the platform adjust promotion toward it, lowering $\beta_H^*$.
+
+
+
+\subsection{Impact of AI Efficiency $\alpha$}
+
+We now ask how a stronger AI, captured by a higher efficiency
+$\alpha$, changes the four equilibrium outcomes. 
+The next four corollaries
+state the sign of $dY/d\alpha$ for each metric; all proofs are in
+Appendix~\ref{app:proofs}.
+
+\begin{corollary}[How $\alpha$ moves platform utility]\label{cor:alpha_up}
+$du_P/d\alpha > 0$ in both settings.
+\end{corollary}
+
+The intuition is straightforward in both settings. A higher $\alpha$ increases the amount of AI quality generated from a given level of creator effort through $q_A=\alpha q_H+Q$. 
+
+Because the platform chooses its compensation and promotion decisions optimally, the envelope theorem implies that only the direct effect of $\alpha$ matters for the comparative static. An increase in $\alpha$ therefore raises platform utility by increasing the value generated from existing creator effort.
+
+Under view-based compensation, higher AI quality either attracts additional viewers when the market is uncovered or shifts viewers toward AI-generated content when the market is covered. Under engagement-based compensation, higher AI quality directly increases the engagement revenue generated by AI content. In both cases, the platform captures the benefit of more effective AI learning, implying $du_P/d\alpha>0$.
+
+
+\begin{corollary}[How $\alpha$ moves creator utility]\label{cor:alpha_uh}
+For sufficiently
+large $k$, the equilibrium creator utility responds to the AI efficiency
+$\alpha$ as follows.
+\begin{enumerate}
+    \item \textbf{View-based.}
+    \[
+    \operatorname{sgn}\!\left(\frac{du_H^*}{d\alpha}\right)=
+    \begin{cases}
+    - & \text{if } Q > Q^c_V, \\[4pt]
+    - & \text{if } Q < Q^c_V \text{ and } \dfrac{\mA^2(1-\mH)}{2\mH^2} < \alpha < \dfrac{\mA^2}{\mH^2}, \\[4pt]
+    + & \text{otherwise.}
+    \end{cases}
+    \]
+    \item \textbf{Engagement-based.}
+    \[
+    \operatorname{sgn}\!\left(\frac{du_H^*}{d\alpha}\right)=
+    \begin{cases}
+    + & \text{if }Q < Q^c_E \text{ or } Q > Q^{c'}_E, \\[4pt]
+    - & \text{if } Q^c_E < Q < Q^{c'}_E.
+    \end{cases}
+    \]
+\end{enumerate}
+\end{corollary}
+
+The creator's utility is directly tied to her equilibrium effort (Corollary~\ref{lem:uc}). Consequently, the effect of AI learning on creator utility depends on whether a higher $\alpha$ leads the platform to increase or decrease creator effort. Two opposing effects are at work. First, a higher $\alpha$ increases the contribution of creator effort to AI quality, making creator effort more valuable to the platform. This increases the platform's incentive to compensate the creator and encourage effort. Second, a higher $\alpha$ makes the AI a more effective substitute for creator-generated content because the AI can produce higher quality from a given level of creator effort. This reduces the platform's reliance on creator effort. The sign of $du_H^*/d\alpha$ depends on the relative strength of these effects and varies across compensation schemes and market regimes.
+
+Under view-based compensation, when baseline AI quality is low ($Q<Q_V^c$), the market is uncovered and a higher $\alpha$ generally increases the value of creator effort as an input into AI quality. As a result, creator effort and utility tend to increase with $\alpha$. The exception is the intermediate range
+$
+\frac{\mA^2(1-\mH)}{2\mH^2}
+<
+\alpha
+<
+\frac{\mA^2}{\mH^2},
+$
+where the platform responds to stronger AI learning by reducing creator promotion. In this region, the reduction in exposure outweighs the increased value of creator effort, causing utility to decline. Outside this interval, the increase in the value of creator effort dominates and utility rises.
+
+When $Q\ge Q_V^c$, the market is covered and additional effort is no longer needed to attract new viewers. In this regime, improvements in AI learning primarily increase the AI's ability to serve the existing audience. The platform therefore reduces creator effort as $\alpha$ increases, implying $du_H^*/d\alpha<0$.
+
+Under engagement-based compensation, the same economic forces operate, but their relative importance changes across baseline-quality regimes. When $Q<Q_E^c$, the market is uncovered and creator effort is valuable primarily because it contributes to AI quality. Since this contribution increases with $\alpha$, the platform raises compensation and creator utility increases.
+
+For intermediate baseline quality levels ($Q_E^c<Q<Q_E^{c'}$), compensation is determined by the market-coverage condition. A higher $\alpha$ allows the market to be covered with a lower compensation rate, reducing both compensation and creator utility. In this region, the substitution effect dominates.
+
+When $Q>Q_E^{c'}$, the market is covered and the compensation rate is determined by the platform's interior optimization problem rather than by the coverage constraint. Because engagement-based revenue depends on content quality, a higher $\alpha$ increases the engagement generated from a given level of creator effort through its effect on AI quality. This raises the marginal value of creator effort and leads the platform to increase compensation. As a result, creator utility increases with $\alpha$.
+
+Taken together, the results show that higher AI learning benefits the creator when it primarily increases the value of creator effort as an input into AI quality, and harms the creator when it primarily increases the AI's ability to substitute for creator-generated content. Under engagement-based compensation, the first effect dominates when baseline AI quality is either low or high, while the second effect dominates only in the intermediate region where compensation is determined by the market-coverage condition.
+
+
+\begin{corollary}[How $\alpha$ moves total views]\label{cor:alpha_tv}
+For sufficiently large $k$, total views $\mathrm{TV}=D_A+D_H$ are non-decreasing in $\alpha$
+in both settings: total views is strictly increasing as long as $Q<{Q}^c$, and equal to
+the constant $\mathrm{TV}=1$ once the AI baseline quality hits the threshold. Hence $\mathrm{TV}$ rises with
+$Q$ up to the coverage cutoff and is flat (at its maximum) thereafter.
+\end{corollary}
+
+The corollary shows that improvements in AI learning increase total views whenever the market is not fully covered. A higher $\alpha$ allows the AI to convert creator effort into higher-quality AI content, which increases $q_A$. When some consumers remain outside the market, this quality improvement attracts additional viewers who previously chose not to consume either provider's content. As a result, total views increase with $\alpha$. This result holds under both compensation schemes. 
+
+The relationship changes once the market becomes covered. At that point, every consumer is already consuming content, so additional improvements in AI quality cannot generate new views. Instead, a higher $\alpha$ only changes how existing viewers are allocated between the creator and the AI. Since total market participation is already at its maximum, total views remain constant at $\mathrm{TV}=1$.
+
+Consequently, the effect of AI learning on total views is straightforward. Higher values of $\alpha$ expand market participation when coverage is incomplete, but have no effect on aggregate viewership once full coverage is reached. Beyond the coverage threshold, improvements in AI learning affect only the distribution of views across providers rather than the total number of views.
+
+
+\begin{corollary}[How $\alpha$ moves total engagement]\label{cor:alpha_te}
+Let
+$Q^{\dagger}:=\frac{(1-\alpha)\,t\,\mA\,\mH}{2-\delta}$ be the quality-parity level
+($q_A=q_H$) of the boundary regime. For sufficiently large $k$, the equilibrium total engagement responds to the AI baseline quality $Q$ as follows.
+
+\textbf{View-based.} 
+    \[
+    \operatorname{sgn}\left(\frac{dTE}{d\alpha}\right)=
+    \begin{cases}
+   + & \text{if } Q<Q^{c}_{V} \text{ or } Q> Q^\dagger,\\[4pt]
+    - & \text{if }  Q^{c}_{V}<Q<Q^\dagger.
+    \end{cases}
+    \]
+
+\textbf{Engagement-based.} 
+    \[
+    \operatorname{sgn}\left(\frac{dTE}{d\alpha}\right)=
+    \begin{cases}
+   + & \text{if } Q<Q^{c}_{E} \text{ or }  Q^\dagger<Q<Q_E^{\sf c'},\\[4pt]
+    - & \text{if }  Q^{c}_{E}<Q<Q^\dagger.\\[4pt]
+    \operatorname{sgn}(\Lambda\,(2t\mH + 4Q + \alpha - 1) - 2(1-\alpha)\,N_c) & \text{if } Q>Q_E^{\sf c'},
+    \end{cases}
+    \]
+    where $N_c = t(\alpha\mH + \mA) - 2(1-\alpha)Q$ and
+    $\Lambda = t(2-\delta) - (1-\alpha)^2$.
+\end{corollary}
+
+The effect of AI learning capability $\alpha$ on total engagement reflects a trade-off between stronger AI content and weaker creator incentives. A higher $\alpha$ increases the extent to which AI benefits from human-generated content, thereby improving AI quality. At the same time, because AI becomes a closer substitute for creator effort, creators have less incentive to invest in content production. Total engagement depends on which of these forces dominates.
+
+When the market is uncovered, improvements in AI quality expand overall engagement without substantially displacing human content. As a result, the direct quality effect dominates and total engagement increases with $\alpha$. Once the market becomes covered, however, additional AI engagement largely comes at the expense of human engagement. In this regime, the sign of $dTE/d\alpha$ depends on the relative quality of AI and human content. If AI quality remains below human quality ($Q<Q^{\dagger}$), stronger AI learning shifts engagement away from the higher-quality source of content and total engagement falls. If AI quality exceeds human quality ($Q>Q^{\dagger}$), the same reallocation improves the average quality of consumed content and total engagement rises. The quality-parity threshold $Q^{\dagger}$ therefore determines the sign change.
+
+The intuition is common to both ranking designs because the threshold is governed by the relative qualities of AI and human content rather than the platform's ranking objective. The engagement-based design introduces an additional high-$Q$ region in which promotion is chosen in the interior. In that region, changes in $\alpha$ affect engagement both directly through content quality and indirectly through the platform's promotion decision, giving rise to the additional condition stated in the corollary. The assumption of sufficiently large $k$ limits promotional adjustments and ensures that the quality-reallocation mechanism remains the primary driver of the comparative statics.
+
+
+\begin{corollary}[How $\alpha$ moves the promotion weight]\label{cor:alpha_beta}
+Fix the equilibrium $\beta_H^*$ and let $\mA,\mH$ be the corresponding multipliers,
+$N=\mA+\alpha\mH$, $P=t\mA-Q$, $\Psi=t\mH-1$, and $\Lambda=t(2-\delta)-(1-\alpha)^2$.
+\medskip
+\begin{enumerate}
+    \item \textbf{View-based.}  
+    \[
+    \operatorname{sgn}\left(\frac{d\beta_H^*}{d\alpha}\right)=
+    \begin{cases}
+     \operatorname{sgn}(\frac{\mA(\mA-\mH)}{2\mH^2}-\alpha) & \text{if } Q<Q^{c}_{V},\\[4pt]
+     \operatorname{sgn}(Q - \frac{t\bigl[\mH(\mA-2\alpha\mH)+3\mA^2\bigr]}{3(2-\delta)}) & \text{otherwise.}
+    \end{cases}
+    \]
+    \item \textbf{Engagement-based.} 
+    \[
+    \operatorname{sgn}\left(\frac{d\beta_H^*}{d\alpha}\right)=
+    \begin{cases}
+     \operatorname{sgn}(\alpha^2 - \frac{(t\mH-1)\bigl[2\mH(t\mH-1)-\mA\bigr]}{\mH}) & \text{if } Q<Q^{c}_{E},\\[4pt]
+     \operatorname{sgn}(c_2\,P^2 + c_1\,P + c_0 ) & \text{if } Q_E^c < Q < Q_E^{\sf c'}.\\[4pt]
+     \operatorname{sgn}(Q - \frac{\Lambda\bigl[\mA+(2\alpha-1)\mH\bigr] + 2(1-\alpha)^2 N}{4(1-\alpha)(2-\delta)}) & \text{otherwise.}
+    \end{cases}
+    \]
+    with $c_2 = -(2-\delta)\bigl(3\mH\Psi + 2\alpha\mH - \mA\bigr)$, $c_1 = tN\bigl[\alpha\mH(2-\delta) - \mA(\mA+3\mH) + 2\mH^2\Psi\bigr]$, and $c_0 = t^2\mA\mH\,N^2 > 0$.
+\end{enumerate}
+\end{corollary}
+
+The corollary highlights two opposing effects of an increase in the AI learning parameter $\alpha$. On the one hand, a higher $\alpha$ makes the AI a closer substitute for the human creator because the same amount of human effort generates higher-quality AI content ($q_A=\alpha q_H+Q$). This substitution effect reduces the platform's incentive to allocate exposure to the creator. On the other hand, a higher $\alpha$ increases the value of human effort as an input into AI quality, which raises the platform's incentive to keep the creator active. The sign of $d\beta_H^*/d\alpha$ depends on the relative strength of these two effects and varies across revenue models and market regimes.
+
+Under view-based monetization, revenue depends only on the number of viewers. As a result, an increase in $\alpha$ does not directly increase revenue from a given viewer; instead, it primarily strengthens the AI's ability to attract viewers that would otherwise consume creator content. In uncovered markets, this substitution effect dominates once $\alpha$ becomes sufficiently large, leading the platform to reduce promotion of the creator. In covered markets, where the audience is fixed, the creator's role as an input into AI quality becomes more important. In this case, the platform increases creator promotion when the AI's standalone quality $Q$ is sufficiently high.
+
+Under engagement-based monetization, revenue depends on both audience size and content quality. A higher $\alpha$ therefore directly increases the revenue generated by AI viewers by improving AI content quality. This strengthens the value of creator effort as a source of training and quality improvement. In uncovered markets, the platform may respond by increasing creator promotion as $\alpha$ rises in order to maintain creator effort. As in the view-based case, once the market is covered and promotion mainly reallocates a fixed audience, the creator's value as an input into AI quality becomes the dominant consideration. Consequently, creator promotion increases with $\alpha$ when the AI's standalone quality $Q$ exceeds the threshold identified in the corollary.
+
+Overall, the effect of AI learning on platform promotion is not uniform. Depending on the monetization model and the market coverage regime, an increase in $\alpha$ can either reduce or increase the platform's incentive to promote the creator. The threshold conditions in Corollary \ref{cor:alpha_beta} characterize the points at which these effects change dominance.

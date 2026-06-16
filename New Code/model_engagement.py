@@ -89,7 +89,9 @@ def _regime_and_rate(s: dict, Q: float, alpha: float) -> tuple:
 
     # Guard: if assumptions are violated return boundary rate
     if Gamma <= 0 or Lambda <= 0:
-        return "bnd", r_b
+        # return error
+        print("Error: Assumptions violated: Gamma <= 0 or Lambda <= 0.")
+        return
 
     r1 = alpha * Q * mH / Gamma
     r2 = N_c / (2.0 * Lambda)
@@ -156,20 +158,50 @@ def M_eng(beta_H: float, Q: float, alpha: float,
 # Solving for beta_H*
 # ---------------------------------------------------------------------------
 
+def _u_P_eng(beta_H: float, Q: float, alpha: float,
+             delta: float, t: float, k: float) -> float:
+    """
+    Platform utility under engagement-based at a given beta_H.
+ 
+    u_P = TE - r*q_H - (k/2)*(beta_H - 0.5)^2
+    """
+    mA = m_A(beta_H, delta)
+    mH = m_H(beta_H, delta)
+    N   = mA + alpha * mH
+    P   = t * mA - Q
+    r_b = mH * P / N
+    r   = r_star_eng(beta_H, Q, alpha, delta, t)
+    q_H = r
+    q_A = alpha * q_H + Q
+    if r <= r_b + 1e-10:
+        D_A = q_A / (t * mA)
+        D_H = q_H / (t * mH)
+    else:
+        m_sum = mA + mH
+        D_A = max(0.0, (t * mH + q_A - q_H) / (t * m_sum))
+        D_H = max(0.0, (t * mA - q_A + q_H) / (t * m_sum))
+    TE  = q_A * D_A + q_H * D_H
+    return TE - r * q_H - 0.5 * k * (beta_H - 0.5) ** 2
+ 
+ 
 def solve_beta_star_eng(Q: float, alpha: float,
                         delta: float, t: float, k: float) -> float:
     """
     Find the optimal algorithmic weight beta_H* for engagement-based.
-
-    Calls solver.find_beta_star with M_eng as the marginal revenue function.
+ 
+    Calls solver.find_beta_star with M_eng as the marginal revenue function
+    and _u_P_eng as the utility function for corner comparison.
     beta_H* is the unique solution to:
         M(beta_H*) = k*(beta_H* - 0.5)
     clipped to [0, 1].
     """
     def Mf(b: float) -> float:
         return M_eng(b, Q, alpha, delta, t)
-
-    return find_beta_star(Mf, k)
+ 
+    def Uf(b: float) -> float:
+        return _u_P_eng(b, Q, alpha, delta, t, k)
+ 
+    return find_beta_star(Mf, k, Uf)
 
 
 # ---------------------------------------------------------------------------

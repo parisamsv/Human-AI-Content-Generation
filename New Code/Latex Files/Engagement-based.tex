@@ -1,0 +1,194 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Engagement-based Setting}\label{sec:eng}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+We now turn to a setting in which both the platform's revenue and the
+creator's compensation scale with engagement rather than raw view
+counts. Concretely, the platform retains, for each consumer it serves,
+a margin proportional to the quality of the content consumed and pays the creator a rate
+$r$ per unit of effort she produces, rather than per realized view. The remainder of the environment (the timing, the AI's learning
+technology, and the Hotelling demand primitives) is identical to
+Section~\ref{sec:view}. As before, we solve the game by backward
+induction, beginning with the Consumer's content choice.
+
+\subsection{Model}
+
+\subsubsection*{Content Generation and Quality.}
+
+The technology is unchanged. The human creator chooses effort
+$q_H \geq 0$ at quadratic cost $C(q_H) = \tfrac{1}{2}q_H^{2}$, and the
+AI generates content of quality $
+q_A \;=\; \alpha\, q_H + Q $
+with $\alpha \in (0,1)$ the AI's learning efficiency and $Q \geq 0$ its
+baseline quality, exactly as in~\eqref{eq:qA}.
+
+\subsubsection*{Consumer Demand.}
+
+The consumer side of the model is unchanged from the view-based setting. Consumers are uniformly distributed on $[0,1]$ along the same Hotelling line, face the same transportation cost $t$, and choose between AI and human content based on the same utility comparison. The demand expressions, the location of the indifferent consumer, and the conditions distinguishing the uncovered and covered regimes therefore carry over directly. What changes in the engagement-based setting is how the platform monetizes these views, not how consumers form them.
+
+\subsubsection*{Creator Utility.}
+
+The platform compensates the human creator on a per-quality basis: she earns the rate $r \geq 0$
+for each unit of effort she produces, regardless of how many viewers
+ultimately consume her content. Her utility is
+\begin{equation}\label{eq:uhE}
+u_H^{E}(q_H;\,r)
+\;=\; r\,q_H \;-\; \tfrac{1}{2}q_H^{2}.
+\end{equation}
+The contrast with the view-based contract \eqref{eq:uhV} is sharp on
+two dimensions. First, the creator's marginal incentive is no longer
+mediated by demand: a change in the algorithmic weight $\beta_H$, which
+alters the mismatch multiplier $\mH$ and hence the elasticity of
+viewership to effort, does not enter \eqref{eq:uhE} directly. Second, we later show that because
+compensation is decoupled from realized demand, the creator's
+participation constraint $u_H \geq 0$ is automatically satisfied for any
+$r \geq 0$.
+
+\subsubsection*{Platform Utility.}
+
+The platform monetizes consumer
+attention in proportion to content quality: each consumer who watches
+AI content contributes $q_A$ to platform revenue, and each consumer
+who watches human content contributes $q_H$. Combining this with the
+per-effort compensation cost $r\,q_H$ paid to the creator under the engagement-based setting, the
+platform's utility is
+\begin{equation}\label{eq:upE}
+u_P^{E}
+\;=\; q_A\,D_A \;+\; q_H\,D_H \;-\; r\,q_H
+\;-\; \tfrac{k}{2}\!\left(\beta_H - \tfrac{1}{2}\right)^{2}\!.
+\end{equation}
+where the quadratic term again penalizes deviations of the algorithmic 
+weight $\beta_H$ from the neutral benchmark $\tfrac{1}{2}$, with 
+$k > 0$ parameterizing the strength of this penalty, capturing the 
+same operational, regulatory, and reputational costs of moving the 
+recommendation system away from neutrality. Three features of 
+\eqref{eq:upE} are worth emphasizing. First, the platform values 
+AI views and human views in proportion to the engagement each 
+generates: each AI view contributes $q_A$ in revenue, while each 
+human view contributes $q_H$. Whether the platform leans toward AI 
+or human content is no longer mechanical, as it was under view-based 
+revenue, but depends on the relative magnitudes of $q_A$ and $q_H$. 
+Second, creator compensation $r\,q_H$ is paid for effort rather than 
+per view, so it enters the platform's payoff as a fixed deduction 
+tied to the level of human content $q_H$ rather than as a per-view 
+margin reduction. Third, this trade-off is tempered by the 
+recognition that human content sustains the AI's own quality through 
+learning, so suppressing human effort lowers $q_A$ and hurts 
+AI-side revenue as well, while the algorithmic weight $\beta_H$ 
+enters both the demand expressions $D_A$ and $D_H$ through the 
+mismatch multipliers in \eqref{eq:mismatch} and the 
+algorithmic-neutrality penalty, giving rise to a non-trivial 
+trade-off in the platform's optimization problem.
+
+
+
+The timing of the game is the same as the timing for the view-based setting shown in Figure \ref{fig:model:1}.
+
+\subsection{Equilibrium Characterization}\label{ss:eb-equilibrium}
+
+We solve the game by backward induction. 
+
+\subsubsection*{Stage 3: Consumer's Choice and Demand Regimes.} Consumer behavior in Stage 3 is identical to the view-based setting. The Hotelling structure, transportation cost $t$, mismatch multipliers $m_A$ and $m_H$, and the two demand regimes carry over without modification: the market is uncovered with local-monopolist demands $D_A = q_A/(t m_A)$ and $D_H = q_H/(t m_H)$ when $q_A/(t m_A) + q_H/(t m_H) < 1$, and covered with indifferent-consumer demands otherwise. Proposition~\ref{pro:ConsumerChoice:View-Based} therefore applies here as well. 
+
+
+\subsubsection*{Stage 2: Creator's Optimal Effort.}
+Given the platform's choices of $r$ and $\beta_H$, the human creator selects effort $q_H \ge 0$ to maximize her utility $u_H = r D_H - \frac{1}{2} q_H^2$. Because consumer demand changes when the market becomes fully covered, the creator's marginal benefit of effort depends on the coverage regime, as characterized above, and we obtain the following characterization. 
+
+\begin{proposition}
+\label{prop:Optimal:qH:Eng-Based}
+For any compensation rate $r>0$, algorithmic weight $\beta_H \in [0,1]$, the human creator's unique best-response effort $q_H^*$ is given by:
+\[
+    q_H^*=r.
+\]
+\end{proposition}
+
+Under engagement-based compensation the creator is paid for each unit 
+of effort she produces rather than for each viewer she attracts. Her 
+marginal benefit of effort is therefore the flat rate $r$, her 
+marginal cost is $q_H$ itself, and equating the two yields $q_H = r$. 
+The simplicity of the expression understates its content: the 
+algorithmic weight $\beta_H$, the mismatch multipliers $\mA$ and 
+$\mH$, the AI's learning rate $\alpha$, and the baseline quality $Q$ 
+all drop out of the creator's first-order condition. Because her 
+compensation is decoupled from realized demand, the platform's 
+algorithmic decisions and the AI's competitive parameters cannot 
+influence her effort except through the single lever $r$. This 
+separation simplifies the platform's problem considerably. It now 
+controls the creator's effort through one linear instrument.
+
+
+\subsubsection*{Stage 1: Platform's Optimal Design.}
+As in the view-based setting, the platform jointly chooses the pay rate $r$ and the algorithm weight $\beta_H$, and we again solve the joint problem in two steps: first finding the optimal $r$ for any given $\beta_H$, then substituting it back to find the optimal $\beta_H$. 
+
+We maintain the following assumption throughout the analysis in this section.
+
+\begin{assumption}\label{ass:concavity-E}
+The AI's learning efficiency is bounded relative to consumer mismatch costs:
+\[
+\mA\bigl(t\,\mH - 1\bigr) \geq \alpha^{2}\,\mH 
+\qquad \text{for all } \beta_H \in [0,1].
+\]
+Equivalently, $t \;>\; \alpha^{2} + \dfrac{1}{1-\delta}$.
+\end{assumption}
+
+Assumption~\ref{ass:concavity-E} is the analytical condition that makes the platform's compensation problem well-posed: it guarantees that the reduced-form objective is strictly concave in $r$, so the first-order condition delivers a unique interior optimum. To see what the condition is asking for economically, recall that under engagement-based setting the creator's effort moves one-for-one with $r$ (Proposition~\ref{prop:Optimal:qH:Eng-Based}), so each additional dollar of compensation buys one unit of human-content quality. That unit raises platform revenue through two channels: a direct human-engagement effect of size $1/(t\mH)$, and an indirect AI-learning effect of size $\alpha^{2}/(t\mA)$ operating through $q_A = \alpha q_H + Q$. Rewriting Assumption~\ref{ass:concavity-E} as
+\[
+\frac{1}{t\,\mH} \;+\; \frac{\alpha^{2}}{t\,\mA} \;<\; 1,
+\]
+the requirement is simply that the combined marginal benefit of $r$ across both sides of the market remain below its marginal cost of one dollar. When consumer transportation costs $t$ are small or the AI's learning efficiency $\alpha$ approaches one, this bound is violated: each additional dollar generates more in joint engagement revenue than it costs, the platform's payoff turns convex in $r$, and the unconstrained optimum is pushed to a corner. Assumption~\ref{ass:concavity-E} therefore restricts attention to the economically meaningful region in which consumers are mismatch-averse enough that the platform's incentive to raise creator effort is internally disciplined rather than runaway.
+
+
+
+Sufficiently large values of the penalty parameter $k$ guarantee concavity of the platform's optimization problem, so Assumption~\ref{ass:k_large} holds for this setting as well. The platform admits an interior optimal solution. We therefore focus the main analysis on this case. We characterize the concavity lower bound for $k$ in Lemma \ref{lem:k_bar:Eng-Based} in the appendix. Also, the complementary setting in which $k$ is small, leading to corner solutions with $\beta_H^* \in {0,1}$, is discussed in the appendix.
+
+
+
+\begin{proposition}[Platform's Joint Optimal Design]\label{prop:optimal:r_beta:Eng-Based}
+Given the framework parameters $\alpha, Q, \delta, k$ and under Assumptions \ref{ass:k_large}-\ref{ass:concavity-E}, the platform's joint optimization over compensation $r$ and algorithmic promotion $\beta_H$ reduces to a single-variable maximization over $\beta_H \in [0,1]$. 
+
+\begin{enumerate}
+    \item \textbf{Optimal Compensation Rate:} For any given promotion weight $\beta_h$, the optimal compensation rate $r^*(\beta_h)$ takes one of three explicit forms, selected by the position of the two interior candidates relative to the boundary rate
+    \[
+        r^*(\beta_h) =
+        \begin{cases}
+            \displaystyle \frac{\alpha\,Q\,\mH}{\Gamma} & \text{if } \dfrac{\alpha Q\mH}{\Gamma} \le r_b, \\[12pt]
+            \displaystyle \frac{N_c}{2\Lambda} & \text{if } \dfrac{N_c}{2\Lambda} \ge r_b, \\[12pt]
+            \displaystyle r_b & \text{otherwise.}
+        \end{cases} \qquad r_b(\beta_h) \;=\; \frac{1 - Q/(t\mA)}{\alpha/(t\mA) + 1/(t\mH)},
+    \]
+    where $\Lambda=t(2-\delta)-(1-\alpha)^{2}$, $\Gamma=\mA(t\mH-1)-\alpha^{2}\mH$,and $N_c = t(\alpha\mH + \mA) - 2(1-\alpha)Q$.
+    The trivial floor $r^* = 0$ applies whenever $\alpha Q = 0$.
+    
+    \item \textbf{Optimal Algorithmic Weight:}  Let $M(\beta_h)$ represent the derivative (marginal revenue) of the platform's base utility at $r = r^*(\beta_h)$. By the Envelope Theorem, $M(\beta_h)$ evaluates piecewise, conditional on which form $r^*(\beta_h)$ takes:
+    \begin{equation}
+        M(\beta_h) =
+        \begin{cases}
+            \displaystyle -\,\frac{\delta\,Q^2\bigl[(t\mH - 1)^2 - \alpha^2\bigr]}{t\,\Gamma^2} & \text{if } \dfrac{\alpha Q\mH}{\Gamma} \le r_b, \\[12pt]
+            \displaystyle \frac{\delta}{2\Lambda (2-\delta)}\bigl[(1-\alpha)\,N_c - 2Q\,\Lambda\bigr] & \text{if } \dfrac{N_c}{2\Lambda} \ge r_b, \\[12pt]
+            -\,\delta\!\left[2\alpha + \frac{2r_b[(1-\alpha) - t\mH]}{t\mH}\right]\!\frac{t\mA^2 - \alpha t\mH^2 - Q(2-\delta)}{(\mA+\alpha\mH)^2} \;+\; t\delta\!\left[\frac{2r_b}{t\mH} - 1\right] &  \text{otherwise}.
+        \end{cases}
+    \end{equation}
+    The optimal algorithmic weight is then formally given by the implicit bounded mapping
+    \begin{equation}
+        \beta_h^* = \max\!\left(0,\;\min\!\left(1,\; \tfrac{1}{2} + \frac{M(\beta_h^*)}{k}\right)\right).
+    \end{equation} 
+\end{enumerate}
+\end{proposition}
+
+
+The key force driving a positive $r^*$ is the AI-learning channel embedded in $q_A = \alpha r + Q$. Every unit of creator effort raises the AI's quality, and the platform earns engagement revenue from that quality across the AI's consumers at no extra compensation cost. The human side is typically a money loser under Assumption~\ref{ass:concavity-E}, since the engagement revenue it generates, $r^2/(t\mH)$, falls short of the wage bill $r^2$ whenever $t\mH > 1$. The creator is, in effect, paid to supply training material for the AI rather than as a profit center in her own right. This is why $r^* = 0$ whenever $\alpha Q = 0$: with no learning ($\alpha = 0$) or no AI baseline quality to amplify ($Q = 0$), the channel disappears and there is nothing left to fund. Strong learning (large $\alpha$) and a strong baseline (large $Q$) raise the value of each dollar paid, pulling the two interior candidates up. The boundary rate $r_b$ moves the other way in $\alpha$: a stronger AI side absorbs more demand at any given rate, so the market saturates at a lower $r$ and the saturating compensation is correspondingly lower. The two forces work together rather than against each other---higher interior optima and a lower saturation threshold both push the active form toward the covered side---so $r^*$ itself rises with $\alpha$ when the optimum sits at an interior candidate and falls when it sits at the boundary.
+
+\begin{corollary}\label{cor:beta_0.5:Eng-Based}
+    Under Assumptions~\ref{ass:k_large}--\ref{ass:concavity-E}, the optimal algorithmic weight $\beta_H^*$ is larger than $1/2$ if and only if
+    \[
+        \frac{2Q}{1-\alpha} \;<\; tm_0 \;<\; 1+\alpha,
+    \]
+    where $tm_0 = t(1-\delta/2)$. Equivalently, $\beta_H^* > 1/2$ requires both $\alpha > tm_0 - 1$ and $Q < (1-\alpha)\,tm_0/2$.
+\end{corollary}
+
+{\color{red} Will add the intuition for the choice of $\beta_H$}
+
+
+% Because the creator's effort under engagement-based compensation depends only on $r$ and not on the algorithm, the promotion weight $\beta_H$ decides only who gets seen, not who works harder. The platform leans toward the side with higher quality per viewer at the chosen $r^*$: a human viewer is worth $q_H = r^*$ and an AI viewer is worth $q_A = \alpha r^* + Q$, so the platform increases the weight toward humans exactly when $r^* > Q/(1-\alpha)$. The primitives that determined $r^*$ therefore also determine the weight. Strong learning (large $\alpha$) raises $r^*$ enough that $q_H$ catches and overtakes $q_A$; low algorithmic mismatch (small $tm_0$, where $m_0 = 1-\delta/2$) makes each unit of effort attract more viewers, again pushing $r^*$ up. A large AI baseline $Q$ works the other way, propping up the AI side and keeping it the more profitable destination at any given $r^*$. The neutrality penalty $k$ then regulates how aggressively the platform acts on these signals with a larger $k$ keeping $\beta_H^*$ close to neutrality at $1/2$ with only a small first-order adjustment.
+

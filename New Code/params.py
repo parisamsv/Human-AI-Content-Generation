@@ -15,11 +15,11 @@ Assumption checks at the baseline (beta_H = 0.5 → m_A = m_H = 1 - delta/2 = 0.
 # Baseline parameter values
 # ---------------------------------------------------------------------------
 BASELINE = {
-    "Q":     0.30,   # AI baseline quality
+    "Q":     0.80,   # AI baseline quality
     "alpha": 0.30,   # AI learning efficiency
-    "delta": 0.40,   # algorithmic influence
+    "delta": 0.50,   # algorithmic influence
     "t":     2.50,   # consumer mismatch cost
-    "k":     1.00,   # algorithmic-neutrality penalty
+    "k":     1.50,   # algorithmic-neutrality penalty
 }
 
 # ---------------------------------------------------------------------------
@@ -27,7 +27,7 @@ BASELINE = {
 # ---------------------------------------------------------------------------
 RANGES = {
     "Q":     (0.05, 1.20),
-    "alpha": (0.10, 0.60),
+    "alpha": (0.10, 0.70),
     "delta": (0.10, 0.50),
 }
 
@@ -35,4 +35,4 @@ RANGES = {
 # Resolution
 # ---------------------------------------------------------------------------
 N_POINTS = 300   # grid points for 1-D comparative statics
-N_GRID   = 80    # grid points per axis for 2-D preference maps
+N_GRID   = 300    # grid points per axis for 2-D preference maps

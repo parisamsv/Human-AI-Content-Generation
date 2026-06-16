@@ -1,0 +1,2511 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\appendix
+\section{Proofs}\label{app:proofs}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{itemize}
+    \item $N=\mA+\alpha\mH$ 
+    \item $D=\mA\mH$
+    \item $P := t\mA - Q$ 
+    \item $G := \mH^2 P^2/N^2$
+    \item $S = t(\mA + \mH) = t(2-\delta)$
+    \item $\Lambda=S - (1-\alpha)^2=t(2-\delta)-(1-\alpha)^{2}$
+    \item $\Gamma=\mA(t\mH-1)-\alpha^{2}\mH$
+    \item $\Psi=t\mH-1$
+    \item $N_c = t(\alpha\mH + \mA) - 2(1-\alpha)Q$ 
+\end{itemize}
+
+\subsection*{Proof of Proposition \ref{pro:ConsumerChoice:View-Based}}
+
+A consumer at location $x$ will choose the AI content if $u_c^A(x) \ge 0$ and $u_c^A(x) \ge u_c^H(x)$. Conversely, the consumer chooses the human content if $u_c^H(x) \ge 0$ and $u_c^H(x) \ge u_c^A(x)$.
+
+First, consider the case where the market is not fully covered. This occurs when the marginal consumer for the AI and the marginal consumer for the human do not overlap. The indifferent consumer for the AI's local monopoly is found by setting $u_c^A(x) = 0$:
+\begin{equation*}
+    q_A - t x m_A = 0 \implies x_A = \frac{q_A}{t m_A}
+\end{equation*}
+Similarly, the indifferent consumer for the human creator's local monopoly is found by setting $u_c^H(x) = 0$:
+\begin{equation*}
+    q_H - t(1-x)m_H = 0 \implies 1-x_H = \frac{q_H}{t m_H}
+\end{equation*}
+Because consumers are uniformly distributed on $[0,1]$, the demands are exactly these distances: $D_A = \frac{q_A}{t m_A}$ and $D_H = \frac{q_H}{t m_H}$. This uncovered regime holds strictly when the sum of these captured market segments is less than the total market size, i.e., $D_A + D_H < 1$.
+
+Second, suppose the condition for the uncovered regime is violated $\left(\frac{q_A}{t m_A} + \frac{q_H}{t m_H} \ge 1\right)$. The providers now compete directly for the marginal consumer, meaning the market is fully covered ($D_A + D_H = 1$). The indifferent consumer is located at $x^*$ where $u_c^A(x^*) = u_c^H(x^*)$, which gives us:
+\begin{equation*}
+    q_A - t x^* m_A = q_H - t(1-x^*)m_H
+\end{equation*}
+Expanding the right-hand side yields:
+\begin{equation*}
+    q_A - t x^* m_A = q_H - t m_H + t x^* m_H
+\end{equation*}
+Rearranging to solve for $x^*$ gives:
+\begin{equation*}
+    t x^*(m_A + m_H) = q_A - q_H + t m_H \implies x^* = \frac{q_A - q_H + t m_H}{t(m_A + m_H)}
+\end{equation*}
+Since the AI captures all consumers from $0$ to $x^*$, its demand is $D_A = x^*$. The human creator captures all consumers from $x^*$ to $1$, yielding:
+\begin{equation*}
+    D_H = 1 - x^* = \frac{t(m_A + m_H) - (q_A - q_H + t m_H)}{t(m_A + m_H)} = \frac{q_H - q_A + t m_A}{t(m_A + m_H)}
+\end{equation*}
+This completes the proof.
+%%%%
+\subsection*{Proof of Proposition \ref{pro:Optimal:q_H:View-Based}}
+The creator maximizes $u_H(q_H) = r D_H(q_H) - \frac{1}{2}q_H^2$. From the consumer choice stage, demand $D_H$ is a piecewise function. 
+
+The market covers when $D_A + D_H = 1$. Substituting the uncovered demands $D_A = \frac{\alpha q_H + Q}{t m_A}$ and $D_H = \frac{q_H}{t m_H}$, we find the boundary effort $\overline{q}_H$ as:
+\begin{equation*}
+    \frac{\alpha\overline{q}_H + Q}{t m_A} + \frac{\overline{q}_H}{t m_H} = 1 \implies \overline{q}_H = \frac{m_H(t m_A - Q)}{m_A + \alpha m_H}
+\end{equation*}
+This splits the utility function into three regions:
+
+\paragraph{Region 1: Uncovered Market ($q_H < \overline{q}_H$)}
+Demand is $D_H = \frac{q_H}{t m_H}$ and the utility is $u_H = \frac{r q_H}{t m_H} - \frac{1}{2}q_H^2$. The first-order condition (FOC) gives the local unconstrained maximum as:
+\begin{equation*}
+    \frac{\partial u_H}{\partial q_H} = \frac{r}{t m_H} - q_H = 0 \implies q_H^{unc} = \frac{r}{t m_H}
+\end{equation*}
+This is the global maximum if $q_H^{unc} \le \overline{q}_H$. Substituting $\overline{q}_H$, this condition is:
+\begin{equation*}
+    r \le \frac{t m_H^2 (t m_A - Q)}{m_A + \alpha m_H}
+\end{equation*}
+
+\paragraph{Region 2: Covered Market ($q_H \ge \overline{q}_H$)}
+Demand is $D_H = \frac{q_H - q_A + t m_A}{t(m_A + m_H)}$. Since $q_A = \alpha q_H + Q$, this becomes $D_H = \frac{(1-\alpha)q_H - Q + t m_A}{t(m_A + m_H)}$. Utility is $u_H = r\left[\frac{(1-\alpha)q_H - Q + t m_A}{t(m_A + m_H)}\right] - \frac{1}{2}q_H^2$. The FOC gives the local unconstrained maximum as:
+\begin{equation*}
+    \frac{\partial u_H}{\partial q_H} = \frac{r(1-\alpha)}{t(m_A + m_H)} - q_H = 0 \implies q_H^{cov} = \frac{r(1-\alpha)}{t(m_A + m_H)}
+\end{equation*}
+This is the global maximum if $q_H^{cov} \ge \overline{q}_H$. Substituting $\overline{q}_H$, this condition is:
+\begin{equation*}
+    r \ge \frac{t(m_A + m_H)m_H(t m_A - Q)}{(1-\alpha)(m_A + \alpha m_H)}
+\end{equation*}
+
+\paragraph{Region 3: The Boundary}
+The marginal benefit of effort drops strictly at $q_H = \overline{q}_H$ because $\frac{r}{t m_H} > \frac{r(1-\alpha)}{t(m_A + m_H)}$. The utility function is strictly concave and continuous but has a kink at the boundary. If $r$ falls between the two thresholds derived above, the unconstrained optima lie outside their valid regions. The marginal utility is positive for $q_H < \overline{q}_H$ and negative for $q_H > \overline{q}_H$. Thus, the maximum is exactly at the kink, i.e., $q_H^* = \overline{q}_H$. This completes the proof. 
+%%%
+
+
+
+
+
+\subsection*{Proof of Proposition \ref{prop:optimal:r_beta:View-Based}}
+\begin{proof}
+To solve the platform's joint problem, we first determine the optimal compensation $r^*(\beta_H)$ for any fixed $\beta_H$. Substituting the human creator's optimal effort $q_H^*(r)$ from Proposition \ref{pro:Optimal:q_H:View-Based} into the platform's utility $u_P = D_A + D_H - r D_H - \frac{k}{2}\left(\beta_H - \frac{1}{2}\right)^2$ yields a piecewise objective. Let $N = m_A + \alpha m_H$ and $P = t m_A - Q$. Assumption \ref{ass:nonsat} guarantees $P > 0$ for all $\beta_H \in [0,1]$.
+
+\paragraph{1. Optimal Compensation Rate:} 
+In the Covered Regime $\left(r > \frac{t(m_A+m_H)m_H P}{(1-\alpha)N}\right)$, the market is perfectly covered ($D_A + D_H = 1$). The human demand evaluates to $D_H = \frac{(1-\alpha)^2 r}{t^2(m_A+m_H)^2} + \frac{P}{t(m_A+m_H)}$. The partial derivative with respect to $r$ is:
+\begin{equation*}
+    \frac{\partial u_P^{cov}}{\partial r} = - \frac{2r(1-\alpha)^2}{t^2(m_A+m_H)^2} - \frac{P}{t(m_A+m_H)}
+\end{equation*}
+Because $P > 0$, we have $\frac{\partial u_P^{cov}}{\partial r} < 0$ strictly. The platform strictly loses profit by over-compensating the creator without expanding total market demand.
+
+In the Boundary Regime $\left(\frac{t m_H^2 P}{N} \le r \le \frac{t(m_A+m_H)m_H P}{(1-\alpha)N}\right)$, the creator's effort stalls exactly at the boundary $\overline{q}_H$, rendering human demand flat at $D_H = \frac{P}{t N}$. Since demand cannot increase, increasing $r$ strictly decreases profit linearly. To maximize utility, the platform clamps $r$ to the absolute minimum of this interval, identifying $r_{bnd} = \frac{t m_H^2 P}{N}$.
+
+In the Uncovered Regime $\left(r < \frac{t m_H^2 P}{N}\right)$, substituting $q_H^{unc}$ generates a downward-facing parabola in $r$:
+\begin{equation*}
+    u_P^{unc}(r) = \frac{Q}{t m_A} + r \left( \frac{\alpha}{t^2 m_A m_H} + \frac{1}{t^2 m_H^2} \right) - \frac{r^2}{t^2 m_H^2} - \frac{k}{2}\left(\beta_H - \frac{1}{2}\right)^2
+\end{equation*}
+Differentiating in $r$,
+\[
+\frac{\partial u_P^{\mathrm{unc}}}{\partial r} 
+\;=\; \frac{\alpha}{t^{2}\mH\mA} \;+\; \frac{1 - 2r}{t^{2}\mH^{2}}, 
+\qquad 
+\frac{\partial^{2} u_P^{V}}{\partial r^{2}} 
+\;=\; -\frac{2}{t^{2}\mH^{2}} \;<\; 0,
+\]
+Setting the first-order condition $\frac{\partial u_P^{unc}}{\partial r} = 0$ yields the local peak $r_{unc}^* = \frac{m_A + \alpha m_H}{2 m_A}$. Due to the strict concavity of $u_P^{unc}(r)$ and the strict monotonic decrease of utility beyond the boundary, the global optimal rate must not exceed $r_{bnd}$. Therefore, $r^*(\beta_H) = \min(r_{unc}^*, r_{bnd})$.
+
+\paragraph{2. Optimal Algorithm Weight:}
+Substituting $r^*(\beta_H)$ into $u_P$ yields the reduced-form profile utility $U_P(\beta_H) = U_{base}(\beta_H) - \frac{k}{2}\left(\beta_H - \frac{1}{2}\right)^2$. Since $m_A(\beta_H)$ and $m_H(\beta_H)$ inherently depend on $\beta_H$, we derive the marginal base utility $M(\beta_H) \equiv \frac{d U_{base}}{d \beta_H}$ utilizing the chain rule, noting $m_A' = \delta$ and $m_H' = -\delta$.
+
+If $r_{unc}^* \le r_{bnd}$ (which simplifies to the threshold condition $N^2 \le 2 t m_A m_H^2 P$), the optimal rate remains strictly interior. 
+Write $\rho=\alpha\mH/\mA$, so $r^*=(1+\rho)/2$. The base utility is
+\begin{align*}
+U_{unc}^{base} &= D_A+(1-r^*)\,D_H\\[4pt]
+&= \frac{\alpha r^*/(t\mH)+Q}{t\mA}
++\frac{(1-r^*)\,r^*}{t^{2}\mH^{2}}\\
+&=\frac{\alpha(1+\rho)}{2t^{2}\mH \mA}
++\frac{Q}{t\mA}
++\frac{(1-\rho)(1+\rho)}{4t^{2}\mH^{2}}\\[2pt]
+&=\frac{\rho(1+\rho)}{2t^{2}\mH^{2}}
++\frac{Q}{t\mA}
++\frac{(1-\rho)(1+\rho)}{4t^{2}\mH^{2}}\\[2pt]
+&=\frac{2\rho(1+\rho)+(1-\rho^{2})}{4t^{2}\mH^{2}}
++\frac{Q}{t\mA}
+\;=\;\frac{(1+\rho)^{2}}{4t^{2}\mH^{2}}
++\frac{Q}{t\mA} = \frac{(m_A+\alpha m_H)^{2}}{4t^{2}\mH^{2}\mH^2}
++\frac{Q}{t\mA}.
+\end{align*}
+The explicit derivative resolves to:
+\begin{equation*}
+    M_{unc}(\beta_H) = - \frac{Q \delta}{t m_A^2} + \frac{2(\mA+\alpha\mH)}{4t^2\mH^2\mA^2} \left( - \frac{-\delta}{m_H^2} - \frac{\alpha \delta}{m_A^2} \right) = \delta \left[ \frac{1}{2t^2} \left( \frac{1}{m_H} + \frac{\alpha}{m_A} \right) \left( \frac{1}{m_H^2} - \frac{\alpha}{m_A^2} \right) - \frac{Q}{t m_A^2} \right]
+\end{equation*}
+
+If $r_{unc}^* > r_{bnd}$, the platform restricts $r$ to $r_{bnd}$. Evaluating the base boundary utility directly gives $U_{bnd}^{base} = 1 - \left(\frac{m_H P}{N}\right)^2$. Defining the core term $F(\beta_H) = \frac{m_H P}{N}$, we apply quotient and chain rules to differentiate dynamically:
+\begin{equation*}
+    F'(\beta_H) = \frac{(m_H' P + m_H P')N - m_H P N'}{N^2} = \delta \frac{t \alpha m_H^2 - t m_A^2 + Q(m_A + m_H)}{(m_A + \alpha m_H)^2}
+\end{equation*}
+Recognizing that $m_A + m_H = 2-\delta$, we assemble the derivative $M_{bnd}(\beta_H) = \frac{d}{d\beta_H} \left( 1 - F^2 \right) = -2 F(\beta_H) F'(\beta_H)$:
+\begin{equation*}
+    M_{bnd}(\beta_H) = \frac{2\delta m_H (t m_A - Q)}{(m_A + \alpha m_H)^3} \left[ t m_A^2 - \alpha t m_H^2 - Q(2-\delta) \right]
+\end{equation*}
+By the Envelope Theorem, $M(\beta_H)$ is continuous across the piece-wise threshold. Setting $\frac{dU_P}{d\beta_H} = M(\beta_H) - k(\beta_H - 1/2) = 0$ yields the baseline optimum mapping. Bound constraints ensure $\beta_H^*$ is truncated properly onto $[0, 1]$.
+\end{proof}
+
+
+
+\begin{lemma}\label{lem:k_bar:View-Based}
+There exists a concavity threshold $\bar{k}^V\ge 0$ such that whenever $k>\bar{k}^V$, the platform utility is strictly concave in $\beta_H$ over $\beta_H \in [0,1]$.
+\end{lemma}
+\subsection*{Proof of Lemma \ref{lem:k_bar:View-Based}}
+Given $M(\beta_H)$ function in Proposition \ref{prop:optimal:r_beta:View-Based}, define the threshold
+\[
+\bar{k}^{V} \;:=\; \sup_{\beta_H \in [0,1]} \frac{dM(\beta_H)}{d\beta_H}.
+\] 
+The objective $\Pi^{V}$ is continuous on $[0,1]$ and strictly concave in $\beta_H$ when $k > \bar{k}^{V}$ (the penalty term dominates), guaranteeing a unique maximizer.
+
+
+\subsection*{Proof of Corollary \ref{cor:beta_0.5:View-Based}}
+\begin{proof}
+At $\beta_H=1/2$, the marginal revenue function simplifies to
+\begin{equation}
+    M(\tfrac{1}{2}) = 
+    \begin{cases}
+        \dfrac{\delta}{tm_0^2} \left[ \dfrac{1-\alpha^2}{t(2-\delta)} - Q \right] & \text{if } (1 + \alpha )^2 \le t(2-\delta) (t m_0 - Q), \\[10pt]
+        \dfrac{\delta (2-\delta) (t m_0 - Q)}{m_0^3(1+ \alpha)^3} \left[ t m_0^2(1-\alpha) - Q(2-\delta) \right] & \text{otherwise.}
+    \end{cases}
+\end{equation}
+Under the maintained concavity condition $k > \bar{k}^V$, the platform's profit is strictly concave in $\beta_H$, so $\beta_H^* > 1/2$ if and only if $M(1/2) > 0$. We use the identity $t(2-\delta) = 2tm_0$ (since $m_0 = 1-\delta/2$) throughout, and we write
+\[
+A := tm_0 - \frac{(1+\alpha)^2}{2tm_0},
+\qquad
+B_1 := \frac{1-\alpha^2}{2tm_0},
+\qquad
+B_2 := \frac{(1-\alpha)\,tm_0}{2}.
+\]
+The case condition becomes: \emph{uncovered} when $Q \le A$, and \emph{boundary} when $Q > A$ (with $Q < tm_0$ by Assumption~\ref{ass:nonsat}).
+
+\medskip
+\textbf{Step 1: sign of $M(1/2)$ in each regime.}
+
+In the uncovered regime, the prefactor $\delta/(tm_0^2)$ is positive, so $M(1/2) > 0 \iff Q < B_1$.
+
+In the boundary regime, the prefactor $\delta(2-\delta)(tm_0-Q)/(m_0^3(1+\alpha)^3)$ is positive (using $tm_0 > Q$ from Assumption~\ref{ass:nonsat}), so, after substituting $2-\delta = 2m_0$, $M(1/2) > 0 \iff Q < B_2$.
+
+\medskip
+\textbf{Step 2: locating the regime cutoff $A$ relative to the two thresholds.}
+
+Direct computation gives
+\[
+A - B_1 = \frac{t^2m_0^2 - (1+\alpha)}{tm_0},
+\qquad
+B_2 - A = \frac{(1+\alpha)\bigl[(1+\alpha) - t^2m_0^2\bigr]}{2tm_0}.
+\]
+These two expressions have opposite signs, both determined by the comparison of $t^2m_0^2$ with $1+\alpha$. We consider the two possibilities.
+
+\emph{(a) If $t^2 m_0^2 \ge 1+\alpha$,} then $B_1 \le B_2 \le A$. For $Q < B_1$ we have $Q < A$ (uncovered) and $Q < B_1$, so $M(1/2) > 0$. For $Q \ge B_1$: if $Q \le A$ the market is uncovered and $Q \ge B_1$ gives $M(1/2) \le 0$; if $Q > A$ the market is covered (boundary) and $Q > A \ge B_2$ also gives $M(1/2) \le 0$. Hence $\beta_H^* > 1/2 \iff Q < B_1 = \min\{B_1,B_2\}$.
+
+\emph{(b) If $t^2 m_0^2 < 1+\alpha$,} then $A < B_2 < B_1$. For $Q < B_2$: if $Q \le A$ the market is uncovered and $Q < B_2 < B_1$ gives $M(1/2) > 0$; if $A < Q < B_2$ the market is covered and $Q < B_2$ gives $M(1/2) > 0$. For $Q \ge B_2$ we have $Q > A$ (covered) with $Q \ge B_2$, so $M(1/2) \le 0$. Hence $\beta_H^* > 1/2 \iff Q < B_2 = \min\{B_1,B_2\}$.
+
+\medskip
+\textbf{Conclusion.} In both cases the platform favors the human creator if and only if $Q$ lies below the smaller of the two regime thresholds. Therefore, independently of which regime the primitives place the platform in,
+\[
+\beta_H^* > \tfrac{1}{2}
+\qquad\Longleftrightarrow\qquad
+Q \;<\; \min\!\left\{\,\frac{1-\alpha^2}{2tm_0},\;\; \frac{(1-\alpha)\,tm_0}{2}\,\right\}.
+\]
+Equivalently, factoring out $(1-\alpha)/2$,
+\[
+\beta_H^* > \tfrac{1}{2}
+\qquad\Longleftrightarrow\qquad
+Q \;<\; \frac{1-\alpha}{2}\cdot\min\!\left\{\frac{1+\alpha}{tm_0},\; tm_0\right\}. 
+\]
+\hfill $\square$
+\end{proof}
+
+
+
+\subsection*{Proof of Proposition~\ref{prop:Optimal:qH:Eng-Based}}
+\begin{proof}
+    The creator maximizes $u_H = rq_H - \frac{1}{2}q_H^2$. The first-order condition is $\partial u_H/\partial q_H = r - q_H = 0$, giving $q_H^* = r$. The second-order condition $\partial^2 u_H/\partial q_H^2 = -1 < 0$ confirms a global maximum for any $r \geq 0$.  \hfill$\square$
+\end{proof}
+
+
+\subsection*{Proof of Proposition~\ref{prop:optimal:r_beta:Eng-Based}}
+\begin{proof}
+To solve the platform's joint problem, we first determine the optimal compensation $r^*(\beta_h)$ for any fixed $\beta_h$, then optimize over $\beta_h$. We substitute the creator's optimal effort $q_h^*(r) = r$ from Proposition~\ref{prop:Optimal:qH:Eng-Based} and $q_A = \alpha r + Q$ into the platform's utility $u_p = q_A D_A + q_h D_h - r q_h - \tfrac{k}{2}(\beta_h - \tfrac12)^2$, which produces a piecewise objective depending on whether the induced market is uncovered ($D_A + D_h < 1$) or covered ($D_A + D_h = 1$).
+
+\paragraph{1. Optimal Compensation Rate.}
+The total market reach $D_A + D_h = (\alpha r + Q)/(t\mA) + r/(t\mH)$ is strictly increasing in $r$, so there is a single saturation rate $r_b(\beta_h)$ at which $D_A + D_h = 1$ exactly. Solving this equation gives $r_b$ in the proposition statement; Assumption~\ref{ass:nonsat} ($Q < t\mA$) guarantees $r_b > 0$. For $r < r_b$ the market is uncovered; for $r > r_b$ it is covered.
+ 
+In the Uncovered Regime ($r < r_b$), the local-monopolist demands $D_A = (\alpha r + Q)/(t\mA)$ and $D_h = r/(t\mH)$ apply, and the base utility is
+\[
+    u_p^{\mathrm{unc}}(r) \;=\; \frac{(\alpha r + Q)^2}{t\mA} + \frac{r^2}{t\mH} - r^2.
+\]
+Differentiating:
+\[
+\frac{\partial u_P}{\partial r} = \frac{2\alpha(\alpha r + Q)}{t\mA} + \frac{2r}{t\mH} - 2r = 0.
+\]
+By Assumption~\ref{ass:concavity-E}, $ \mA(t\mH - 1) - \alpha^2 \mH > 0$, so this is strictly concave in $r$. Collecting terms in $r$ and multiplying by $t\mA\mH$ yields 
+$
+ r_{\mathrm{unc}}  = \frac{\alpha Q \mH}{\mA(t\mH-1)-\alpha^2 \mH}.
+$
+
+ 
+In the Covered Regime ($r > r_b$), the market is perfectly covered ($D_A+D_H=1$), the human demand evaluates to $D_H = \frac{t\mA + (1-\alpha)r - Q}{t(2-\delta)}$. The partial derivative with respect to $r$ is:
+\[
+\frac{\partial u_P^{cov}}{\partial r} = \frac{t(\alpha\mH + \mA) - 2(1-\alpha)Q + 2(1-\alpha)^2 r}{t(2-\delta)} - 2r = 0.
+\]
+The second-order condition is $2[\frac{(1-\alpha)^2}{t(2-\delta)} - 1] < 0$, i.e., $t(\mA+\mH) > (1-\alpha)^2$, which holds by Assumption \ref{ass:nonsat}. Setting the first order condition $\frac{\partial u_P^{cov}}{\partial r}=0$ yields the local peak $r_{\mathrm{cov}}=\frac{t(\alpha\mH + \mA) - 2(1-\alpha)\,Q}{2\bigl[t(2-\delta) - (1-\alpha)^2\bigr]}$.
+
+
+\emph{Selecting the global optimum.} The two branches meet continuously at $r_b$ but with different slopes (a kink). Differentiating each branch and evaluating at $r_b$, then simplifying using the saturation identity $(\alpha r_b + Q)/(t\mA) = 1 - r_b/(t\mH)$ and $r_b(\mA + \alpha\mH)/\mH = t\mA - Q$, gives the slope gap
+\begin{equation}\label{eq:slope-gap-E}
+    \left.\frac{du_p^{\mathrm{unc}}}{dr}\right|_{r_b} - \left.\frac{du_p^{\mathrm{cov}}}{dr}\right|_{r_b} \;=\; \frac{\mA + \alpha\mH}{\mA+\mH} \;>\; 0.
+\end{equation}
+Thus the uncovered slope at $r_b$ is always strictly larger than the covered slope at $r_b$. In particular, if the uncovered slope at $r_b$ is non-positive ($r_{\mathrm{unc}} \le r_b$), then the covered slope is strictly negative ($r_{\mathrm{cov}} < r_b$). The merged profile therefore has at most one local maximum, ruling out the case where both interior peaks are admissible.
+
+
+Since each branch is concave and the two meet continuously at $r_b$, the global maximizer over $r \in [0,\infty)$ is found as follows. If the uncovered peak is admissible ($r_{\mathrm{unc}} \le r_b$), the profit rises to $r_{\mathrm{unc}}$ then falls, so $r^* = r_{\mathrm{unc}}$. If the covered peak is admissible ($r_{\mathrm{cov}} \ge r_b$), $r^* = r_{\mathrm{cov}}$. If neither peak is admissible ($r_{\mathrm{unc}} > r_b$ and $r_{\mathrm{cov}} < r_b$), the uncovered branch rises up to $r_b$ and the covered branch falls beyond it, so the constrained optimum is the boundary $r^* = r_b$. Collecting these cases yields the piecewise $r^*(\beta_h)$ in Part~1.
+
+
+\paragraph{2. Optimal Algorithmic Weight.}
+Substituting $r^*(\beta_h)$ into $u_p$ yields the reduced-form utility $U_P(\beta_h) = U_{\mathrm{base}}(\beta_h) - \tfrac{k}{2}(\beta_h - \tfrac12)^2$. Since $\mA(\beta_h)$ and $\mH(\beta_h)$ depend on $\beta_h$, we derive the marginal base utility $M(\beta_h) \equiv dU_{\mathrm{base}}/d\beta_h$ via the chain rule, noting $\mA' = \delta$ and $\mH' = -\delta$.
+ 
+When $r^*(\beta_h) = \alpha Q\mH/\Gamma$, the base utility condenses to $U_{\mathrm{base}} = Q^2(t\mH - 1)/(t\Gamma)$. Differentiating, with $d(t\mH - 1)/d\beta_h = -t\delta$ and $d\Gamma/d\beta_h = \delta[(t\mH-1)^2 - \alpha^2]/(t\mH-1)$ after algebra, gives
+\[
+    M(\beta_h) \;=\; -\,\frac{\delta\,Q^2\bigl[(t\mH - 1)^2 - \alpha^2\bigr]}{t\,\Gamma^2}.
+\]
+ 
+When $r^*(\beta_h) = N_c/(2\Lambda)$, the base utility is $U_{\mathrm{base}} = N_c^2/(4\Lambda t(2-\delta)) + Q(Q + t\mH)/(t(2-\delta))$. Since $\Lambda$ is independent of $\beta_h$, differentiating with $dN_c/d\beta_h = t\delta(1-\alpha)$ and $d(t\mH)/d\beta_h = -t\delta$ gives
+\[
+    M(\beta_h) \;=\; \frac{N_c\,\delta(1-\alpha)}{2\Lambda (2-\delta)} - \frac{Q\,\delta}{(2-\delta)} \;=\; \frac{\delta}{2\Lambda (2-\delta)}\bigl[(1-\alpha)\,N_c - 2Q\,\Lambda\bigr].
+\]
+ 
+When $r^*(\beta_h) = r_b(\beta_h)$, define $V(\beta_h) := u_p(r_b(\beta_h);\,\beta_h)$. By continuity of $u_p$ at $r_b$, $V$ is differentiable in $\beta_h$, and applying the chain rule on the uncovered-side expression of $u_p$ yields
+\[
+    \frac{dV}{d\beta_h} \;=\; \underbrace{\frac{\partial u_p^{\mathrm{unc}}}{\partial r}\bigg|_{r_b}}_{\text{slope at } r_b} \cdot r_b'(\beta_h) \;+\; \underbrace{\frac{\partial u_p^{\mathrm{unc}}}{\partial \beta_h}\bigg|_{r_b}}_{\text{direct effect at fixed } r}.
+\]
+We compute each piece in turn.
+ 
+\emph{(i) Slope at $r_b$.} Differentiating $u_p^{\mathrm{unc}} = (\alpha r + Q)^2/(t\mA) + r^2/(t\mH) - r^2$ in $r$:
+\[
+    \frac{\partial u_p^{\mathrm{unc}}}{\partial r}\bigg|_{r_b} = \frac{2\alpha(\alpha r_b + Q)}{t\mA} + \frac{2r_b}{t\mH} - 2r_b = 2\alpha + \frac{2r_b[(1-\alpha) - t\mH]}{t\mH}.
+\]
+The second equality uses $(\alpha r_b + Q)/(t\mA) = 1 - r_b/(t\mH)$.
+ 
+\emph{(ii) Direct effect at fixed $r$.} Differentiating $u_p^{\mathrm{unc}}$ in $\beta_h$ at fixed $r$ (using $\mA' = \delta$, $\mH' = -\delta$) and applying $(\alpha r_b + Q)/(t\mA) = 1 - r_b/(t\mH)$ to the squared term yields
+\[
+    \frac{\partial u_p^{\mathrm{unc}}}{\partial \beta_h}\bigg|_{r_b} = -\frac{\delta(\alpha r_b + Q)^2}{t\mA^2} + \frac{\delta r_b^2}{t\mH^2} = t\delta\left[\left(\frac{r_b}{t\mH}\right)^{\!2} - \left(1 - \frac{r_b}{t\mH}\right)^{\!2}\right] = t\delta\left[\frac{2r_b}{t\mH} - 1\right].
+\]
+ 
+\emph{(iii) Derivative of $r_b$.} Quotient-rule differentiation of $r_b = (t\mA - Q)\mH/(\mA+\alpha\mH)$, with $((t\mA-Q)\mH)' = t\delta\mH - \delta(t\mA-Q)$ and $(\mA+\alpha\mH)' = \delta(1-\alpha)$, gives
+\begin{align*}
+    r_b'(\beta_h) &= \frac{[t\delta\mH - \delta(t\mA-Q)](\mA+\alpha\mH) - \delta(1-\alpha)\mH(t\mA-Q)}{(\mA+\alpha\mH)^2} \\
+    &= -\frac{\delta\,[t\mA^2 - \alpha t\mH^2 - Q(2-\delta)]}{(\mA+\alpha\mH)^2}.
+\end{align*}
+The second equality expands the numerator and uses $\mA + \mH = 2-\delta$.
+ 
+\emph{Combining (i), (ii), and (iii).} Inserting (i) and (iii) into the chain-rule expression for $dV/d\beta_h$ and adding (ii):
+\[
+    M(\beta_h) = -\,\delta\!\left[2\alpha + \frac{2r_b[(1-\alpha) - t\mH]}{t\mH}\right]\!\frac{t\mA^2 - \alpha t\mH^2 - Q(2-\delta)}{(\mA+\alpha\mH)^2} \;+\; t\delta\!\left[\frac{2r_b}{t\mH} - 1\right].
+\]
+Substituting $r_b = (t\mA - Q)\mH/(\mA+\alpha\mH)$ in both bracketed factors yields the closed-form expression
+\[
+    M(\beta_h) = \frac{\delta[t(\mA-\alpha\mH) - 2Q]}{\mA+\alpha\mH} \;+\; \frac{2\delta[t\Gamma - Q(t\mH-1+\alpha)][t\mA^2 - \alpha t\mH^2 - Q(2-\delta)]}{t(\mA+\alpha\mH)^3},
+\]
+the third-branch expression in Part~2. 
+ 
+Setting $dU_P/d\beta_h = M(\beta_h) - k(\beta_h - 1/2) = 0$ yields the baseline optimum mapping. The bound constraints ensure $\beta_h^*$ is truncated properly onto $[0,1]$, giving Part~2.
+ 
+\end{proof}
+
+
+
+
+\begin{lemma}\label{lem:k_bar:Eng-Based}
+There exists a concavity threshold $\bar{k}^E\ge 0$ such that whenever $k>\bar{k}^E$, the platform utility is strictly concave in $\beta_H$ over $\beta_H \in [0,1]$.
+\end{lemma}
+\subsection*{Proof of Lemma \ref{lem:k_bar:Eng-Based}}
+Given $M(\beta_H)$ function in Proposition \ref{prop:optimal:r_beta:Eng-Based}, define the threshold
+\[
+\bar{k}^{E} \;:=\; \sup_{\beta_H \in [0,1]} \frac{dM(\beta_H)}{d\beta_H}.
+\] 
+The utility function $U_P(\beta_H)$ is continuous on $[0,1]$ and strictly concave in $\beta_H$ when $k > \bar{k}^{E}$ (the penalty term dominates), guaranteeing a unique maximizer.
+
+
+\subsection*{Proof of Corollary \ref{cor:beta_0.5:Eng-Based}}
+\begin{proof}
+At $\beta_H = 1/2$, $\mA = \mH = m_0 = 1 - \delta/2$. Under Assumption~\ref{ass:k_large}, the platform's profit is strictly concave in $\beta_H$, so $\beta_H^* > 1/2 \iff M(1/2) > 0$. We evaluate $M(1/2)$ in each of the three forms of Proposition~\ref{prop:optimal:r_beta:Eng-Based}, then compare regime cutoffs to sign thresholds. Throughout we use $2-\delta = 2m_0$, $\Gamma_0 = m_0(tm_0 - 1 - \alpha^2)$, and $\Lambda = 2tm_0 - (1-\alpha)^2$.
+ 
+\medskip
+\textbf{Step 1: $M(1/2)$ in each case.}
+ 
+\emph{First form.} Substituting $\mA = \mH = m_0$:
+\[
+    M(1/2) = -\,\frac{\delta\,Q^2 \bigl[(tm_0-1)^2 - \alpha^2\bigr]}{t\,\Gamma_0^2}.
+\]
+The prefactor $\delta Q^2/(t\Gamma_0^2) > 0$, so $M(1/2) > 0 \iff (tm_0-1)^2 < \alpha^2 \iff tm_0 < 1+\alpha$ (using $tm_0 > 1$).
+ 
+\emph{Second form.} Substituting and using $(1-\alpha) N_c|_{1/2} - 2Q\Lambda = tm_0[(1-\alpha^2) - 4Q]$:
+\[
+    M(1/2) = \frac{t\delta\bigl[(1-\alpha^2) - 4Q\bigr]}{4\Lambda}.
+\]
+The prefactor $t\delta/(4\Lambda) > 0$, so $M(1/2) > 0 \iff Q < (1-\alpha^2)/4 =: B_1$.
+ 
+\emph{boundary.} After substituting and using $\mA + \mH = 2m_0$:
+\[
+    M(1/2) = \frac{\delta\,\bigl[tm_0(1-\alpha) - 2Q\bigr]\bigl[tm_0\Lambda - 2Q(tm_0 - 1 + \alpha)\bigr]}{tm_0^2 (1+\alpha)^3}.
+\]
+The prefactor is positive, so $M(1/2) > 0 \iff$ the two brackets share the same sign. Bracket~1 is positive iff $Q < (1-\alpha)tm_0/2 =: B_2$; bracket~2 is positive iff $Q < tm_0\Lambda/[2(tm_0-1+\alpha)] =: B_3$.
+ 
+\medskip
+\textbf{Step 2: regime cutoffs.}
+ 
+The first form is active iff $\alpha Q m_0/\Gamma_0 \le (tm_0-Q)/(1+\alpha)$, which rearranges to $Q \le A_1$ where
+\[
+    A_1 := \frac{tm_0(tm_0-1-\alpha^2)}{tm_0-1+\alpha}.
+\]
+The second form is active iff $N_c|_{1/2}/(2\Lambda) \ge (tm_0-Q)/(1+\alpha)$, which rearranges to $Q \ge A_2$ where
+\[
+    A_2 := \frac{tm_0\bigl[4tm_0 - (1+\alpha)^2 - 2(1-\alpha)^2\bigr]}{4(tm_0-1+\alpha)}.
+\]
+The boundary form covers $A_1 < Q < A_2$.
+ 
+Direct computation gives the following pairwise comparisons:
+\[
+    A_1 - B_2 = \frac{tm_0(1+\alpha)\bigl[tm_0 - (1+\alpha)\bigr]}{2(tm_0-1+\alpha)},
+    \qquad
+    A_2 - B_2 = \frac{tm_0(1+\alpha)\bigl[2tm_0 - (1+\alpha)\bigr]}{4(tm_0-1+\alpha)} > 0,
+\]
+\[
+    A_2 - B_3 = -\,\frac{tm_0(1+\alpha)^2}{4(tm_0-1+\alpha)} < 0,
+    \qquad
+    B_2 - B_1 = \frac{(1-\alpha)\bigl[2tm_0 - (1+\alpha)\bigr]}{4} > 0.
+\]
+The sign of $A_1 - B_2$ depends on the sign of $tm_0 - (1+\alpha)$; the others are unconditional. Combined: $B_1 < B_2 < A_2 < B_3$ always, and sgn$(A_1 - B_2)=$sgn($tm_0 - (1+\alpha)$.
+ 
+\medskip
+\textbf{Step 3: combine.}
+ 
+\emph{Case 1: $tm_0 < 1+\alpha$.} Then $A_1 < B_2 < A_2 < B_3$ and the first form delivers $M(1/2) > 0$.
+\begin{itemize}
+    \item $Q \le A_1$: first form active, $M(1/2) > 0$.
+    \item $A_1 < Q < A_2$: boundary active. Bracket~2 is positive (since $Q < A_2 < B_3$); bracket~1 positive iff $Q < B_2$. So $M(1/2) > 0 \iff Q < B_2$.
+    \item $Q \ge A_2$: second form active. Since $A_2 > B_1$, $Q \ge A_2 > B_1$, so $M(1/2) < 0$.
+\end{itemize}
+Hence in Case~1, $M(1/2) > 0 \iff Q < B_2$.
+ 
+\emph{Case 2: $tm_0 \ge 1+\alpha$.} Then $B_2 < A_1 < A_2 < B_3$ and the first form gives $M(1/2) \le 0$.
+\begin{itemize}
+    \item $Q \le A_1$: first form, $M(1/2) \le 0$.
+    \item $A_1 < Q < A_2$: boundary. Bracket~1 negative (since $Q > A_1 > B_2$), bracket~2 positive. $M(1/2) < 0$.
+    \item $Q \ge A_2$: second form, $M(1/2) < 0$ as before.
+\end{itemize}
+Hence in Case~B, $M(1/2) \le 0$ everywhere.
+ 
+\medskip
+\textbf{Conclusion.}
+The platform favors the human creator if and only if Case~1 holds \emph{and} $Q < B_2$:
+\[
+    \beta_H^* > \tfrac{1}{2}
+    \qquad\Longleftrightarrow\qquad
+    tm_0 < 1+\alpha \quad\text{and}\quad Q < \frac{(1-\alpha)\,tm_0}{2}.
+\]
+The second inequality rearranges to $2Q/(1-\alpha) < tm_0$, so the two conditions combine into
+\[
+    \beta_H^* > \tfrac{1}{2}
+    \qquad\Longleftrightarrow\qquad
+    \frac{2Q}{1-\alpha} \;<\; tm_0 \;<\; 1+\alpha.
+\]
+\hfill $\square$
+\end{proof}
+
+
+\subsection*{Proof of Corollary~\ref{lem:uc}}
+\begin{proof}
+Under view-based compensation, $u_H^{V} = rD_H - q_H^{2}/2$ with
+$D_H = q_H/(t\mH)$. The first-order condition gives
+$q_H^* = r/(t\mH)$, hence $rD_H^* = q_H^*\cdot t\mH \cdot q_H^*/(t\mH) = (q_H^*)^2$
+and $u_H^* = (q_H^*)^2 - (q_H^*)^2/2 = (q_H^*)^2/2$.
+
+Under engagement-based compensation, $u_H^{E} = rq_H - q_H^{2}/2$.
+The first-order condition gives $q_H^* = r$, hence
+$u_H^* = (r^*)^{2} - (r^*)^{2}/2 = (q_H^*)^2/2$. Both yield
+$u_H^* = (q_H^*)^2/2$, and the creator strictly prefers the contract
+that delivers the larger equilibrium $q_H^*$. \hfill $\square$
+\end{proof}
+ 
+ 
+ \subsection*{Proof of Corollary~\ref{cor:Q_up}}
+\begin{proof}
+It suffices to sign $\partial u_P/\partial Q$ at $r=r^*$,
+$\beta_H=\beta_H^*$, in each region. We drop the penalty term as it is independent of $Q$.
+
+
+\textbf{View-based.}
+\paragraph{Uncovered.} Here $r^*=(\mA+\alpha\mH)/(2\mA)$ is
+independent of $Q$, the market is uncovered, and
+$u_P=D_A+(1-r)D_H$ with $D_A=(\alpha q_H+Q)/(t\mA)$,
+$q_H=r^*/(t\mH)$. Only the $Q$ inside $q_A$ depends on
+$Q$, and $q_H$ does not, so
+\[
+\frac{\partial u_P}{\partial Q}=\frac{1}{t\mA}\frac{\partial q_A}{\partial Q}=\frac{1}{t\mA}>0.
+\]
+
+\paragraph{Boundary.} Here $r^*=t\mH^2(t\mA-Q)/(\mA+\alpha\mH)$ and
+the market is exactly covered, so $D_A+D_H=1$ and
+$u_P=1-r^*D_H$.
+Using $q_H=\mH (t\mA-Q)/(\mA+\alpha\mH)$ and $D_H=q_H/(t\mH)$,
+\[
+u_P=1-r^*D_H=1-\frac{t\mH^2(t\mA-Q)}{\mA+\alpha\mH}\cdot\frac{t\mA-Q}{t(\mA+\alpha\mH)}=1-\frac{\mH^2(t\mA-Q)^2}{(\mA+\alpha\mH)^2},
+\]
+so,
+\[
+\frac{\partial u_P}{\partial Q}=\frac{2\mH^2(t\mA-Q)}{(\mA+\alpha\mH)^2}>0,
+\]
+because $t\mA-Q>0$ by Assumption \ref{ass:nonsat}.
+
+\textbf{Engagement-based.}
+\paragraph{Uncovered.} Here $r^*=\alpha Q\mH/\Gamma$
+and the market is uncovered. Substituting $q_H=r$, $q_A=\alpha r+Q$,
+$D_A=q_A/(t\mA)$, $D_H=r/(t\mH)$ into
+$u_P=q_AD_A+q_HD_H-rq_H$ and reducing using the first-order condition
+ gives
+$u_P=Q^2(t\mH-1)/(t\Gamma)$, and hence
+\[
+\frac{\partial u_P}{\partial Q}=\frac{2Q(t\mH-1)}{t\Gamma}>0,
+\]
+since $t\mH>1$, $\Gamma>0$, and $Q>0$.
+
+\paragraph{Covered.}
+The market is covered, $u_P=q_AD_A+q_HD_H-rq_H$ with
+$D_H=(t\mA+(1-\alpha)r-Q)/(t(2-\delta))$, $D_A=1-D_H$. Differentiating
+at fixed $\beta_H$ and simplifying with $2-\delta=\mA+\mH$ yields
+\[
+\frac{\partial u_P}{\partial Q}=\frac{(t\mH-1)+2Q+\alpha}{\Lambda}>0.
+\]
+The denominator $\Lambda=t(2-\delta)-(1-\alpha)^2>0$ because
+$t(2-\delta)>t>1>(1-\alpha)^2$ (Assumption~\ref{ass:nonsat} gives
+$t>1/(1-\delta)>1$). The numerator is strictly positive because
+$t\mH>1$ and $Q,\alpha>0$. Hence $\partial u_P/\partial Q>0$.
+
+\paragraph{Boundary.} Evaluating
+$u_P=(\alpha r+Q)^2/(t\mA)+r^2/(t\mH)-r^2$ at $r=r_b=\mH (t\mA-Q)/(\mA+\alpha\mH)$, the total
+derivative in $Q$ is
+\[
+\frac{\partial u_P}{\partial Q}
+=\frac{\partial u_P}{\partial Q}\bigg|_{r}
++\frac{\partial u_P}{\partial r}\,\frac{\partial r_b}{\partial Q}
+=\frac{2q_A}{t\mA}
+-\frac{\mH}{\mA+\alpha\mH}\!\left[\frac{2\alpha q_A}{t\mA}+\frac{2r_b(1-t\mH)}{t\mH}\right],
+\]
+using $\partial r_b/\partial Q=-\mH/(\mA+\alpha\mH)$ and $q_A=\alpha r_b+Q$. Factoring
+out $2/t$ and collecting,
+\[
+\frac{\partial u_P}{\partial Q}
+=\frac{2}{t}\!\left[\frac{q_A}{\mA}(1-\frac{\alpha\mH}{\mA+\alpha\mH})
+-\frac{r_b(1-t\mH)}{\mA+\alpha\mH}\right]
+=\frac{2}{t(\mA+\alpha\mH)}\bigl[q_A+r_b(t\mH-1)\bigr].
+\]
+Both terms in the bracket
+are strictly positive: $q_A=\alpha r_b+Q>0$, and $r_b(t\mH-1)>0$ because
+$r_b>0$ (as $t\mA-Q>0$ by Assumption~\ref{ass:nonsat}) and
+$t\mH>1$ (Assumption~\ref{ass:nonsat}). Hence
+$\partial u_P/\partial Q>0$.\hfill $\square$
+\end{proof}
+
+
+
+
+\subsection*{Proof of Corollary \ref{cor:Q_uh}}
+\begin{proof}
+By Corollary~\ref{lem:uc}, $u_H^*=(q_H^*)^2/2$ in both settings, so for $q_H^*>0$
+\[
+    \frac{du_H^*}{dQ} \;=\; q_H^*\,\frac{dq_H^*}{dQ},
+    \qquad
+    \operatorname{sgn}\!\frac{du_H^*}{dQ}=\operatorname{sgn}\!\frac{dq_H^*}{dQ},
+\]
+and $u_H^*$ is flat wherever $q_H^*=0$. It therefore suffices to sign the total
+derivative of the equilibrium effort. Following the decomposition
+\eqref{eq:decomp}, with $r$ already evaluated at the optimal rate $r^*(\beta_H)$
+inside each partial,
+\[
+    \frac{dq_H^*}{dQ}
+    \;=\;\underbrace{\frac{\partial q_H^*}{\partial Q}\bigg|_{\beta_H=\beta_H^*}}_{\text{direct}}
+    \;+\;\underbrace{\frac{\partial q_H^*}{\partial \beta_H}\cdot\frac{d\beta_H^*}{dQ}}_{\text{promotion}},
+    \qquad
+    \frac{d\beta_H^*}{dQ}=\frac{\partial_Q M}{\,k-\partial_{\beta_H}M\,},
+\]
+where the last expression is \eqref{eq:implicit-beta} and has a positive
+denominator under concavity. The key point throughout is that $Q$ moves $q_H^*$
+only through the platform's chosen rate $r^*$, and $r^*$ depends on $Q$
+differently across the coverage regimes.
+
+\medskip
+\textbf{View-based.}
+\paragraph{Uncovered ($Q<\hat Q^{V}$).} Here $q_H^*=\dfrac{r_{\mathrm{unc}}}{t\mH}=\dfrac{\mA+\alpha\mH}{2\,t\,\mA\,\mH}$,
+which contains no $Q$. Hence
+\[
+    \frac{\partial q_H^*}{\partial Q}\bigg|_{\beta_H}=0.
+\]
+The platform earns one unit per view regardless of $Q$, so $Q$ shifts the AI's
+standalone demand $Q/(t\mA)$ only as an additive constant and leaves the marginal
+value of $r$ untouched; the rate, and hence effort, do not move.
+
+With $q_H^*=\frac{\mA+\alpha\mH}{2t\mA\mH}=\frac{1}{2t}\!\left(\frac{1}{\mH}+\frac{\alpha}{\mA}\right)$
+in the uncovered regime, and using $\mA'=\delta$, $\mH'=-\delta$,
+\[
+    \frac{\partial q_H^*}{\partial \beta_H}
+    =\frac{\delta}{2t}\!\left(\frac{1}{\mH^{2}}-\frac{\alpha}{\mA^{2}}\right),
+    \qquad
+    \partial_Q M=-\frac{\delta}{t\mA^{2}},
+\]
+the latter uses the marginal-revenue expression in
+Proposition~\ref{prop:optimal:r_beta:View-Based}. Therefore
+\[
+    \frac{\partial q_H^*}{\partial \beta_H}\cdot\frac{d\beta_H^*}{dQ}
+    =\frac{\delta}{2t}\!\left(\frac{1}{\mH^{2}}-\frac{\alpha}{\mA^{2}}\right)
+     \cdot\frac{-\delta/(t\mA^{2})}{\,k-\partial_{\beta_H}M\,}
+    =-\,\frac{\delta^{2}}{2t^{2}\mA^{2}(k-\partial_{\beta_H}M)}
+        \left(\frac{1}{\mH^{2}}-\frac{\alpha}{\mA^{2}}\right).
+\]
+The denominator is positive, so the promotion effect is non-positive iff
+$\frac{1}{\mH^{2}}\ge\frac{\alpha}{\mA^{2}}$, i.e.\ $\mA^{2}\ge\alpha\mH^{2}$.
+
+
+\paragraph{Boundary ($Q>\hat Q^{V}$).} Here $q_H^*=\bar{q}_H=\dfrac{\mH (t\mA-Q)}{\mA+\alpha\mH}$, so
+\[
+    \frac{\partial q_H^*}{\partial Q}\bigg|_{\beta_H}
+    =-\frac{\mH}{\mA+\alpha\mH}<0.
+\]
+A higher $Q$ saturates the market sooner, so the platform cuts $r$ to keep the
+market exactly covered, and the lower rate pulls effort down.
+
+
+Write
+$F(\beta_H)=\frac{\mH (t\mA-Q)}{\mA+\alpha\mH}$ and
+\[
+    \frac{\partial q_H^*}{\partial \beta_H}
+    =F'(\beta_H)
+    =\frac{\delta\bigl[t\alpha\mH^{2}-t\mA^{2}+Q(2-\delta)\bigr]}{(\mA+\alpha\mH)^{2}}
+    =-\frac{\delta\,W}{(\mA+\alpha\mH)^{2}},
+    \qquad W:=t\mA^{2}-\alpha t\mH^{2}-Q(2-\delta).
+\]
+The base utility is $1-F^{2}$, so $M=-2FF'=\frac{2\delta\mH (t\mA-Q)}{(\mA+\alpha\mH)^{3}}\,W$, and
+since $\partial_Q W=-(2-\delta)$,
+\[
+    \partial_Q M
+    =\frac{2\delta\mH}{(\mA+\alpha\mH)^{3}}\,\partial_Q((t\mA-Q)W)
+    =-\frac{2\delta\mH\bigl[W+(2-\delta)(t\mA-Q)\bigr]}{(\mA+\alpha\mH)^{3}}.
+\]
+The promotion effect is therefore
+\[
+    \frac{\partial q_H^*}{\partial \beta_H}\cdot\frac{d\beta_H^*}{dQ}
+    =\frac{2\delta^{2}\mH\,W\bigl[W+(2-\delta)(t\mA-Q)\bigr]}
+          {(\mA+\alpha\mH)^{5}\,(k-\partial_{\beta_H}M_{\mathrm{bnd}})}.
+\]
+
+\emph{Combining the two channels.} Adding the direct effect $-\mH/(\mA+\alpha\mH)$ from Step~1,
+\begin{align*}
+    \frac{dq_H^*}{dQ}\bigg|_{\mathrm{bnd}}
+    &=-\frac{\mH}{\mA+\alpha\mH}
+     +\frac{2\delta^{2}\mH\,W\bigl[W+(2-\delta)(t\mA-Q)\bigr]}{(\mA+\alpha\mH)^{5}\,(k-\partial_{\beta_H}M_{\mathrm{bnd}})}\\
+    &=\frac{\mH}{\mA+\alpha\mH}\!\left[-1
+        +\frac{2\delta^{2}\,W\bigl[W+(2-\delta)(t\mA-Q)\bigr]}{(\mA+\alpha\mH)^{4}\,(k-\partial_{\beta_H}M_{\mathrm{bnd}})}\right].
+\end{align*}
+The promotion
+term is $O(1/k)$ while the direct effect $-\mH/(\mA+\alpha\mH)$ is $O(1)$. Consequently the bracket is
+negative for any admissible $k$ when $W\bigl[W+(2-\delta)(t\mA-Q)\bigr]\le0$, and negative
+once
+\[
+    k\;>\;\partial_{\beta_H}M
+        +\frac{2\delta^{2}\,W\bigl[W+(2-\delta)(t\mA-Q)\bigr]}{(\mA+\alpha\mH)^{4}}
+\]
+when $W\bigl[W+(2-\delta)(t\mA-Q)\bigr]>0$. Letting $\bar k$ be the the supremum of the right-hand side over $\beta_H\in[0,1]$ and
+$Q\in[\hat Q^{V},t\mA)$ (finite, by continuity on a compact set), for $k> \bar{k}^V_Q \coloneq \max\{\bar{k}^V,\bar{k}\}$
+we obtain $\frac{dq_H^*}{dQ}<0$.
+
+\medskip
+\textbf{Engagement-based.}
+By Proposition~\ref{prop:Optimal:qH:Eng-Based}, $q_H^*=r^*(\beta_H)$, so $Q$ moves
+effort only through the platform's chosen rate. For each of the three forms of
+$r^*$ in Proposition~\ref{prop:optimal:r_beta:Eng-Based} we record the direct
+effect (the change in $r^*$ at a fixed algorithm $\beta_H$) and the promotion
+effect (the change that runs through the platform's adjustment of $\beta_H$).
+Throughout we use $\mA'=\delta$, $\mH'=-\delta$, $\Psi=t\mH-1$, and the abbreviations
+$N=\mA+\alpha\mH$, $\Gamma=\mA\Psi-\alpha^{2}\mH$, $\Lambda=t(2-\delta)-(1-\alpha)^{2}$.
+ 
+\medskip
+\paragraph{Uncovered ($Q\le Q_{E}^c$).}
+Here $q_H^*=r^*=\dfrac{\alpha Q\mH}{\Gamma}$ with $\Gamma$ free of $Q$, so the direct effect is
+\[
+    \frac{\partial q_H^*}{\partial Q}\bigg|_{\beta_H}=\frac{\alpha\mH}{\Gamma}>0,
+\]
+which is positive because $\Gamma>0$ by Assumption~\ref{ass:concavity-E} and
+$\alpha\in(0,1)$. A higher $Q$ feeds straight into the AI-learning channel, the
+platform pays more, and effort rises.
+ 
+For the promotion effect, differentiating $r^*$ in $\beta_H$ (at fixed $Q$) and
+the uncovered marginal revenue $M=-\delta Q^{2}(\Psi^{2}-\alpha^{2})/(t\Gamma^{2})$
+of Proposition~\ref{prop:optimal:r_beta:Eng-Based} in $Q$ gives
+\[
+    \frac{\partial q_H^*}{\partial\beta_H}
+    =-\frac{\alpha Q\,\delta\bigl[(2-\delta)\Psi-t\mA\mH\bigr]}{\Gamma^{2}},
+    \qquad
+    \partial_Q M=-\frac{2\delta Q\,(\Psi^{2}-\alpha^{2})}{t\,\Gamma^{2}},
+\]
+so the promotion effect is
+\[
+    \frac{\partial q_H^*}{\partial\beta_H}\cdot\frac{d\beta_H^*}{dQ}
+    =\frac{2\alpha\,\delta^{2}Q^{2}\bigl[(2-\delta)\Psi-t\mA\mH\bigr](\Psi^{2}-\alpha^{2})}
+          {t\,\Gamma^{4}\,(k-\partial_{\beta_H}M)}.
+\]
+Every factor is bounded on the compact set $\beta_H\in[0,1]$ and the denominator
+is positive once $k>\bar k^{E}$, so this term is $O(1/k)$.
+ 
+\medskip
+\paragraph{Boundary ($\hat Q_{E}^c<Q<\hat Q_E^{c'}$).}
+Here $q_H^*=r^*=r_b=\dfrac{\mH(t\mA-Q)}{N}$, the same form as the view-based
+boundary effort, so the direct effect is
+\[
+    \frac{\partial q_H^*}{\partial Q}\bigg|_{\beta_H}=-\frac{\mH}{N}<0.
+\]
+A higher $Q$ saturates the market sooner, the platform trims the rate to hold the
+market exactly at coverage, and effort falls.
+ 
+For the promotion effect, the rate moves with $\beta_H$ exactly as in the
+view-based boundary case,
+\[
+    \frac{\partial q_H^*}{\partial\beta_H}
+    =-\frac{\delta\,W}{N^{2}},
+    \qquad W:=t\mA^{2}-\alpha t\mH^{2}-Q(2-\delta),
+\]
+and the boundary marginal revenue $M(\beta_H)$ of
+Proposition~\ref{prop:optimal:r_beta:Eng-Based} is a ratio of polynomials in
+$\mA,\mH,Q$ with a denominator bounded away from zero, hence $\partial_Q M$ is a
+continuous, and therefore bounded, function of $(\beta_H,Q)$ on the compact domain.
+The promotion effect
+\[
+    \frac{\partial q_H^*}{\partial\beta_H}\cdot\frac{d\beta_H^*}{dQ}
+    =-\frac{\delta\,W}{N^{2}}\cdot\frac{\partial_Q M}{\,k-\partial_{\beta_H}M\,}
+\]
+is again $O(1/k)$.
+ 
+\medskip
+\paragraph{Covered ($Q\ge\hat Q^{c'}_E$).}
+Here $q_H^*=r^*=\dfrac{N_c}{2\Lambda}$ with $N_c=t(\alpha\mH+\mA)-2(1-\alpha)Q$ and
+$\Lambda$ free of $Q$, so the direct effect is
+\[
+    \frac{\partial q_H^*}{\partial Q}\bigg|_{\beta_H}=-\frac{1-\alpha}{\Lambda}<0,
+\]
+since $\Lambda>0$ under Assumption~\ref{ass:concavity-E}. A higher $Q$ lets the AI
+absorb more of the covered market, so the platform pays less and effort falls.
+ 
+For the promotion effect, using $\partial_{\beta_H}N_c=t\delta(1-\alpha)$ and the
+covered marginal revenue
+$M=\frac{\delta}{2\Lambda(2-\delta)}\bigl[(1-\alpha)N_c-2Q\Lambda\bigr]$ of
+Proposition~\ref{prop:optimal:r_beta:Eng-Based},
+\[
+    \frac{\partial q_H^*}{\partial\beta_H}=\frac{t\delta(1-\alpha)}{2\Lambda},
+    \qquad
+    \partial_Q M=-\frac{t\delta}{\Lambda},
+\]
+where the second identity uses $(1-\alpha)^{2}+\Lambda=t(2-\delta)$. The promotion
+effect is therefore the clean expression
+\[
+    \frac{\partial q_H^*}{\partial\beta_H}\cdot\frac{d\beta_H^*}{dQ}
+    =-\frac{t^{2}\delta^{2}(1-\alpha)}{2\Lambda^{2}\,(k-\partial_{\beta_H}M)},
+\]
+which is negative and $O(1/k)$.
+ 
+\medskip
+\textit{Signing the total derivative.}
+In all three engagement regimes the direct effect is non-zero, while every
+promotion effect above is $O(1/k)$. Define 
+\[
+\bar{k}^E_Q = \max_{\dagger \in \{ unc,bnd,cov \}} \left\{ \left| \frac{\partial M^\dagger}{\partial \beta_H} \right| + \left| \frac{\partial_Q M^\dagger}{\partial q_H^{*\dagger}/\partial Q} \cdot \frac{\partial q_H^{*\dagger}}{\partial \beta_H} \right| \right\}
+\]
+
+Hence, by the dominance argument of \eqref{eq:general_k_threshold}, for $k>\bar k_Q^E$ the
+total derivative $dq_H^*/dQ$ inherits the sign of the direct effect:
+\[
+    \operatorname{sgn}\frac{dq_H^*}{dQ}
+    =\begin{cases}
+        +1, & Q< Q^{c}_E\quad(\text{uncovered}),\\[4pt]
+        -1, & Q> Q^{c}_E\quad(\text{boundary or covered}).
+    \end{cases}
+\]
+Because $u_H^*=(q_H^*)^2/2$ shares the sign of $dq_H^*/dQ$ wherever $q_H^*>0$,
+equilibrium creator utility is strictly increasing in $Q$ on the uncovered region
+and strictly decreasing once the market reaches coverage. Writing $Q^{c}:=\hat
+Q^{E}$ for the coverage threshold, $u_H^*$ rises up to $Q^{c}$ and falls
+thereafter, so it is maximized at $Q=Q^{c}$. 
+\hfill$\square$
+\end{proof}
+
+
+
+\subsection*{Proof of Corollary \ref{cor:Q_TV}}
+\begin{proof}
+\textbf{View-based.}
+\paragraph{Uncovered.}
+
+Direct effects at fixed $\beta_H$:
+From Proposition~\ref{prop:optimal:r_beta:View-Based}, the platform's optimal rate is
+\[
+r^* \;=\; \frac{\mA + \alpha \mH}{2\mA},
+\]
+which does not depend on~$Q$. The induced human effort and AI quality are
+\[
+q_H^* \;=\; \frac{r^*}{t\mH} \;=\; \frac{\mA + \alpha \mH}{2t\mA\mH}, 
+\qquad
+q_A^* \;=\; \alpha q_H^* + Q,
+\]
+and the demands are $D_H = q_H^*/(t\mH)$, $D_A = q_A^*/(t\mA)$.
+
+Fix~$\beta_H$. Then $\mA$ and $\mH$ are fixed, so $r^*$, $q_H^*$, and $D_H$ are all independent of~$Q$. Only $q_A^*$ moves with~$Q$, and
+\[
+\frac{\partial q_A^*}{\partial Q}\bigg|_{\beta_H} = 1,
+\qquad
+\frac{\partial D_A}{\partial Q}\bigg|_{\beta_H}
+= \frac{1}{t\mA}\cdot\frac{\partial q_A^*}{\partial Q}\bigg|_{\beta_H}
+= \frac{1}{t\mA}.
+\]
+
+Since $\text{TV} = D_A + D_H$,
+\[
+\frac{\partial \text{TV}}{\partial Q}\bigg|_{\beta_H}
+= \frac{\partial D_A}{\partial Q}\bigg|_{\beta_H}
++ \frac{\partial D_H}{\partial Q}\bigg|_{\beta_H}
+= \frac{1}{t\mA} + 0
+= \frac{1}{t\mA} \;>\; 0.
+\]
+
+
+Bounding the promotion effect:
+From Proposition \ref{prop:optimal:r_beta:View-Based}, $\partial_Q M= -\delta/(t\mA^2) < 0$, so
+\[
+\frac{d\beta_H^*}{dQ}
+\;=\; \frac{-\delta/(t\mA^2)}{k - \partial_{\beta_H}M}.
+\]
+The promotion effect on~$TV$ is therefore
+\[
+\frac{\partial TV}{\partial\beta_H}\cdot\frac{d\beta_H^*}{dQ}
+\;=\; \frac{-\delta\,(\partial TV/\partial\beta_H)}{t\mA^2\bigl(k - \partial_{\beta_H}M\bigr)}.
+\]
+We now calculate $\partial TV/\partial\beta_H$. $q_H^*=(\mA+\alpha\mH)/(2t\mA\mH) $:
+\[
+\frac{\partial q_H^*}{\partial\beta_H}
+\;=\;
+\;=\; \frac{\delta\bigl[(1-\alpha)\mA\mH - (\mA + \alpha\mH)(\mH - \mA)\bigr]}{2t\mA^2\mH^2}.
+\]
+The bracket simplifies to $\mA^2 - \alpha\mH^2$, giving
+\begin{equation}\label{eq:dqh-dbeta-V}
+\frac{\partial q_H^*}{\partial\beta_H}
+\;=\; \frac{\delta(\mA^2 - \alpha\mH^2)}{2t\mA^2\mH^2},
+\qquad
+\frac{\partial q_A^*}{\partial\beta_H}
+\;=\; \alpha\,\frac{\partial q_H^*}{\partial\beta_H}
+\;=\; \frac{\alpha\delta(\mA^2 - \alpha\mH^2)}{2t\mA^2\mH^2},
+\end{equation}
+where the second identity follows from $q_A^* = \alpha q_H^* + Q$ with $Q$ independent of $\beta_H$.
+
+
+Since $\text{TV} = D_A + D_H = q_A^*/(t\mA) + q_H^*/(t\mH)$, the quotient rule gives
+\[
+\frac{\partial D_A}{\partial\beta_H}
+\;=\; \frac{(\partial q_A^*/\partial\beta_H)\,\mA - \delta q_A^*}{t\mA^2}
+\;=\; \frac{\alpha\,(\partial q_H^*/\partial\beta_H)}{t\mA} - \frac{\delta\, q_A^*}{t\mA^2},
+\]
+\[
+\frac{\partial D_H}{\partial\beta_H}
+\;=\; \frac{(\partial q_H^*/\partial\beta_H)\,\mH + \delta q_H^*}{t\mH^2}
+\;=\; \frac{\partial q_H^*/\partial\beta_H}{t\mH} + \frac{\delta\, q_H^*}{t\mH^2}.
+\]
+Summing:
+\[
+\frac{\partial\text{TV}}{\partial\beta_H}
+\;=\; \frac{\mA + \alpha \mH}{t\mA\mH}\cdot\frac{\partial q_H^*}{\partial\beta_H}
+\;+\; \delta\!\left[\frac{q_H^*}{t\mH^2} - \frac{q_A^*}{t\mA^2}\right].
+\]
+Substituting~\eqref{eq:dqh-dbeta-V} for the first term, and $q_A^* = \alpha q_H^* + Q$, $q_H^* = (\mA + \alpha \mH)/(2t\mA\mH)$ for the second, the second bracket becomes
+\[
+\frac{q_H^*}{t\mH^2} - \frac{q_A^*}{t\mA^2}
+\;=\; \frac{q_H^*(\mA^2 - \alpha\mH^2)}{t\mA^2\mH^2} - \frac{Q}{t\mA^2}
+\;=\; \frac{(\mA + \alpha \mH)(\mA^2 - \alpha\mH^2)}{2t^2\mA^3\mH^3} - \frac{Q}{t\mA^2}.
+\]
+Combining:
+\begin{equation}\label{eq:dTV-dbeta-V}
+\frac{\partial\text{TV}}{\partial\beta_H}
+\;=\; \frac{\delta\,(\mA + \alpha \mH)\,(\mA^2 - \alpha\mH^2)}{t^2\,\mA^3\,\mH^3}
+\;-\; \frac{\delta\,Q}{t\,\mA^2}.
+\end{equation}
+
+
+
+The direct effect dominates the promotion effect, that is, $\partial TV/\partial Q > |\partial TV/\partial\beta_H \cdot d\beta_H^*/dQ|$, if and only if
+\[
+\frac{\partial TV}{\partial Q}\bigl(k - \partial_{\beta_H} M\bigr)
+\;>\; \frac{\delta\,|\partial TV/\partial\beta_H|}{t\mA^2}.
+\]
+Dividing both sides by $\partial TV/\partial Q > 0$, rearranging and substituting \eqref{eq:dTV-dbeta-V} gives
+\[
+k \;>\;  \partial_{\beta_H}M
+\;+\; \frac{\delta}{t\mA^2}\cdot\frac{\bigl|\partial TV/\partial\beta_H\bigr|}{\partial TV/\partial Q}\,\;=\; \partial_{\beta_H}M
+\;+\; \frac{\delta^2}{t\mA^3}\left|\frac{(\mA + \alpha \mH)(\mA^2 - \alpha\mH^2)}{t\mA\mH^3} - Q\right|.
+\]
+If $k$ satisfies the above inequality, the direct effect dominates and the total views increase in $Q$.
+
+
+\paragraph{Boundary.}
+Since $D_A + D_H = 1$,
+\[
+\frac{d \text{TV}}{d Q}\;=\; 0.
+\]
+
+
+\textbf{Engagement-based.}
+\paragraph{Uncovered.}
+The equilibrium quantities are $r^* = q_H^* = \alpha Q\mH/\Gamma$ and $q_A^* = Q\mA\Psi/\Gamma$, where $\Psi := t\mH - 1$ and $\Gamma := \mA\Psi - \alpha^2\mH > 0$ by Assumption~\ref{ass:concavity-E}. The demands are $D_H = \alpha Q/(t\Gamma)$ and $D_A = Q\Psi/(t\Gamma)$.
+
+Direct effects at fixed $\beta_H$:
+At fixed $\beta_H$, the quantities $\mA$, $\mH$, $\Psi$, and $\Gamma$ are constants, while all four objects $q_H^*$, $q_A^*$, $D_H$, $D_A$ are linear in~$Q$. For total views, $\text{TV} = D_H + D_A = Q(\Psi + \alpha)/(t\Gamma)$, so
+\[
+\frac{\partial \text{TV}}{\partial Q}\bigg|_{\beta_H}
+\;=\; \frac{\Psi + \alpha}{t\Gamma} \;>\; 0,
+\]
+since $\Psi = t\mH - 1 > 0$ under Assumption~\ref{ass:concavity-E} and $\alpha \ge 0$.
+
+
+Promotion effect:
+From the proof of Corollary~\ref{cor:Q_beta}, $\partial_Q M= -2\delta Q(\Psi^2 - \alpha^2)/(t\Gamma^2)$. Using $\partial\mH/\partial\beta_H = -\delta$, $\partial\mA/\partial\beta_H = \delta$, $\partial\Psi/\partial\beta_H = -t\delta$, and $\partial\Gamma/\partial\beta_H = \delta\,(\Psi - t\mA + \alpha^2)$:
+\begin{equation}\label{eq:dTV-dbeta-E-unc}
+\frac{\partial\text{TV}}{\partial\beta_H}
+\;=\; -\frac{Q\,\delta\,\bigl[t\Gamma + (\Psi+\alpha)\,G_E\bigr]}{t\Gamma^2},
+\end{equation}
+where $G_E = \Psi - t\mA + \alpha^2$.
+
+
+The standard formula \eqref{eq:general_k_threshold} is
+\[
+\; \partial_{\beta_H}M
+\;+\; \left|\partial_QM\right|\cdot
+\frac{|\partial Y/\partial\beta_H|}{\partial TV/\partial Q}.\]
+We compute the multiplier $|\partial\Phi^{E\text{-unc}}/\partial Q|/(\partial TV/\partial Q)$, then attach $|\partial TV/\partial\beta_H|$.
+
+From earlier in the proof, $\partial_Q M = (\Psi+\alpha)/(t\Gamma)$, so
+\[
+\frac{|\partial_Q M|}{\partial\text{TV}/\partial Q}
+\;=\; \frac{2\delta Q\,|\Psi^2 - \alpha^2|/(t\Gamma^2)}{(\Psi+\alpha)/(t\Gamma)}
+\;=\; \frac{2\delta Q\,|\Psi^2 - \alpha^2|}{\Gamma\,(\Psi + \alpha)}.
+\]
+Multiplying by $|\partial\text{TV}/\partial\beta_H| = Q\delta\,|t\Gamma + (\Psi+\alpha)G_E|/(t\Gamma^2)$ from \eqref{eq:dTV-dbeta-E-unc}:
+\[
+\frac{|\partial_Q M|\,\cdot\,|\partial\text{TV}/\partial\beta_H|}{\partial\text{TV}/\partial Q}
+\;=\; \frac{2\delta Q\,|\Psi^2 - \alpha^2|}{\Gamma\,(\Psi + \alpha)}
+\cdot \frac{Q\,\delta\,|t\Gamma + (\Psi+\alpha)G_E|}{t\,\Gamma^2}
+\;=\; \frac{2\,\delta^{2}\,Q^{2}\,|\Psi^{2}-\alpha^{2}|\,\bigl|t\Gamma + (\Psi+\alpha)G_E\bigr|}{t\,\Gamma^{3}\,(\Psi+\alpha)}.
+\]
+Adding $\partial_{\beta_H}M$, we have
+\begin{equation}\label{eq:kbar-Q-TV-E-unc}
+\bar{k}_Q^E = \partial_{\beta_H}M
+\;+\; \frac{2\,\delta^{2}\,Q^{2}\,|\Psi^{2}-\alpha^{2}|\,\bigl|t\Gamma + (\Psi+\alpha)G_E\bigr|}{t\,\Gamma^{3}\,(\Psi+\alpha)}.
+\end{equation}
+
+If $k$ satisfies the above inequality, the direct effect dominates and the total views increase in $Q$.
+
+\paragraph{Covered.}
+Since $D_A + D_H = 1$,
+\[
+\frac{d \text{TV}}{d Q}\;=\; 0.
+\]
+
+\paragraph{Boundary.}
+The equilibrium quantities are $r^* = q_H^* = \mH(t\mA-Q)/(\mA+\alpha\mH)$
+and $q_A^* = \alpha r^* + Q$. By construction, the boundary rate $r_b$ is the
+rate at which the market just saturates, so total views are held at one:
+\[
+\text{TV} \;=\; D_A + D_H
+\;=\; \frac{\alpha r_b + Q}{t\mA} + \frac{r_b}{t\mH}
+\;=\; 1.
+\]
+This identity holds for every $Q$ inside the boundary regime and every
+$\beta_H$, because $r_b$ adjusts with $Q$ and $\beta_H$ in just the way needed
+to keep total reach equal to one. A higher $Q$ therefore moves viewers between
+the AI and the human but leaves the total unchanged. Both channels vanish:
+\[
+\frac{\partial \text{TV}}{\partial Q}\bigg|_{\beta_H} \;=\; 0,
+\qquad
+\frac{\partial \text{TV}}{\partial \beta_H}\bigg|_{Q} \;=\; 0,
+\qquad\Longrightarrow\qquad
+\frac{d\text{TV}}{dQ} \;=\; 0.
+\]
+\hfill $\square$
+\hfill $\square$
+\end{proof}
+
+\subsection*{Proof of Corollary \ref{cor:Q_TE}}
+\begin{proof}
+\textbf{View-based.}
+\paragraph{Uncovered.}
+Direct effects at fixed $\beta_H$:
+From Proposition~\ref{prop:optimal:r_beta:View-Based}, the platform's optimal rate is
+\[
+r^* \;=\; \frac{\mA + \alpha \mH}{2\mA},
+\]
+which does not depend on~$Q$. The induced human effort and AI quality are
+\[
+q_H^* \;=\; \frac{r^*}{t\mH} \;=\; \frac{\mA + \alpha \mH}{2t\mA\mH}, 
+\qquad
+q_A^* \;=\; \alpha q_H^* + Q,
+\]
+and the demands are $D_H = q_H^*/(t\mH)$, $D_A = q_A^*/(t\mA)$.
+
+Fix~$\beta_H$. Then $\mA$ and $\mH$ are fixed, so $r^*$, $q_H^*$, and $D_H$ are all independent of~$Q$. Only $q_A^*$ moves with~$Q$, and
+\[
+\frac{\partial q_A^*}{\partial Q}\bigg|_{\beta_H} = 1,
+\qquad
+\frac{\partial D_A}{\partial Q}\bigg|_{\beta_H}
+= \frac{1}{t\mA}\cdot\frac{\partial q_A^*}{\partial Q}\bigg|_{\beta_H}
+= \frac{1}{t\mA}.
+\]
+
+Since $\text{TE} = q_A^* D_A + q_H^* D_H = (q_A^*)^2/(t\mA) + (q_H^*)^2/(t\mH)$, and only the first term depends on~$Q$ at fixed~$\beta_H$,
+\begin{equation}\label{prop:Q_beta:dTEdQ}
+\frac{\partial \text{TE}}{\partial Q}\bigg|_{\beta_H}
+= \frac{1}{t\mA}\cdot \frac{\partial (q_A^*)^2}{\partial Q}\bigg|_{\beta_H}
++ \frac{1}{t\mH}\cdot \frac{\partial (q_H^*)^2}{\partial Q}\bigg|_{\beta_H}
+= \frac{2 q_A^*}{t\mA}\cdot 1 + 0
+= \frac{2 q_A^*}{t\mA} \;>\; 0.
+\end{equation}
+
+
+Bounding the promotion effect:
+From Proposition \ref{prop:optimal:r_beta:View-Based}, $\partial_Q M = -\delta/(t\mA^2) < 0$, so
+\[
+\frac{d\beta_H^*}{dQ}
+\;=\; \frac{-\delta/(t\mA^2)}{k - \partial_{\beta_H}M}.
+\]
+The promotion effect on~$TE$ is therefore
+\[
+\frac{\partial TE}{\partial\beta_H}\cdot\frac{d\beta_H^*}{dQ}
+\;=\; \frac{-\delta\,(\partial TE/\partial\beta_H)}{t\mA^2\bigl(k - \partial_{\beta_H}M\bigr)}.
+\]
+We now calculate $\partial TE/\partial\beta_H$ for each measure. $q_H^*=(\mA+\alpha\mH)/(2t\mA\mH) $:
+\[
+\frac{\partial q_H^*}{\partial\beta_H}
+\;=\;
+\;=\; \frac{\delta\bigl[(1-\alpha)\mA\mH - (\mA + \alpha\mH)(\mH - \mA)\bigr]}{2t\mA^2\mH^2}.
+\]
+The bracket simplifies to $\mA^2 - \alpha\mH^2$, giving
+\[
+\frac{\partial q_H^*}{\partial\beta_H}
+\;=\; \frac{\delta(\mA^2 - \alpha\mH^2)}{2t\mA^2\mH^2},
+\qquad
+\frac{\partial q_A^*}{\partial\beta_H}
+\;=\; \alpha\,\frac{\partial q_H^*}{\partial\beta_H}
+\;=\; \frac{\alpha\delta(\mA^2 - \alpha\mH^2)}{2t\mA^2\mH^2},
+\]
+where the second identity follows from $q_A^* = \alpha q_H^* + Q$ with $Q$ independent of $\beta_H$.
+
+
+Since $\text{TE} = (q_A^*)^2/(t\mA) + (q_H^*)^2/(t\mH)$, the quotient rule with the same building blocks gives
+\[
+\frac{\partial}{\partial\beta_H}\!\left[\frac{(q_A^*)^2}{t\mA}\right]
+\;=\; \frac{2\alpha\,q_A^*}{t\mA}\cdot\frac{\partial q_H^*}{\partial\beta_H}
+\;-\; \frac{\delta\,(q_A^*)^2}{t\mA^2},
+\]
+\[
+\frac{\partial}{\partial\beta_H}\!\left[\frac{(q_H^*)^2}{t\mH}\right]
+\;=\; \frac{2\,q_H^*}{t\mH}\cdot\frac{\partial q_H^*}{\partial\beta_H}
+\;+\; \frac{\delta\,(q_H^*)^2}{t\mH^2}.
+\]
+Summing:
+\[
+\frac{\partial\text{TE}}{\partial\beta_H}
+\;=\; \frac{2\,\partial q_H^*/\partial\beta_H}{t}\!\left[\frac{\alpha\,q_A^*}{\mA} + \frac{q_H^*}{\mH}\right]
+\;+\; \delta\!\left[\frac{(q_H^*)^2}{t\mH^2} - \frac{(q_A^*)^2}{t\mA^2}\right].
+\]
+Substituting~\eqref{eq:dqh-dbeta-V}:
+\begin{equation}\label{eq:dTE-dbeta-V}
+\frac{\partial\text{TE}}{\partial\beta_H}
+\;=\; \frac{\delta\,(\mA^2 - \alpha\mH^2)\bigl[\alpha\mH\, q_A^* + \mA\, q_H^*\bigr]}{t^2\,\mA^3\,\mH^3}
+\;+\; \frac{\delta\bigl[\mA^2(q_H^*)^2 - \mH^2(q_A^*)^2\bigr]}{t\,\mA^2\,\mH^2}.
+\end{equation}
+
+
+The direct effect dominates the promotion effect if 
+\begin{equation}\label{eq:kbar-Q-V}
+k \;> \partial_{\beta_H}M
+\;+\; \frac{\delta}{t\mA^2}\cdot\frac{\bigl|\partial TE/\partial\beta_H\bigr|}{\partial TE/\partial Q}\,,
+\end{equation}
+with all partial derivatives evaluated at $\beta_H = \beta_H^*$. Substituting \eqref{prop:Q_beta:dTEdQ} and~\eqref{eq:dTE-dbeta-V} into~\eqref{eq:kbar-Q-V}, 
+\[
+k > \partial_{\beta_H} M
+\;+\; \frac{\delta^2}{2t\mA^3\mH^2 q_A^*}\left|\frac{(\mA^2 - \alpha\mH^2)[\alpha\mH q_A^* + \mA q_H^*]}{t\mA\mH} + \mA^2(q_H^*)^2 - \mH^2(q_A^*)^2\right|.
+\]
+If $k$ satisfies the above inequality, the direct effect dominates and total engagement is increasing in $Q$. 
+
+
+\paragraph{Boundary.}
+The platform sets the rate at the saturating value $r^{\mathrm{bnd}}(\beta_H) = t\mH^2 P / N$ where $P = t\mA - Q$ and $N = \mA + \alpha\mH$. The induced equilibrium quantities are
+\[
+q_H^* \;=\; \frac{\mH P}{N}, \qquad
+q_A^* \;=\; \alpha q_H^* + Q \;=\; \frac{\alpha\mH P + QN}{N},
+\]
+and the demands are $D_H = q_H^*/(t\mH) = P/(tN)$, $D_A = q_A^*/(t\mA)$, with $D_A + D_H = 1$.
+
+Direct effects at fixed $\beta_H$:
+$\text{TE} = (q_A^*)^2/(t\mA) + (q_H^*)^2/(t\mH)$. At fixed $\beta_H$, both $\mA$ and $\mH$ are fixed, while $P = t\mA - Q$ moves with~$Q$. Direct differentiation gives
+\[
+\frac{\partial q_H^*}{\partial Q}\bigg|_{\beta_H} \;=\; -\frac{\mH}{N},
+\qquad
+\frac{\partial q_A^*}{\partial Q}\bigg|_{\beta_H} \;=\; -\frac{\alpha\mH}{N} + 1 \;=\; \frac{\mA}{N}.
+\]
+Therefore
+\[
+\frac{\partial \text{TE}}{\partial Q}\bigg|_{\beta_H}
+\;=\; \frac{2 q_A^*}{t\mA}\cdot\frac{\mA}{N}
+\;+\; \frac{2 q_H^*}{t\mH}\cdot\!\left(-\frac{\mH}{N}\right)
+\;=\; \frac{2(q_A^* - q_H^*)}{tN}
+\;=\; \frac{2\bigl[Q(2-\delta) - (1-\alpha)\,t\mA\mH\bigr]}{tN^2}.
+\]
+This direct effect is strictly positive whenever
+\begin{equation}\label{eq:TE-direct-V-bnd}
+Q \;>\; \frac{(1-\alpha)\,t\,\mA\,\mH}{\,2-\delta\,}.
+\end{equation}
+
+The boundary branch is the optimum exactly when
+$r_{unc}^*>r_{bnd}$, i.e. $Q>Q^{\sf c}$. The sign threshold in
+\eqref{eq:TE-direct-V-bnd} is $Q^{\dagger}:=\dfrac{(1-\alpha)t\mA\mH}{2-\delta}$.
+Intersecting ``boundary'' ($Q>Q^{\sf c}$) with the sign condition:
+\begin{itemize}
+  \item if $Q^{\sf c}<Q^{\dagger}$: $\partial TE/\partial Q<0$ on $(Q^{\sf c},Q^{\dagger})$
+        and $>0$ on $(Q^{\dagger},t\mA)$;
+  \item if $Q^{\sf c}\ge Q^{\dagger}$: the boundary regime begins only past $Q^\dagger$,
+        so $\partial TE/\partial Q>0$ on all of $(Q^{\sf c},t\mA)$.
+\end{itemize}
+
+
+Promotion effect:
+With $F_V := t(\mA^2 - \alpha\mH^2) - Q(2-\delta)$ and $G_V := F_V + P(2-\delta) = t(\mA^2-\alpha\mH^2) + (2-\delta)(t\mA - 2Q)$,
+\[
+\partial_Q M
+\;=\; -\frac{2\delta\,\mH\,G_V}{N^3},
+\qquad
+\left|\partial_Q M\right|
+\;=\; \frac{2\delta\,\mH\,|G_V|}{N^3}.
+\]
+The building-block derivatives at fixed~$Q$ are
+\[
+\frac{\partial q_H^*}{\partial\beta_H}
+\;=\; -\frac{\delta\,F_V}{N^2},
+\qquad
+\frac{\partial q_A^*}{\partial\beta_H}
+\;=\; \alpha\frac{\partial q_H^*}{\partial\beta_H}
+\;=\; -\frac{\alpha\delta\,F_V}{N^2},
+\]
+
+Using $\text{TE} = (q_A^*)^2/(t\mA) + (q_H^*)^2/(t\mH)$, we differentiate each term by the quotient rule. For the AI term, using $\partial\mA/\partial\beta_H = \delta$:
+\[
+\frac{\partial}{\partial\beta_H}\!\left[\frac{(q_A^*)^2}{t\mA}\right]
+\;=\; \frac{2 q_A^*\,(\partial q_A^*/\partial\beta_H)}{t\mA}
+\;-\; \frac{(q_A^*)^2\,\delta}{t\mA^2}.
+\]
+Substituting $\partial q_A^*/\partial\beta_H = -\alpha\delta F_V/N^2$:
+\begin{equation}\label{eq:dTEA-dbeta-V-bnd}
+\frac{\partial}{\partial\beta_H}\!\left[\frac{(q_A^*)^2}{t\mA}\right]
+\;=\; -\frac{2\alpha\,\delta\,F_V\,q_A^*}{t\mA\,N^2}
+\;-\; \frac{\delta\,(q_A^*)^2}{t\mA^2}.
+\end{equation}
+
+For the human term, using $\partial\mH/\partial\beta_H = -\delta$ (note the sign flip):
+\[
+\frac{\partial}{\partial\beta_H}\!\left[\frac{(q_H^*)^2}{t\mH}\right]
+\;=\; \frac{2 q_H^*\,(\partial q_H^*/\partial\beta_H)}{t\mH}
+\;+\; \frac{(q_H^*)^2\,\delta}{t\mH^2}.
+\]
+Substituting $\partial q_H^*/\partial\beta_H = -\delta F_V/N^2$:
+\begin{equation}\label{eq:dTEH-dbeta-V-bnd}
+\frac{\partial}{\partial\beta_H}\!\left[\frac{(q_H^*)^2}{t\mH}\right]
+\;=\; -\frac{2\,\delta\,F_V\,q_H^*}{t\mH\,N^2}
+\;+\; \frac{\delta\,(q_H^*)^2}{t\mH^2}.
+\end{equation}
+
+Adding \eqref{eq:dTEA-dbeta-V-bnd} and \eqref{eq:dTEH-dbeta-V-bnd} and grouping by source:
+\[
+\frac{\partial\text{TE}}{\partial\beta_H}
+\;=\; -\frac{2\delta\,F_V}{tN^2}\!\left[\frac{\alpha q_A^*}{\mA} + \frac{q_H^*}{\mH}\right]
+\;+\; \frac{\delta}{t}\!\left[\frac{(q_H^*)^2}{\mH^2} - \frac{(q_A^*)^2}{\mA^2}\right].
+\]
+
+
+The standard formula \eqref{eq:general_k_threshold} is
+\[
+ k>\partial_{\beta_H}M
+\;+\; \left|\partial_QM\right|\cdot
+\frac{|\partial\text{TE}/\partial\beta_H|}{\partial\text{TE}/\partial Q}.
+\]
+Using
+\[
+\left|\partial_Q M\right|
+\;=\; \frac{2\delta\,\mH\,|G_V|}{N^3},
+\qquad
+\frac{\partial\text{TE}}{\partial Q}
+\;=\; \frac{2\bigl[Q(2-\delta) - (1-\alpha)t\mA\mH\bigr]}{t N^2}.
+\]
+Their ratio is
+\[
+\frac{|\partial_Q M|}{\partial\text{TE}/\partial Q}
+\;=\; \frac{2\delta\mH|G_V|/N^3}{2\bigl[Q(2-\delta) - (1-\alpha)t\mA\mH\bigr]/(tN^2)}
+\;=\; \frac{t\,\delta\,\mH\,|G_V|}{N\bigl[Q(2-\delta) - (1-\alpha)t\mA\mH\bigr]},
+\]
+Multiplying by $|\partial\text{TE}/\partial\beta_H|$ and adding $\partial_{\beta_H}M$ gives
+\begin{equation}\label{eq:kbar-Q-TE-V-bnd}
+k \;> \partial_{\beta_H}M
+\;+\; \frac{t\,\delta\,\mH\,|G_V|\,\bigl|\partial\text{TE}/\partial\beta_H\bigr|}{N\bigl|Q(2-\delta) - (1-\alpha)t\mA\mH\bigr|}.
+\end{equation}
+
+
+\textbf{Engagemenat-based.}
+\paragraph{Uncovered.}
+
+The equilibrium quantities are $r^* = q_H^* = \alpha Q\mH/\Gamma$ and $q_A^* = Q\mA\Psi/\Gamma$, where $\Psi := t\mH - 1$ and $\Gamma := \mA\Psi - \alpha^2\mH > 0$ by Assumption~\ref{ass:concavity-E}. The demands are $D_H = \alpha Q/(t\Gamma)$ and $D_A = Q\Psi/(t\Gamma)$.
+
+Direct effects at fixed $\beta_H$:
+At fixed $\beta_H$, the quantities $\mA$, $\mH$, $\Psi$, and $\Gamma$ are constants, while all four objects $q_H^*$, $q_A^*$, $D_H$, $D_A$ are linear in~$Q$.  $\text{TE} = (q_A^*)^2/(t\mA) + (q_H^*)^2/(t\mH) = Q^2 (\mA\Psi^2 + \alpha^2\mH)/(t\Gamma^2)$, so
+\[
+\frac{\partial \text{TE}}{\partial Q}\bigg|_{\beta_H}
+\;=\; \frac{2Q\,(\mA\Psi^2 + \alpha^2\mH)}{t\Gamma^2} \;>\; 0.
+\]
+
+
+Promotion effect:
+$\partial_Q M= -2\delta Q(\Psi^2 - \alpha^2)/(t\Gamma^2)$. Using $\partial\mH/\partial\beta_H = -\delta$, $\partial\mA/\partial\beta_H = \delta$, $\partial\Psi/\partial\beta_H = -t\delta$, and $\partial\Gamma/\partial\beta_H = \delta\,(\Psi - t\mA + \alpha^2)$:
+\begin{equation}\label{eq:dTE-dbeta-E-unc}
+\frac{\partial\text{TE}}{\partial\beta_H}
+\;=\; \frac{Q^2\,\delta\,\bigl[(\Psi^2 - 2t\mA\Psi - \alpha^2)\,\Gamma - 2 G_E\, (\mA\Psi^2+\alpha^2\mH)\bigr]}{t\,\Gamma^3},
+\end{equation}
+where $G_E = \Psi - t\mA + \alpha^2$.
+
+
+The standard formula \eqref{eq:general_k_threshold} is
+\[
+k>\partial_{\beta_H}M
+\;+\; \left|\partial_Q M\right|\cdot
+\frac{|\partial TE/\partial\beta_H|}{\partial TE/\partial Q}.
+\]
+We compute the multiplier $|\partial_Q M|/(\partial TE/\partial Q)$, then attach $|\partial TE/\partial\beta_H|$.
+
+
+
+$\partial\text{TE}/\partial Q = 2 Q (\mA\Psi^2+\alpha^2\mH)/(t\Gamma^2)$, so the $t\Gamma^2$ factors cancel:
+\[
+|\partial_Q M|\cdot {\partial\text{TE}/\partial Q}
+\;=\; \frac{2\delta Q\,|\Psi^2 - \alpha^2|/(t\Gamma^2)}{2 Q (\mA\Psi^2+\alpha^2\mH)/(t\Gamma^2)}
+\;=\; \frac{\delta\,|\Psi^2 - \alpha^2|}{\mA\Psi^2+\alpha^2\mH}.
+\]
+Multiplying by $|\partial\text{TE}/\partial\beta_H| = Q^2\delta\,|(\Psi^2 - 2t\mA\Psi - \alpha^2)\Gamma - 2 ((\mA\Psi^2+\alpha^2\mH)) G_E|/(t\Gamma^3)$ from \eqref{eq:dTE-dbeta-E-unc}:
+\[
+\frac{|\partial_Q M|\,\cdot\,|\partial\text{TE}/\partial\beta_H|}{\partial\text{TE}/\partial Q}
+\;=\; \frac{\delta\,|\Psi^2 - \alpha^2|}{\mA\Psi^2+\alpha^2\mH}
+\cdot \frac{Q^{2}\,\delta\,\bigl|(\Psi^{2}-2t\mA\Psi-\alpha^{2})\Gamma - 2 (\mA\Psi^2+\alpha^2\mH)\, G_E\bigr|}{t\,\Gamma^{3}}.
+\]
+Adding $\partial_{\beta_H}M$, we have
+\begin{equation}k> \partial_{\beta_H}M
+\;+\; \frac{Q^{2}\,\delta^{2}\,|\Psi^{2}-\alpha^{2}|\,\bigl|(\Psi^{2}-2t\mA\Psi-\alpha^{2})\Gamma - 2 ((\mA\Psi^2+\alpha^2\mH))\, G_E\bigr|}{t\,\Gamma^{3}\,((\mA\Psi^2+\alpha^2\mH))}.
+\end{equation}
+
+If $k$ satisfies the above inequality, total engagement is increasing in $Q$.
+
+\paragraph{Boundary.}
+When $r^*=r_b$ the market saturates exactly, so the induced quantities are
+\[
+q_H^* = \frac{\mH P}{N}, \qquad
+q_A^* = \alpha q_H^* + Q = \frac{\alpha\mH P + QN}{N},
+\qquad
+D_H = \frac{P}{tN}, \quad D_A = \frac{q_A^*}{t\mA},
+\]
+with $P = t\mA - Q$ and $D_A+D_H=1$. These are exactly the view-based boundary
+quantities, so $TE = (q_A^*)^2/(t\mA) + (q_H^*)^2/(t\mH)$ and every term below that
+depends only on $(q_H^*,q_A^*,\mA,\mH)$ carries over unchanged from the view-based
+boundary; only $\partial_Q M$ uses the engagement objective.
+
+Direct effect at fixed $\beta_H$:
+\[
+\frac{\partial q_H^*}{\partial Q}\bigg|_{\beta_H} = -\frac{\mH}{N},
+\qquad
+\frac{\partial q_A^*}{\partial Q}\bigg|_{\beta_H} = \frac{\mA}{N},
+\qquad
+\frac{\partial TE}{\partial Q}\bigg|_{\beta_H}
+= \frac{2(q_A^*-q_H^*)}{tN}
+= \frac{2\bigl[Q(2-\delta) - (1-\alpha)t\mA\mH\bigr]}{tN^2},
+\]
+which is strictly positive iff $Q > Q^{\dagger} := \dfrac{(1-\alpha)t\mA\mH}{2-\delta}$.
+
+Promotion effect:
+The induced effort and quality move with $\beta_H$ exactly as in the view-based
+boundary: with $F_V := t(\mA^2 - \alpha\mH^2) - Q(2-\delta)$,
+\[
+\frac{\partial q_H^*}{\partial\beta_H} = -\frac{\delta F_V}{N^2},
+\qquad
+\frac{\partial q_A^*}{\partial\beta_H} = \alpha\frac{\partial q_H^*}{\partial\beta_H}
+= -\frac{\alpha\delta F_V}{N^2},
+\]
+and therefore
+\[
+\frac{\partial TE}{\partial\beta_H}
+= -\frac{2\delta F_V}{tN^2}\!\left[\frac{\alpha q_A^*}{\mA} + \frac{q_H^*}{\mH}\right]
++ \frac{\delta}{t}\!\left[\frac{(q_H^*)^2}{\mH^2} - \frac{(q_A^*)^2}{\mA^2}\right].
+\]
+What differs is $M(\beta_H)$, the marginal base utility, which on this branch is the
+third-form expression of Proposition~\ref{prop:optimal:r_beta:Eng-Based},
+\[
+M(\beta_H) = \frac{\delta[t(\mA-\alpha\mH) - 2Q]}{N}
++ \frac{2\delta\,[\,t\Gamma - Q(\Psi+\alpha)\,]\,F_V}{tN^3},
+\qquad \Psi = t\mH - 1,\ \ \Gamma = \mA\Psi - \alpha^2\mH,
+\]
+where we used $t\mA^2 - \alpha t\mH^2 - Q(2-\delta) = F_V$. Differentiating in $Q$
+(at fixed $\beta_H$, so $\mA,\mH,N,\Gamma$ are constants), with
+$\partial_Q F_V = -(2-\delta)$ and $\partial_Q[t\Gamma - Q(\Psi+\alpha)] = -(\Psi+\alpha)$,
+\[
+\partial_Q M
+= -\frac{2\delta}{N}
+- \frac{2\delta}{tN^3}\Bigl[(\Psi+\alpha)F_V + (2-\delta)\bigl(t\Gamma - Q(\Psi+\alpha)\bigr)\Bigr]
+= -\frac{2\delta\,G_E^{\mathrm{bnd}}}{tN^3},
+\]
+where
+\[
+G_E^{\mathrm{bnd}} := tN^2 + (\Psi+\alpha)F_V + (2-\delta)\bigl(t\Gamma - Q(\Psi+\alpha)\bigr).
+\]
+Hence
+\[
+\frac{d\beta_H^*}{dQ} = \frac{\partial_Q M}{k - \partial_{\beta_H}M}
+= \frac{-2\delta\,G_E^{\mathrm{bnd}}/(tN^3)}{k - \partial_{\beta_H}M}.
+\]
+
+The standard formula \eqref{eq:general_k_threshold} is
+\[
+k > \partial_{\beta_H}M + |\partial_Q M|\cdot
+\frac{|\partial TE/\partial\beta_H|}{\partial TE/\partial Q}.
+\]
+Using $|\partial_Q M| = 2\delta|G_E^{\mathrm{bnd}}|/(tN^3)$ and the direct effect above,
+the $tN$ factors cancel:
+\[
+\frac{|\partial_Q M|}{\partial TE/\partial Q}
+= \frac{2\delta|G_E^{\mathrm{bnd}}|/(tN^3)}
+{2[Q(2-\delta) - (1-\alpha)t\mA\mH]/(tN^2)}
+= \frac{\delta\,|G_E^{\mathrm{bnd}}|}{N\,[Q(2-\delta) - (1-\alpha)t\mA\mH]}.
+\]
+Multiplying by $|\partial TE/\partial\beta_H|$ and adding $\partial_{\beta_H}M$,
+\begin{equation}\label{eq:kbar-Q-TE-E-bnd}
+k > \partial_{\beta_H}M
++ \frac{\delta\,|G_E^{\mathrm{bnd}}|\,\bigl|\partial TE/\partial\beta_H\bigr|}
+{N\,|\,Q(2-\delta) - (1-\alpha)t\mA\mH\,|},
+\end{equation}
+For $k$ above this bound the
+direct effect dominates, so on the part of the boundary regime with $Q>Q^{\dagger}$
+total engagement is increasing in $Q$.
+
+Intersection: The boundary branch is the optimum on
+$Q^{\sf c}_E<Q<Q^{\sf c\prime}_E$, where $Q^{\sf c}_E=\dfrac{t\Gamma}{t\mH-1+\alpha}$ ends the
+uncovered regime and $Q^{\sf c\prime}_E$, the root of $r_{cov}=r_b$, starts the covered
+regime. We show the parity point $Q^{\dagger}$ always lies strictly below the start of the
+covered regime, $Q^{\dagger}<Q^{\sf c\prime}_E$, so the sign flip never spills into the
+covered regime.
+
+Both $r_{cov}$ and $r_b$ are linear in $Q$, and the covered branch is selected
+for large $Q$, so the gap $r_{cov}(Q)-r_b(Q)$ is increasing and vanishes at
+$Q^{\sf c\prime}_E$. Hence $Q^{\dagger}<Q^{\sf c\prime}_E$ if and only if
+$r_{cov}(Q^{\dagger})<r_b(Q^{\dagger})$. Evaluate both at
+$Q^{\dagger}=\dfrac{(1-\alpha)t\mA\mH}{\mA+\mH}$. Using
+$t\mA-Q^{\dagger}=\dfrac{t\mA N}{\mA+\mH}$,
+\[
+r_b(Q^{\dagger})=\frac{(t\mA-Q^{\dagger})\mH}{N}=\frac{t\mA\mH}{\mA+\mH},
+\qquad
+r_{cov}(Q^{\dagger})=\frac{tN-2(1-\alpha)Q^{\dagger}}{2\Lambda}
+=\frac{t}{2\Lambda}\!\left[N-\frac{2(1-\alpha)^2\mA\mH}{\mA+\mH}\right].
+\]
+Multiplying $r_{cov}(Q^{\dagger})<r_b(Q^{\dagger})$ by $2\Lambda(\mA+\mH)/t>0$ and using
+$\Lambda+(1-\alpha)^2=t(\mA+\mH)$, the inequality collapses to
+\[
+N<2t\mA\mH.
+\]
+This is always true: by Assumption~\ref{ass:nonsat}, $t\mA>1$ and $t\mH>1$, so
+$2t\mA\mH>\max\{2\mA,\,2\mH\}\ge \mA+\mH>\mA+\alpha\mH=N$. Therefore
+$Q^{\dagger}<Q^{\sf c\prime}_E$ for every $\beta_H\in[0,1]$.
+
+Consequently, when the decreasing range is nonempty
+($Q^{\sf c}_E<Q^{\dagger}$), it lies entirely inside the boundary regime, and the direct
+effect flips exactly at $Q^{\dagger}$:
+\[
+\frac{\partial TE}{\partial Q}<0 \ \text{ on } (Q^{\sf c}_E,\,Q^{\dagger}),
+\qquad
+\frac{\partial TE}{\partial Q}>0 \ \text{ on } (Q^{\dagger},\,Q^{\sf c\prime}_E),
+\]
+where on the decreasing part the dominance bound \eqref{eq:kbar-Q-TE-E-bnd} applies with
+its denominator replaced by the absolute value $(1-\alpha)t\mA\mH-Q(2-\delta)$. The
+boundary regime therefore flips at the same $Q^{\dagger}$ as the view-based setting, and
+the cutoff in the corollary is $Q^{\dagger}$.
+
+
+\paragraph{Covered.}
+The equilibrium rate is $r^* = N_c/(2\Lambda)$ with $N_c = t(\alpha\mH + \mA) - 2(1-\alpha)Q$ and $\Lambda = t(2-\delta) - (1-\alpha)^2$. The demands $D_H = (t\mA + (1-\alpha)r^* - Q)/(t(2-\delta))$ and $D_A = 1 - D_H$ sum to one.
+
+Substituting $q_H = r$, $q_A = \alpha r + Q$, $D_A$, $D_H$ into $\text{TE} = q_A D_A + q_H D_H$ and simplifying gives, at any~$r$,
+\[
+\text{TE}\cdot t(2-\delta)
+\;=\; (1-\alpha)^2 r^2 + r N_c + Q(Q + t\mH).
+\]
+Evaluating at $r = r^* = N_c/(2\Lambda)$ and using $(1-\alpha)^2 + 2\Lambda = t(2-\delta) + \Lambda$:
+\[
+\text{TE}
+\;=\; \frac{N_c^2(t(2-\delta) + \Lambda)}{4\Lambda^2 t(2-\delta)}
+\;+\; \frac{Q(Q + t\mH)}{t(2-\delta)}.
+\]
+With $\partial N_c/\partial Q = -2(1-\alpha)$, and $\Lambda$, $\mH$ independent of~$Q$,
+\[
+\frac{\partial \text{TE}}{\partial Q}\bigg|_{\beta_H}
+\;=\; \frac{(2Q + t\mH)\,\Lambda^2 - (1-\alpha)\,N_c\,(t(2-\delta) + \Lambda)}{\Lambda^2 t(2-\delta)}.
+\]
+The direct effect is strictly positive whenever
+\begin{equation}\label{eq:TE-direct-E-cov}
+(2Q + t\mH)\Lambda^2 \;-\; (1-\alpha)N_c(t(2-\delta)+\Lambda)>0
+\end{equation}
+
+
+Promotion effect:
+Using $(1-\alpha)^2 + \Lambda = t(2-\delta)$,
+\[
+\partial_Q M
+\;=\; -\frac{t\delta}{\Lambda}.
+\]
+The building blocks at fixed~$Q$ are $\partial N_c/\partial\beta_H = t\delta(1-\alpha)$ and (since $\Lambda$ is $\beta_H$-independent)
+\[
+\frac{\partial r^*}{\partial\beta_H}
+\;=\; \frac{t\delta(1-\alpha)}{2\Lambda},
+\qquad
+\frac{\partial q_A^*}{\partial\beta_H} \;=\; \alpha\frac{\partial r^*}{\partial\beta_H}.
+\]
+Differentiating the TE expression with $\partial(Q t\mH)/\partial\beta_H = -t\delta Q$:
+\[
+\frac{\partial\text{TE}}{\partial\beta_H}
+\;=\; \frac{t\,\delta\,[(1-\alpha)\,N_c\,(t(2-\delta)+\Lambda) - 2Q\,\Lambda^2]}{2\Lambda^2 t(2-\delta)}.
+\]
+
+
+When~\eqref{eq:TE-direct-E-cov} holds, the direct effect on TE is strictly positive. Substituting into the standard framework \eqref{eq:general_k_threshold},
+\begin{equation}\label{eq:kbar-Q-TE-E-cov}
+k> \partial_{\beta_H}M
+\;+\; \frac{t^{2}\,\delta^{2}\,|(1-\alpha)\,N_c\,(t(2-\delta)+\Lambda) - 2Q\,\Lambda^2|}{2\,\Lambda\,[(2Q + t\mH)\,\Lambda^2 - (1-\alpha)\,N_c\,(t(2-\delta) + \Lambda)]}.
+\end{equation}
+If $k$ satisfies the above condition, the direct effect dominates. 
+
+
+\hfill $\square$
+\end{proof}
+
+
+
+\subsection*{Proof of Corollary \ref{cor:Q_beta}}
+\begin{proof}
+By \eqref{eq:implicit-beta} the denominator is positive under the maintained
+concavity condition, so
+$\operatorname{sgn}\!\bigl(d\beta_H^*/dQ\bigr)=\operatorname{sgn}\!\bigl(\partial M/\partial Q\bigr)$. 
+Throughout, $\mA,\mH,N,\Gamma,\Lambda$ are independent of $Q$. We treat the two
+settings in turn, computing $\partial M/\partial Q$ on each branch of $r^{*}$ from the
+relevant Proposition and identifying the $Q$-ranges on which each branch is selected.
+
+
+\textbf{View-based.}
+From the proof of Proposition~\ref{prop:optimal:r_beta:View-Based},
+$r^{*}=\min\{r^{\mathrm{unc}},r^{\mathrm{bnd}}\}$ with
+$r^{\mathrm{unc}}=N/(2\mA)$ and $r^{\mathrm{bnd}}=t\mH^{2}P/N$, where $P=t\mA-Q$.
+The uncovered branch is selected iff $r^{\mathrm{unc}}\le r^{\mathrm{bnd}}$, i.e.
+$N^{2}\le 2t\mA\mH^{2}(t\mA-Q)$, equivalently
+\[
+Q\le Q^{c}_{V}:=t\mA-\frac{N^{2}}{2t\mA\mH^{2}} .
+\]
+Thus $r^{*}=r^{\mathrm{unc}}$ for $Q<Q^{c}_{V}$ and $r^{*}=r^{\mathrm{bnd}}$ for
+$Q>Q^{c}_{V}$.
+
+\paragraph{Uncovered ($Q<Q^{c}_{V}$).}
+From Proposition~\ref{prop:optimal:r_beta:View-Based},
+\[
+M^{\mathrm{unc}}=\delta\!\left[\frac{1}{2t^{2}}\!\left(\frac{1}{\mH}+\frac{\alpha}{\mA}\right)\!
+\left(\frac{1}{\mH^{2}}-\frac{\alpha}{\mA^{2}}\right)-\frac{Q}{t\mA^{2}}\right].
+\]
+Only the last term depends on $Q$, so
+$\partial M^{\mathrm{unc}}/\partial Q=-\delta/(t\mA^{2})<0$ and
+$\operatorname{sgn}(d\beta_H^*/dQ)=-1$.
+
+\paragraph{Boundary ($Q>Q^{c}_{V}$).}
+Write $M^{\mathrm{bnd}}=\dfrac{2\delta\mH}{N^{3}}\,(t\mA-Q)\,H$ with
+$H:=t\mA^{2}-\alpha t\mH^{2}-Q(2-\delta)$. Since $\mA,\mH,N$ are $Q$-free,
+\[
+\frac{\partial}{\partial Q}\bigl[(t\mA-Q)H\bigr]
+=-H+(t\mA-Q)\frac{\partial H}{\partial Q}
+=-H-(t\mA-Q)(2-\delta).
+\]
+Using $2-\delta=\mA+\mH$ and $t\mA(2-\delta)=t\mA^{2}+t\mA\mH$,
+\[
+\frac{\partial}{\partial Q}\bigl[(t\mA-Q)H\bigr]
+=2(2-\delta)Q-t\bigl(2\mA^{2}+\mA\mH-\alpha\mH^{2}\bigr).
+\]
+As $2\delta\mH/N^{3}>0$,
+\[
+\operatorname{sgn}\frac{\partial M^{\mathrm{bnd}}}{\partial Q}
+=\operatorname{sgn}\!\bigl(2(2-\delta)Q-t(2\mA^{2}+\mA\mH-\alpha\mH^{2})\bigr)
+=\operatorname{sgn}\!\bigl(Q-\widehat Q_{V}\bigr),
+\]
+with $\widehat Q_{V}=t(2\mA^{2}+\mA\mH-\alpha\mH^{2})/(2(2-\delta))$. This proves the
+view-based cases.
+
+
+\textbf{Engagement-based.}
+From the proof of Proposition~\ref{prop:optimal:r_beta:Eng-Based},
+$r^{*}\in\{r^{\mathrm{unc}},r^{\mathrm{cov}},r_b\}$ with
+$r^{\mathrm{unc}}=\alpha Q\mH/\Gamma$, $r^{\mathrm{cov}}=N_c/(2\Lambda)$,
+$r_b=(t\mA-Q)\mH/N$, selected by $r^{\mathrm{unc}}\le r_b$ (uncovered),
+$r^{\mathrm{cov}}\ge r_b$ (covered), and $ r^{\mathrm{cov}}<r_b<r^{\mathrm{unc}}$
+(boundary). Both $r^{\mathrm{unc}}-r_b$ and $r^{\mathrm{cov}}-r_b$ are affine in $Q$.
+Since $r^{\mathrm{unc}}$ is increasing and $r_b$ decreasing in $Q$,
+$r^{\mathrm{unc}}-r_b$ is strictly increasing, so
+$r^{\mathrm{unc}}\le r_b\iff Q\le Q^{c}_{E}:=t\Gamma/(\alpha+\Psi)$. For the
+covered/boundary split, using $N_c=tN-2(1-\alpha)Q$ (since $\alpha\mH+\mA=N$),
+\[
+\frac{d}{dQ}\!\left(\frac{N_c}{2\Lambda}-r_b\right)
+=\frac{\Lambda\mH-N(1-\alpha)}{\Lambda N}
+=\frac{(2-\delta)\bigl[t\mH-(1-\alpha)\bigr]}{\Lambda N}>0,
+\]
+because $t\mH>1>1-\alpha$ by Assumption~\ref{ass:nonsat}. Hence
+$r^{\mathrm{cov}}\ge r_b\iff Q\ge Q^{c'}_{E}$, the unique crossing point, which equals
+\[
+Q^{c'}_{E}=\frac{t\bigl(2\Lambda\,\mA\mH-N^{2}\bigr)}{2(2-\delta)\bigl[t\mH-(1-\alpha)\bigr]} .
+\]
+The slope gap \eqref{eq:slope-gap-E} gives $r^{\mathrm{cov}}\ge r_b\Rightarrow
+r^{\mathrm{unc}}>r_b$, i.e. $Q^{c}_{E}\le Q^{c'}_{E}$. Thus $r^{*}$ equals
+$r^{\mathrm{unc}}$ on $[0,Q^{c}_{E})$, $r_b$ on $[Q^{c}_{E},Q^{c'}_{E})$, and
+$r^{\mathrm{cov}}$ on $[Q^{c'}_{E},\infty)$.
+
+\paragraph{Uncovered ($Q<Q^{c}_{E}$).}
+Here $M=-\delta Q^{2}\bigl[\Psi^{2}-\alpha^{2}\bigr]/(t\Gamma^{2})$ with $\Gamma$ $Q$-free, so
+\[
+\frac{\partial M}{\partial Q}=-\frac{2\delta Q\bigl[\Psi^{2}-\alpha^{2}\bigr]}{t\Gamma^{2}},
+\qquad
+\operatorname{sgn}\frac{\partial M}{\partial Q}=\operatorname{sgn}\!\bigl(\alpha^{2}-\Psi^{2}\bigr).
+\]
+
+\paragraph{Boundary ($Q^{c}_{E}\le Q<Q^{c'}_{E}$).}
+The third-branch marginal revenue from
+Proposition~\ref{prop:optimal:r_beta:Eng-Based} is
+\[
+M_b=\frac{\delta\bigl[t(\mA-\alpha\mH)-2Q\bigr]}{N}
++\frac{2\delta}{tN^{3}}\,\Theta\,H,
+\qquad
+\Theta:=t\Gamma-Q(\Psi+\alpha),\quad H:=t\mA^{2}-\alpha t\mH^{2}-Q(2-\delta).
+\]
+Differentiating ($N$ $Q$-free, $\partial\Theta/\partial Q=-(\Psi+\alpha)$,
+$\partial H/\partial Q=-(2-\delta)$),
+\[
+\frac{\partial M_b}{\partial Q}
+=-\frac{2\delta}{N}+\frac{2\delta}{tN^{3}}\bigl[-(\Psi+\alpha)H-(2-\delta)\Theta\bigr].
+\]
+Multiplying by $tN^{3}/(2\delta)>0$ gives
+$\operatorname{sgn}(\partial M_b/\partial Q)=\operatorname{sgn}(B_E)$, where
+\[
+B_E:=-tN^{2}-(\Psi+\alpha)H-(2-\delta)\Theta .
+\]
+$B_E$ is affine in $Q$ with leading coefficient $2(2-\delta)(\Psi+\alpha)>0$
+(as $\Psi=t\mH-1>0$), hence has a unique root $\widehat Q_{E}$ and
+$\operatorname{sgn}(\partial M_b/\partial Q)=\operatorname{sgn}(Q-\widehat Q_{E})$, with
+\[
+\widehat Q_{E}=\frac{tN^{2}+(\alpha+\Psi)\,t\bigl(\mA^{2}-\alpha\mH^{2}\bigr)+(2-\delta)\,t\Gamma}
+{2(2-\delta)(\alpha+\Psi)} .
+\]
+
+\paragraph{Covered ($Q\ge Q^{c'}_{E}$).}
+Here $M=\dfrac{\delta}{2\Lambda(2-\delta)}\bigl[(1-\alpha)N_c-2Q\Lambda\bigr]$ with
+$\partial N_c/\partial Q=-2(1-\alpha)$ and $\Lambda$ $Q$-free, so
+\[
+\frac{\partial M}{\partial Q}
+=\frac{\delta}{2\Lambda(2-\delta)}\bigl[-2(1-\alpha)^{2}-2\Lambda\bigr]
+=-\frac{\delta t}{\Lambda}<0,
+\]
+using $(1-\alpha)^{2}+\Lambda=t(2-\delta)$. Hence $\operatorname{sgn}(d\beta_H^*/dQ)=-1$.
+
+Collecting the branches yields the stated signs. \hfill$\square$
+\end{proof}
+
+
+\subsection*{Proof of Corollary~\ref{cor:alpha_up}}
+\begin{proof}
+By the envelope theorem applied to both $r^*$ and $\beta_H^*$, 
+$du_P/d\alpha = \partial U_{base}/\partial\alpha$ evaluated at the equilibrium, where $U_{base}$ is the platform's utility without the algorithmic penalty given that the penalty term is $\alpha$ free.
+
+\medskip
+\textbf{View-based.}\\
+\paragraph{Uncovered.}
+With $U_{base} = (\mA + \alpha \mH)^2/(4t^2\mA^2\mH^2) + Q/(t\mA)$ :
+\[
+\frac{du_P}{d\alpha} 
+= \frac{2\mH(\mA+\alpha \mH)}{4t^2\mA^2\mH^2} 
+= \frac{\mA + \alpha \mH}{2t^2\mA^2\mH} > 0.
+\]
+
+\medskip
+\paragraph{Covered.}\;
+With $u_P = 1 - \mH^2 (t\mA-Q)^2/(\mA+\alpha\mH)^2$ :
+\[
+\frac{du_P}{d\alpha}
+= -\mH^2 (t\mA-Q)^2 \cdot \frac{-2\mH}{(\mA+\alpha\mH)^3}
+= \frac{2\mH^3 (t\mA-Q)^2}{(\mA+\alpha\mH)^3} > 0.
+\]
+
+\medskip
+\textbf{Engagement-based.}\\
+\paragraph{Uncovered.}
+With $U_{base} = Q^2(t\mH - 1)/(t\Gamma)$ and 
+$\partial\Gamma/\partial\alpha = -2\alpha\mH$:
+\[
+\frac{du_P}{d\alpha}
+= \frac{Q^2(t\mH-1)}{t} \cdot \frac{-1}{\Gamma^2}\cdot(-2\alpha\mH)
+= \frac{2\alpha Q^2\mH\,(t\mH-1)}{t\,\Gamma^2} > 0,
+\]
+positive under Assumption~\ref{ass:nonsat}, which guarantees 
+$t\mH > 1$.
+
+\medskip
+\paragraph{Covered.}\;
+With $U_{base} = N_c^2/(4\Lambda t(2-\delta)) + Q(Q + t\mH)/(t(2-\delta))$, where $N_c = t(\alpha\mH + \mA) - 2(1-\alpha)Q$ and $\Lambda = t(2-\delta) - (1-\alpha)^2$, the second term is independent of $\alpha$, and $\partial N_c/\partial\alpha = t\mH + 2Q$, $\partial\Lambda/\partial\alpha = 2(1-\alpha)$. The quotient rule gives
+\[
+\frac{du_P}{d\alpha}
+= \frac{1}{4t(2-\delta)}\cdot\frac{2 N_c(t\mH + 2Q)\Lambda - 2(1-\alpha) N_c^2}{\Lambda^2}
+= \frac{N_c\bigl[(t\mH + 2Q)\Lambda - (1-\alpha) N_c\bigr]}{2\Lambda^2 t (2-\delta)}.
+\]
+The bracket simplifies. Using $\Lambda + (1-\alpha)^2 = t(2-\delta)$ and $\mA + \mH = 2 - \delta$:
+\begin{align*}
+(t\mH + 2Q)\Lambda - (1-\alpha) N_c
+&= t\mH\Lambda + 2Q\Lambda -(1-\alpha)[t(\mA+\alpha\mH)-2(1-\alpha)Q]
+\\
+&= t\bigl[\mH\Lambda - (1-\alpha)(\mA+\alpha\mH)\bigr] + 2Q\bigl[\Lambda + (1-\alpha)^2\bigr] \\
+&= t\bigl[\mH t(2-\delta) - (1-\alpha)(\mA + \mH)\bigr] + 2Qt(2-\delta) \\
+&= t(2-\delta)(t\mH + \alpha - 1) + 2Qt(2-\delta) \\
+&= t(2-\delta)\bigl(t\mH + \alpha + 2Q - 1\bigr).
+\end{align*}
+Substituting:
+\[
+\frac{du_P}{d\alpha}
+= \frac{N_c\bigl(t\mH + \alpha + 2Q - 1\bigr)}{2\Lambda^2}.
+\]
+$N_c > 0$, and under Assumption~\ref{ass:nonsat}, $t\mH > 1$. Hence $t\mH + \alpha + 2Q - 1 > 0$ and $du_P/d\alpha > 0$ for any $\beta_H^* \in [0,1]$.
+
+\paragraph{Boundary.}
+At the boundary the optimal rate sits at the saturation point
+$r^* = r_b = \mH P/N$, with $P = t\mA - Q$ and $N = \mA + \alpha\mH$.
+Here the rate is set by the kink in the platform's objective, not by an
+interior first-order condition, so the envelope theorem in $r$ no longer
+applies: when $\alpha$ moves, the saturation point moves with it, and we
+must follow that movement. (The envelope theorem in $\beta_H$ still
+applies, since $\beta_H^*$ is interior.) Writing the base utility on the
+uncovered side,
+$U_{base}(r,\alpha) = (\alpha r + Q)^2/(t\mA) + r^2/(t\mH) - r^2$,
+the total derivative splits into two parts:
+\[
+\frac{du_P}{d\alpha}
+= \underbrace{\frac{\partial U_{base}}{\partial\alpha}\bigg|_{r_b}}_{\text{direct effect}}
+\;+\;
+\underbrace{\frac{\partial U_{base}}{\partial r}\bigg|_{r_b}\cdot\frac{\partial r_b}{\partial\alpha}}_{\text{saturation-shift effect}}.
+\]
+We compute the three ingredients in turn.
+
+\emph{Direct effect.} Differentiating in $\alpha$ at fixed $r$, evaluating at
+$r_b$, and using $\alpha r_b + Q = \mA(\alpha t\mH + Q)/N$,
+\[
+\frac{\partial U_{base}}{\partial\alpha}\bigg|_{r_b}
+= \frac{2r_b(\alpha r_b + Q)}{t\mA}
+= \frac{2\mH P(\alpha t\mH + Q)}{tN^2}.
+\]
+
+\emph{Slope at $r_b$.} Differentiating in $r$, evaluating at $r_b$, and using
+$(\alpha r_b + Q)/(t\mA) = 1 - r_b/(t\mH)$,
+\[
+\frac{\partial U_{base}}{\partial r}\bigg|_{r_b}
+= \frac{2\bigl[\alpha^2 t\mH + \alpha Q - (t\mH - 1)P\bigr]}{tN}.
+\]
+
+\emph{Shift of the saturation point.} Only $N$ carries $\alpha$ in
+$r_b = \mH P/N$, so
+\[
+\frac{\partial r_b}{\partial\alpha} = -\frac{\mH^2 P}{N^2} < 0.
+\]
+
+Putting the three together and pulling out the common positive factor
+$2\mH P/(tN^3)$, the $\alpha^2 t\mH$ and $\alpha Q\mH$ terms cancel and we are
+left with
+\[
+\frac{du_P}{d\alpha}
+= \frac{2\mH P}{tN^3}\Bigl[\,\mA(\alpha t\mH + Q) + (t\mH - 1)\mH P\,\Bigr].
+\]
+Both terms in the bracket are positive: $\mA(\alpha t\mH + Q) > 0$, and
+$(t\mH - 1)\mH P > 0$ because $t\mH > 1$ by Assumption~\ref{ass:nonsat} and
+$P = t\mA - Q > 0$. The prefactor $2\mH P/(tN^3)$ is positive too. Hence
+$du_P/d\alpha > 0$ at the boundary as well, which completes the proof.
+
+\hfill $\square$
+\end{proof}
+
+
+\subsection*{Proof of Corollary \ref{cor:alpha_uh}}
+\begin{proof}
+\textbf{View-based.}
+\paragraph{Uncovered.}
+$u_H = (\mA+\alpha \mH)^2/(8t^2\mA^2\mH^2)$. 
+ 
+\textit{Direct effect.}
+\[
+\frac{\partial u_H}{\partial\alpha}
+= \frac{2\mH(\mA+\alpha \mH)}{8t^2\mA^2\mH^2}
+= \frac{\mA+\alpha \mH}{4t^2\mA^2\mH} > 0.
+\]
+ 
+\textit{Promotion effect: factor $\partial u_H/\partial\beta_H$.}
+\begin{align}
+\frac{\partial u_H}{\partial\beta_H}
+&= \frac{1}{8t^2}\cdot\frac{d}{d\beta_H}\!\left[\frac{(\mA+\alpha\mH)^2}{\mA^2\mH^2}\right]\notag\\
+&= \dfrac{1}{8t^2} \left[ \dfrac{2\delta(\mA+\alpha\mH)(1-\alpha)\mA^2\mH^2 - (\mA+\alpha\mH)^2(2\delta\mA\mH^2-2\delta\mH\mA^2)}{\mA^4\mH^4} \right]
+\notag\\
+&= \frac{1}{8t^2}\cdot\frac{2\delta(\mA+\alpha\mH)}{\mA^3\mH^3}\bigl[(1-\alpha)\mA\mH - (\mA+\alpha\mH)(\mH - \mA)\bigr] \notag\\[4pt]
+&= \frac{\delta (\mA+\alpha\mH)^2(\mA^2 - \alpha\mH^2)}{4t^2\mA^3\mH^3},\label{eq:duc-dbeta-V}
+\end{align}
+using $(1-\alpha)\mA\mH - (\mA + \alpha\mH)(\mH - \mA) = \mA^2 - \alpha\mH^2$.  This is positive when $\mA^2 > \alpha\mH^2$, or more generally whenever $\mA/\mH > \sqrt{\alpha}$.
+ 
+\textit{Promotion effect: factor $d\beta_H^*/d\alpha$.}\;
+The marginal promotion benefit is $M = \delta (\mA+\alpha\mH)(\mA^2 - \alpha\mH^2)/(2t^2\mA^3\mH^3) - \delta Q/(t\mA^2)$.  We need $\partial_\alpha M$:
+\begin{align}
+\frac{\partial M}{\partial\alpha}
+&= \frac{\delta}{2t^2\mA^3\mH^3}\left[\mH(\mA^2 - \alpha\mH^2) - (\mA+\alpha\mH)\mH^2\right] \notag\\[4pt]
+&= \frac{\delta\mH}{2t^2\mA^3\mH^3}\left[\mA^2 - \alpha\mH^2 - \mA\mH - \alpha\mH^2\right] \notag\\[4pt]
+&= \frac{\delta\left[\mA(\mA - \mH) - 2\alpha\mH^2\right]}{2t^2\mA^3\mH^2}. \label{eq:dPhi-dalpha-V}
+\end{align}
+By~\eqref{eq:implicit-beta}:
+\[
+\frac{d\beta_H^*}{d\alpha}
+= \frac{\partial_\alpha M}{k - \partial_{\beta_H} M}.
+\]
+When $\partial_\alpha M < 0$, $d\beta_H^*/d\alpha < 0$.
+ 
+\textit{Combining.}\;
+The total derivative is
+\[
+\frac{du_H}{d\alpha}
+= \frac{\mA+\alpha\mH}{4t^2\mA^2\mH}
++ \frac{\delta (\mA+\alpha\mH)(\mA^2 - \alpha\mH^2)}{4t^2\mA^3\mH^3}
+\cdot\frac{\partial_\alpha M}{k - \partial_{\beta_H} M}.
+\]
+If $\mA^2<\alpha\mH^2$, both factors of promotion are negative; hence, $du_H/d\alpha>0$. Also, if $\mA^2 > 2\alpha \mH^2 / (1-\mH)$, both factors are positive, and we get the same sign for the total derivative. Otherwise, the total derivative is positive if and only if the direct effect exceeds the (absolute value of the) promotion effect:
+\[
+\frac{\mA+\alpha\mH}{4t^2\mA^2\mH}
+> \frac{\delta (\mA+\alpha\mH)(\mA^2 - \alpha\mH^2)}{4t^2\mA^3\mH^3}
+\cdot\frac{|\partial_\alpha M|}{k - \partial_{\beta_H} M}.
+\]
+Cancelling common positive factors and rearranging:
+\[
+k > \partial_{\beta_H} M
++ \frac{\delta(\mA^2 - \alpha\mH^2)}{\mA\mH^2}\cdot\bigl|\partial_\alpha M\bigr|.
+\]
+Substituting~\eqref{eq:dPhi-dalpha-V} 
+\begin{equation}\label{eq:kbar-alpha-V}
+k>\partial_{\beta_H} M
++ \frac{\delta^2(\mA^2 - \alpha\mH^2)\bigl|  \mA(\mA - \mH) - 2\alpha\mH^2\bigr|}{2t^2\mA^4\mH^4},
+\end{equation}
+the result follows: $du_H/d\alpha > 0$ whenever $k$ satisfies the above inequality.
+
+ 
+\paragraph{Boundary.}
+From $u_H = \mH^2 (t\mA-Q)^2/(2(\mA+\alpha\mH)^2)$:
+\[
+\left.\frac{\partial u_H}{\partial\alpha}\right|_{\beta_H}
+= \frac{\mH^2 (t\mA-Q)^2}{2}\cdot\frac{-2\mH}{(\mA+\alpha\mH)^3}
+= -\frac{\mH^3 (t\mA-Q)^2}{(\mA+\alpha\mH)^3} < 0.
+\]
+The total derivative includes the promotion effect:
+\[
+\frac{du_H}{d\alpha}
+= -\frac{\mH^3 (t\mA-Q)^2}{(\mA+\alpha\mH)^3}
++ \underbrace{\left.\frac{\partial u_H}{\partial\beta_H}\right|_{\alpha} \cdot \frac{d\beta_H^*}{d\alpha}}_{\text{promotion effect}}.
+\]
+For the promotion shift, $\partial_\alpha M$ is computed by differentiating $M$:
+\begin{align}
+\label{eq:dPhi-dalpha-Vbnd}
+\partial_\alpha M
+&= 2\delta\mH (t\mA-Q)\,\dfrac{-t\mH^2(\mA+\alpha\mH)\;-\;3\mH\bigl[t(\mA^2-\alpha\mH^2)-Q(2-\delta)\bigr]}{(\mA+\alpha\mH)^4}\notag\\[4pt]
+&= -\frac{2\delta\mH^2 (t\mA-Q)}{(\mA+\alpha\mH)^4}\Bigl[\,t\mH(\mA+\alpha\mH)+3t(\mA^2-\alpha\mH^2)-3Q(2-\delta)\,\Bigr].
+\end{align}
+By~\eqref{eq:implicit-beta}, $d\beta_H^*/d\alpha = (\partial_\alpha M)/(k - \partial_{\beta_H} M)$. 
+Given $t\mA>Q$ by Assumption \ref{ass:nonsat}, the sign of $d\beta_H^*/d\alpha$ is the opposite of the sign of the value in the bracket, which depends on the parameters.
+
+We now calculate $\partial u_H / \partial \beta_H$. Numerator derivative:
+\[
+\frac{\partial\bigl[\mH^2(t\mA-Q)^2\bigr]}{\partial\beta_H}
+= -2\delta\mH(t\mA-Q)^2 + 2t\delta\mH^2(t\mA-Q)
+= 2\delta\mH(t\mA-Q)\bigl[\,t(\mH-\mA)+Q\,\bigr].
+\]
+Denominator derivative:
+\[
+\frac{\partial\bigl[2(\mA+\alpha\mH)^2\bigr]}{\partial\beta_H}
+= 4\delta(1-\alpha)(\mA+\alpha\mH).
+\]
+
+\begin{align*}
+\frac{\partial u_H}{\partial\beta_H}
+&= \frac{2\delta\mH(t\mA-Q)\bigl[t(\mH-\mA)+Q\bigr]\cdot 2(\mA+\alpha\mH)^2 \;-\; \mH^2(t\mA-Q)^2 \cdot 4\delta(1-\alpha)(\mA+\alpha\mH)}{4(\mA+\alpha\mH)^4}\\[6pt]
+&= \frac{\delta\mH(t\mA-Q)}{(\mA+\alpha\mH)^3}\Bigl[\,(\mA+\alpha\mH)\bigl(t(\mH-\mA)+Q\bigr) \;-\; (1-\alpha)\mH(t\mA-Q)\,\Bigr]\\[4pt]
+&= \frac{\delta\mH(t\mA-Q)}{(\mA+\alpha\mH)^3}\Bigl[\,(\mA+\alpha\mH)\bigl(t\mH-(t\mA-Q)\bigr) \;-\; (1-\alpha)\mH(t\mA-Q)\,\Bigr].
+\end{align*}
+The direct effect $-\mH^3 (t\mA-Q)^2/(\mA+\alpha\mH)^3$ is negative and dominates whenever
+\begin{equation}\label{eq:kbar-alpha-uc-V-bnd}
+k \;>\;  \partial_{\beta_H} M
++ \bigl|\partial_\alpha M\bigr|\cdot
+\frac{(\mA+\alpha\mH)^3\bigl|\partial u_H/\partial\beta_H\bigr|}{\mH^3 (t\mA-Q)^2}\,.
+\end{equation}
+If $k$ satisfies the above, creator utility is strictly decreasing in~$\alpha$.
+
+
+\textbf{Engagement-based.}
+\paragraph{Uncovered.}
+With $u_H = \alpha^2 Q^2\mH^2/(2\Gamma^2)$, where $\Gamma = \mA(t\mH-1)-\alpha^2\mH$ ,the total derivative is
+\begin{equation}\label{eq:duc-total-E}
+\frac{du_H}{d\alpha}
+= \left.\frac{\partial u_H}{\partial\alpha}\right|_{\beta_H}
++ \left.\frac{\partial u_H}{\partial\beta_H}\right|_{\alpha} \cdot \frac{d\beta_H^*}{d\alpha}.
+\end{equation}
+ 
+\textit{Direct effect.}\; Differentiating $u_H$ with respect to~$\alpha$ at fixed~$\beta_H$:
+\begin{align}
+\frac{\partial u_H}{\partial\alpha}
+& = \dfrac{4\alpha Q^2\mH^2\Gamma^2 + 8\Gamma \alpha^3 Q^2 \mH^3}{4\Gamma^4} \notag\\
+& = \dfrac{\alpha Q^2\mH^2\Gamma +  2\alpha^3 Q^2 \mH^3}{\Gamma^3} \notag\\
+&= \frac{\alpha Q^2\mH^2(\Gamma + 2\alpha^2\mH)}{\Gamma^3}. \label{eq:duc-direct-E}
+\end{align}
+Since $\Gamma + 2\alpha^2\mH = \mA(t\mH-1) + \alpha^2\mH > 0$, this is strictly positive.
+ 
+\textit{Promotion effect: factor $\partial u_H/\partial\beta_H$.}\;
+Using $d\Gamma/d\beta_H = \delta[t(\mH - \mA) -1 + \alpha^2]$:
+\begin{align}
+\frac{\partial u_H}{\partial\beta_H}
+&= \frac{\alpha^2 Q^2}{2}\cdot\frac{2\mH(-\delta)\Gamma^2 - \mH^2\cdot 2\Gamma\cdot\delta[t(\mH - \mA) -1 + \alpha^2]}{\Gamma^4} \notag\\[4pt]
+&= \frac{-\alpha^2 Q^2\delta\mH}{\Gamma^3}\bigl[\Gamma + \mH(t(\mH - \mA) -1 + \alpha^2)\bigr]. \label{eq:duc-dbeta-E}
+\end{align}
+Expanding the bracket:
+\begin{align*}
+\Gamma + \mH(t(\mH - \mA) -1 + \alpha^2)
+&= t\mA\mH - \mA - \alpha^2\mH + t\mH^2 -t\mA\mH -\mH + \alpha^2\mH \\
+&= t\mH^2 - (\mH + \mA) = t\mH^2 - (2-\delta) .
+\end{align*}
+Therefore
+\begin{equation}\label{eq:duc-dbeta-E-clean}
+\frac{\partial u_H}{\partial\beta_H}
+= \frac{-\alpha^2 Q^2\delta\mH\bigl[t\mH^2 - (2-\delta)\bigr]}{\Gamma^3}.
+\end{equation}
+The sign depends on whether $t\mH^2$ is greater or less than $2 - \delta$.
+ 
+\textit{Promotion effect: factor $d\beta_H^*/d\alpha$.}\;
+The marginal promotion benefit is $M = -\delta Q^2((t\mH-1)^2 - \alpha^2)/(t\Gamma^2)$.  Differentiating with respect to~$\alpha$:
+\begin{align*}
+\partial_\alpha M
+&= -\frac{\delta Q^2}{t}\cdot\frac{-2\alpha\Gamma^2 - ((t\mH-1)^2 - \alpha^2)\cdot 2\Gamma(-2\alpha\mH)}{\Gamma^4} \notag\\[4pt]
+&= \frac{2\alpha\delta Q^2}{t\Gamma^3}\bigl[\Gamma - 2\mH((t\mH-1)^2 - \alpha^2)\bigr]. \label{eq:dPhi-dalpha-E}
+\end{align*}
+Using $\Gamma = \mA(t\mH-1) - \alpha^2\mH$:
+\begin{align}
+\Gamma - 2\mH((t\mH-1)^2 - \alpha^2)
+&= t\mA\mH - \mA - \alpha^2\mH - 2\mH(t\mH-1)^2 + 2\alpha^2\mH \notag \\
+&= \mA (t\mH-1) - 2\mH (t\mH-1)^2 + \alpha^2\mH \notag \\
+& = (t\mH-1)(\mA - 2\mH(t\mH-1)) + \alpha^2\mH
+\end{align}
+The sign of $\partial_\alpha M$ is ambiguous in general.  By~\eqref{eq:implicit-beta}:
+\begin{equation}\label{eq:dbeta-dalpha-E}
+\frac{d\beta_H^*}{d\alpha}
+= \frac{\partial_\alpha M}{k - \partial_{\beta_H} M}.
+\end{equation}
+ 
+\textit{Combining.}\;
+The total derivative~\eqref{eq:duc-total-E} is the sum of the positive direct effect~\eqref{eq:duc-direct-E} and the promotion effect, whose sign depends on the product of~\eqref{eq:duc-dbeta-E-clean} and~\eqref{eq:dbeta-dalpha-E}.  Regardless of the sign of the promotion effect, the direct effect dominates whenever $k$ exceeds the threshold
+\[
+\partial_{\beta_H} M
++ \left|\partial_\alpha M\right|
+\cdot\frac{\bigl|\partial u_H/\partial\beta_H\bigr|}{\partial u_H/\partial\alpha}.
+\]
+Substituting~\eqref{eq:duc-direct-E}, \eqref{eq:duc-dbeta-E-clean}, and~\eqref{eq:dPhi-dalpha-E}, the threshold is
+\[
+\partial_{\beta_H} M
++ \frac{2\alpha\delta Q^2}{t\Gamma^3}\bigl|\Gamma + 2\mH((t\mH-1)^2 - \alpha^2)\bigr|
+\cdot\frac{\alpha^2 Q^2\delta\mH\bigl|t\mH^2 - (2-\delta)\bigr|/\Gamma^3}{\alpha Q^2\mH^2(\Gamma + 2\alpha^2\mH)/\Gamma^3}.
+\]
+Simplifying:
+\begin{equation}\label{eq:kbar-alpha-E-clean}
+\partial_{\beta_H} M
++ \frac{2\alpha^2\delta^2\bigl|\Gamma + 2\mH((t\mH-1)^2 - \alpha^2)\bigr|\cdot\bigl|t\mH^2 - (2-\delta)\bigr|}{t\mH\,\Gamma^3\,(\Gamma + 2\alpha^2\mH)}.
+\end{equation}
+If $k$ is larger than the above threshold, $|$promotion effect$|$ $<$ direct effect, yielding $du_H/d\alpha > 0$.
+
+
+\paragraph{Covered.}
+From $u_H = N_c^2/(8\Lambda^2)$, using $\partial N_c/\partial\alpha = t\mH + 2Q > 0$ and $\partial\Lambda/\partial\alpha = 2(1-\alpha) > 0$:
+\begin{align*}
+\left.\frac{\partial u_H}{\partial\alpha}\right|_{\beta_H}
+&= \frac{N_c(t\mH + 2Q)}{4\Lambda^2} - \frac{N_c^2(1-\alpha)}{2\Lambda^3} \\[4pt]
+&= \frac{N_c\bigl[\Lambda(t\mH + 2Q) - 2(1-\alpha)N_c\bigr]}{4\Lambda^3}.
+\end{align*}
+In equilibrium $N_c, \Lambda > 0$, so the sign of the direct effect equals the sign of $\Lambda(t\mH+2Q) - 2(1-\alpha)N_c$. Substituting $N_c = t(\mA+\alpha\mH) - 2(1-\alpha)Q$ and using $\Lambda = (2-\delta) - (1-\alpha)^2$:
+\begin{align}
+\Lambda(t\mH+2Q) - 2(1-\alpha)N_c
+= t\bigl[\Lambda \mH - 2(1-\alpha)N\bigr] 
+ + 2Q\bigl[t(2-\delta) + (1-\alpha)^2\bigr]. \label{eq:direct-alpha-E-cov-general}
+\end{align}
+Denote the right-hand side of~\eqref{eq:direct-alpha-E-cov-general} by $E$. It has the compact form
+\begin{equation}\label{eq:E-split}
+    E \;=\; t\,B \;+\; 2Q\,C,
+    \qquad
+    B := \Lambda\mH-2(1-\alpha)N,
+    \qquad
+    C := t(2-\delta)+(1-\alpha)^2,
+\end{equation}
+where one checks directly that
+$B=t\mH(2-\delta)-(1-\alpha)\bigl((1+\alpha)\mH+2\mA\bigr)$ is the first bracket of
+\eqref{eq:direct-alpha-E-cov-general}. Since $C>0$, it suffices to show $B\ge 0$ on the covered branch.
+
+\medskip
+The covered optimum is selected only when $Q\ge Q^{c'}_E$, so the
+branch is occupied only if $Q^{c'}_E<t\mA$. A direct computation factors the gap as
+\[
+    Q^{c'}_E - t\mA
+    \;=\; -\,\frac{t\,N\,\bigl[\alpha(2\mA+\mH)-\mA\bigr]}{2(2-\delta)\,(t\mH-1+\alpha)} .
+\]
+The denominator is positive (Assumption~\ref{ass:nonsat} gives $t\mH>1$, hence $t\mH-1+\alpha>0$),
+and $tN>0$. Therefore $Q^{c'}_E<t\mA$ holds if and only if
+\begin{equation}\label{eq:star}
+    \alpha(2\mA+\mH)\;\ge\;\mA. \tag{$\star$}
+\end{equation}
+Every covered-branch point must satisfy ~\eqref{eq:star}. Otherwise, $Q_E^{\sf c'}>t\mA$ and the covered branch cannot exist.
+
+\medskip
+With $\Gamma=\mA(t\mH-1)-\alpha^2\mH$, a direct expansion gives
+\[
+    \mA\,B
+    \;=\; \alpha^2\mH(2\mA+\mH)\;-\;\mA^2(1-2\alpha)\;+\;(2-\delta)\,\Gamma .
+\]
+By Assumption~\ref{ass:concavity-E}, $\Gamma\ge 0$, and $2-\delta=\mA+\mH>0$, so
+\begin{equation}\label{eq:B-lower}
+    \mA\,B \;\ge\; \alpha^2\mH(2\mA+\mH)-\mA^2(1-2\alpha).
+\end{equation}
+
+\medskip
+If $\alpha\ge \tfrac12$, then $\mA^2(1-2\alpha)\le 0\le \alpha^2\mH(2\mA+\mH)$ and we are done.
+If $\alpha<\tfrac12$, square the positive quantities in~\eqref{eq:star} to get
+$\alpha^2(2\mA+\mH)^2\ge\mA^2$, then
+\[
+    \alpha^2\mH(2\mA+\mH)
+    \;=\; \frac{\mH}{2\mA+\mH}\,\alpha^2(2\mA+\mH)^2
+    \;\ge\; \frac{\mA^2\,\mH}{2\mA+\mH}.
+\]
+Also, multiplying~\eqref{eq:star} by $2$ gives $(2\mA+\mH)(1-2\alpha)\le \mH$, i.e.
+$\mA^2(1-2\alpha)\le \mA^2\mH/(2\mA+\mH)$. Combining the two displays,
+\[
+    \alpha^2\mH(2\mA+\mH)\;\ge\;\frac{\mA^2\mH}{2\mA+\mH}\;\ge\;\mA^2(1-2\alpha).
+\]
+
+\medskip
+Hence the right-hand side of~\eqref{eq:B-lower} is nonnegative, so $\mA B\ge 0$ and therefore
+$B\ge 0$. Therefore, the direct effect is always positive.
+
+
+The total derivative is
+\[
+\frac{du_H}{d\alpha}
+= \left.\frac{\partial u_H}{\partial\alpha}\right|_{\beta_H}
++ \left.\frac{\partial u_H}{\partial\beta_H}\right|_{\alpha} \cdot \frac{d\beta_H^*}{d\alpha}.
+\]
+$\partial u_H/\partial\beta_H = t\delta(1-\alpha)N_c/(4\Lambda^2) > 0$.  For the promotion shift, $\partial_{\beta_H}M =t\delta^2(1-\alpha)^2/(2\Lambda (2-\delta)) > 0$.
+
+Differentiating $M$ with respect to~$\alpha$ at fixed~$\beta_H$ (quotient rule on $M = \tfrac{\delta}{2(2-\delta)}\bigl[\tfrac{(1-\alpha)N_c}{\Lambda} - 2Q\bigr]$):
+\begin{equation}\label{eq:dPhi-dalpha-E-cov}
+\partial_\alpha M
+= \frac{\delta}{2(2-\delta)\Lambda^2}\Bigl[\,\Lambda\bigl[(1-\alpha)(t\mH+2Q) - N_c\bigr] - 2(1-\alpha)^2 N_c\,\Bigr].
+\end{equation}
+By~\eqref{eq:implicit-beta}, $d\beta_H^*/d\alpha = \partial_\alpha M/(k -\partial_{\beta_H}M)$.  The sign of $du_H/d\alpha$ coincides with that of the direct effect whenever the promotion effect is dominated, which holds for
+\[
+k \;>\; \partial_{\beta_H}M
++ \bigl|\partial_\alpha M\bigr|\cdot
+\frac{\partial u_H/\partial\beta_H}{\bigl|\partial u_H/\partial\alpha\bigr|}\,.
+\]
+Substituting the computed expressions:
+\[
+k> \partial_{\beta_H}M
++ \frac{t\delta\,\bigl|\Lambda\bigl[(1-\alpha)(t\mH+2Q) - N_c\bigr] - 2(1-\alpha)^2 N_c\bigr|}{2S\Lambda^2}
+\cdot\frac{t\delta(1-\alpha)N_c/(4\Lambda^2)}{\bigl|N_c\bigl[\Lambda(t\mH + 2Q) - 2(1-\alpha)N_c\bigr]\bigr|/(4\Lambda^3)}.
+\]
+Simplifying (cancelling common factors of $N_c$, $\Lambda$, and the $4$'s):
+\begin{equation}\label{eq:kbar-alpha-uc-E-cov-clean}
+K> \partial_{\beta_H}M
++ \frac{t\delta^2(1-\alpha)\,\bigl|\Lambda\bigl[(1-\alpha)(t\mH+2Q) - N_c\bigr] - 2(1-\alpha)^2 N_c\bigr|}{2(2-\delta)\Lambda\,\bigl|\Lambda(t\mH + 2Q) - 2(1-\alpha)N_c\bigr|}.
+\end{equation}
+If $k$ satisfies the above condition, the sign of $du_H/d\alpha$ coincides with the sign of the direct effect~\eqref{eq:direct-alpha-E-cov-general}.
+
+
+\paragraph{Boundary.}
+On the boundary branch the platform clamps compensation at the saturation
+rate $r^* = r_b = P\mH/N$, with $P = t\mA - Q$ and $N = \mA + \alpha\mH$.
+By Corollary~\ref{lem:uc}, the creator's equilibrium utility is
+\[
+u_H \;=\; \tfrac{1}{2}r_b^2 \;=\; \frac{P^2\mH^2}{2N^2} \;=\; \frac{G}{2}.
+\]
+The total derivative is
+\[
+\frac{du_H}{d\alpha}
+= \left.\frac{\partial u_H}{\partial\alpha}\right|_{\beta_H}
++ \left.\frac{\partial u_H}{\partial\beta_H}\right|_{\alpha}\cdot\frac{d\beta_H^*}{d\alpha}.
+\]
+
+\textit{Direct effect.}\; At fixed $\beta_H$, neither $P$ nor $\mH$ depends on
+$\alpha$; only $N$ does, through $\partial N/\partial\alpha = \mH$. Hence
+\begin{equation}\label{eq:duc-direct-E-bnd}
+\left.\frac{\partial u_H}{\partial\alpha}\right|_{\beta_H}
+= \frac{P^2\mH^2}{2}\cdot\frac{\partial}{\partial\alpha}\!\left(\frac{1}{N^2}\right)
+= -\,\frac{P^2\mH^2}{N^3}\cdot\mH
+= -\,\frac{P^2\mH^3}{N^3}.
+\end{equation}
+Since $P = t\mA - Q > 0$ by Assumption~\ref{ass:nonsat}, this is strictly
+\emph{negative}.
+
+\textit{Promotion effect: factor $\partial u_H/\partial\beta_H$.}\;
+Writing $u_H = F^2/2$ with $F = P\mH/N$ and using
+\[
+F'(\beta_H) = \frac{\delta\bigl[t\alpha\mH^2 - t\mA^2 + Q(2-\delta)\bigr]}{N^2}
+\]
+(derived in the proof of Proposition~\ref{prop:optimal:r_beta:View-Based}),
+\begin{equation}\label{eq:duc-dbeta-E-bnd}
+\frac{\partial u_H}{\partial\beta_H}
+= F\,F'
+= \frac{\delta\,P\mH\bigl[t\alpha\mH^2 - t\mA^2 + Q(2-\delta)\bigr]}{N^3}.
+\end{equation}
+Its sign depends on whether $t\mA^2 - \alpha t\mH^2$ exceeds $Q(2-\delta)$,
+and is ambiguous in general.
+
+\textit{Promotion effect: factor $d\beta_H^*/d\alpha$.}\;
+On the boundary branch the platform's marginal promotion benefit is the
+third-branch expression $M^{\mathrm{bnd}}(\beta_H)$ of
+Proposition~\ref{prop:optimal:r_beta:Eng-Based}. By~\eqref{eq:implicit-beta},
+\[
+\frac{d\beta_H^*}{d\alpha}
+= \frac{\partial_\alpha M^{\mathrm{bnd}}}{k - \partial_{\beta_H} M^{\mathrm{bnd}}},
+\]
+with positive denominator under the concavity threshold. The numerator
+$\partial_\alpha M^{\mathrm{bnd}}$ is bounded but of ambiguous sign.
+
+\textit{Combining.}\;
+The total derivative is the sum of the strictly negative direct
+effect~\eqref{eq:duc-direct-E-bnd} and a bounded promotion effect. The
+direct effect dominates whenever $k$ exceeds
+\[
+\partial_{\beta_H} M^{\mathrm{bnd}}
++ \bigl|\partial_\alpha M^{\mathrm{bnd}}\bigr|
+\cdot\frac{\bigl|\partial u_H/\partial\beta_H\bigr|}{\bigl|\partial u_H/\partial\alpha\bigr|}
+= \partial_{\beta_H} M^{\mathrm{bnd}}
++ \bigl|\partial_\alpha M^{\mathrm{bnd}}\bigr|
+\cdot\frac{\delta\,\bigl|t\alpha\mH^2 - t\mA^2 + Q(2-\delta)\bigr|}{P\,\mH^2}.
+\]
+For $k$ larger than the above threshold, the sign of $du_H/d\alpha$
+coincides with that of the direct effect, so $du_H/d\alpha < 0$.
+\hfill $\square$
+\end{proof}
+
+
+
+
+\subsection*{Proof of Corollary \ref{cor:alpha_tv}}
+\begin{proof}
+\textbf{View-based.}
+\paragraph{Uncovered.}\;
+Total views and is
+\begin{align*}
+\text{TV} &= \frac{q_A^*}{t\mA} + \frac{q_H^*}{t\mH}
+= \frac{q_H^*(\mA + \alpha\mH) + \mH Q}{t\mA\mH},
+\end{align*}
+with $q_H^* = (\mA+\alpha\mH)/(2t\mA\mH)$ and $q_A^* = \alpha q_H^* + Q$.
+
+\emph{Direct effects.}: since $\mA$ and $\mH$
+do not depend on $\alpha$,
+\[
+\frac{\partial q_H^*}{\partial\alpha}
+= \frac{\mH}{2t\mA\mH} = \frac{1}{2t\mA},
+\qquad
+\frac{\partial q_A^*}{\partial\alpha} = q_H^* + \frac{\alpha}{2t\mA}.
+\]
+Both are positive. Substituting:
+\[
+\frac{\partial\text{TV}}{\partial\alpha}\bigg|_{\beta_H}
+= \frac{1}{t\mA\mH}\!\left[\frac{1}{2t\mA}\,(\mA+\alpha\mH) + q_H^*\,\mH\right]
+= \frac{\mA+\alpha\mH}{t^2\mA^2\mH} > 0,
+\]
+
+\emph{Promotion-effects.} 
+\[
+\frac{\partial q_H^*}{\partial\beta_H}
+= \frac{2t\mA\mH\delta(1-\alpha) - 2t(\mA+\alpha\mH)\delta(\mH-\mA)}{4t^2\mA^2\mH^2} 
+=\frac{\delta(\mA^2 - \alpha\mH^2)}{2t\mA^2\mH^2},
+\qquad
+\frac{\partial q_A^*}{\partial\beta_H} = \alpha\,\frac{\partial q_H^*}{\partial\beta_H},
+\]
+which gives
+\begin{align*}
+\frac{\partial\text{TV}}{\partial\beta_H}
+& = \frac{1}{t} \left[ \frac{\mA\cdot \partial q_A^*/\partial \beta_H - \delta q_A^*}{\mA^2} + \frac{\mH\cdot \partial q_H^*/\partial \beta_H + \delta q_H^*}{\mH^2} \right].
+\end{align*}
+The second factor is
+$d\beta_H^*/d\alpha = (\partial_\alpha M)/(k - \partial_{\beta_H}M)$, and $\partial_\alpha M$ is computed in \eqref{eq:dPhi-dalpha-V} from the proof of Corollary~\ref{cor:alpha_uh}. The direct effect dominates whenever
+\begin{equation}\label{eq:kbar-alpha-Y-V}
+k \;>\; \partial_{\beta_H} M
++ \bigl|\partial_\alpha M\bigr|\cdot
+\frac{\bigl|\partial Y/\partial\beta_H\bigr|}{\partial Y/\partial\alpha}.
+\end{equation}
+Thus, for $k$ greater than the above threshold, TV is strictly increasing in~$\alpha$.
+
+\medskip
+\paragraph{Boundary.}\;
+Total views are fixed at $D_A + D_H = 1$, so $d\text{TV}/d\alpha = 0$.
+
+
+
+\medskip
+\textbf{Engagement-based.}
+\paragraph{Uncovered.}\;
+At fixed $\beta_H$, $q_H^* = \alpha Q\mH/\Gamma$ and
+$q_A^* = Q\mA\Psi/\Gamma$, with $\Psi = t\mH - 1$ and
+$\Gamma = \mA\Psi - \alpha^2\mH$.
+
+\emph{Direct effects.} Given $\partial\Gamma/\partial\alpha = -2\alpha\mH$):
+\[
+\frac{\partial q_H^*}{\partial\alpha}
+= \frac{Q\mH(\Gamma + 2\alpha^2\mH)}{\Gamma^2}=
+\frac{Q\mH(\mA\Psi +\alpha^2\mH)}{\Gamma^2}> 0,
+\qquad
+\frac{\partial q_A^*}{\partial\alpha}
+= \frac{2\alpha Q\mA\mH\Psi}{\Gamma^2} > 0,
+\]
+where positivity uses $\Gamma> 0$ from Assumption \ref{ass:concavity-E}.
+\[
+\frac{\partial\text{TV}}{\partial\alpha} = \frac{1}{t\mA}\cdot\frac{\partial q_A^*}{\partial\alpha} +  \frac{1}{t\mH}\cdot\frac{\partial q_H^*}{\partial\alpha}> 0
+\]
+where positivity uses $t\mH-1> 0$ from Assumption \ref{ass:nonsat}.
+
+\emph{Promotion-effect factors}: 
+With
+\[
+\frac{\partial\Gamma}{\partial\beta_H} = \delta(t\mH-1)-t\delta\mA +\delta \alpha^2 =  \delta[\delta t(1-2\beta_H) + \alpha^2 - 1],
+\]
+we have
+\[
+\frac{\partial q_H^*}{\partial\beta_H}
+= -\frac{\alpha Q\bigl[\delta\Gamma + \mH\,\partial\Gamma/\partial\beta_H\bigr]}{\Gamma^2},
+\qquad
+\frac{\partial q_A^*}{\partial\beta_H}
+= -\frac{\alpha^2 Q\bigl[\delta\Gamma + \mH\,\partial\Gamma/\partial\beta_H\bigr]}{\Gamma^2}
+\]
+The second promotion-effect factor is
+$d\beta_H^*/d\alpha = (\partial_\alpha M)/(k -
+\partial_{\beta_H}M)$, and  $\partial_\alpha M$ is computed in the proof of Corollary \ref{cor:alpha_uh}.
+
+When
+\begin{equation}\label{eq:kbar-alpha-Y-E}
+k \;>\; \partial_{\beta_H}M
++ \bigl|\partial_\alpha M\bigr|\cdot
+\frac{\bigl|\partial \text{TV}/\partial\beta_H\bigr|}{\partial \text{TV}/\partial\alpha},
+\end{equation}
+the direct effect dominates and total views is increasing in $\alpha$.
+
+
+\medskip
+\paragraph{Boundary/Covered.}\;
+Total views are fixed at $D_A + D_h = 1$, so $d\text{TV}/d\alpha = 0$.
+\hfill$\square$
+\end{proof}
+
+
+\subsection*{Proof of Corollary \ref{cor:alpha_te}}
+\begin{proof}
+\textbf{View-based.}
+\paragraph{Uncovered.}\;
+Total engagement is
+\begin{align*}
+\text{TE} = \frac{(q_A^*)^2}{t\mA} + \frac{(q_H^*)^2}{t\mH},
+\end{align*}
+with $q_H^* = (\mA+\alpha\mH)/(2t\mA\mH)$ and $q_A^* = \alpha q_H^* + Q$.
+
+\emph{Direct effects.}: since $\mA$ and $\mH$
+do not depend on $\alpha$,
+\[
+\frac{\partial q_H^*}{\partial\alpha}
+= \frac{\mH}{2t\mA\mH} = \frac{1}{2t\mA},
+\qquad
+\frac{\partial q_A^*}{\partial\alpha} = q_H^* + \frac{\alpha}{2t\mA}.
+\]
+Both are positive. Substituting:
+\[
+\frac{\partial\text{TE}}{\partial\alpha}\bigg|_{\beta_H}
+= \frac{2q_A^*}{t\mA}\!\left(q_H^* + \frac{\alpha}{2t\mA}\right)
++ \frac{2q_H^*}{t\mH}\cdot\frac{1}{2t\mA}
+= \frac{2q_A^* q_H^*}{t\mA} + \frac{\alpha q_A^*}{t^2\mA^2} + \frac{q_H^*}{t^2\mA\mH} > 0.
+\]
+
+\emph{Promotion-effects.} 
+\[
+\frac{\partial q_H^*}{\partial\beta_H}
+= \frac{2t\mA\mH\delta(1-\alpha) - 2t(\mA+\alpha\mH)\delta(\mH-\mA)}{4t^2\mA^2\mH^2} 
+=\frac{\delta(\mA^2 - \alpha\mH^2)}{2t\mA^2\mH^2},
+\qquad
+\frac{\partial q_A^*}{\partial\beta_H} = \alpha\,\frac{\partial q_H^*}{\partial\beta_H},
+\]
+which gives
+\begin{align*}
+\frac{\partial\text{TE}}{\partial\beta_H}
+&= \frac{2}{t}\!\left[\frac{q_A^*\,\partial q_A^*/\partial\beta_H}{\mA}
+   + \frac{q_H^*\,\partial q_H^*/\partial\beta_H}{\mH}\right]
+   - \frac{\delta}{t}\!\left[\frac{(q_A^*)^2}{\mA^2} - \frac{(q_H^*)^2}{\mH^2}\right].
+\end{align*}
+The second factor is
+$d\beta_H^*/d\alpha = (\partial_\alpha M)/(k - \partial_{\beta_H}M)$, and $\partial_\alpha M$ is computed in \eqref{eq:dPhi-dalpha-V} from the proof of Corollary~\ref{cor:alpha_uh}. The direct effect dominates whenever
+\begin{equation}\label{eq:kbar-alpha-Y-V}
+k \;>\; \partial_{\beta_H} M
++ \bigl|\partial_\alpha M\bigr|\cdot
+\frac{\bigl|\partial Y/\partial\beta_H\bigr|}{\partial Y/\partial\alpha}.
+\end{equation}
+Thus, if $k$ satisfies the above inequality, TE is strictly increasing in~$\alpha$.
+
+\medskip
+\paragraph{Boundary.}\;
+For TE, the boundary condition gives $q_H^* = \mH (t\mA - Q)/(\mA+\alpha\mH)$,
+and $q_A^* = \alpha q_H^* + Q$. At fixed $\beta_H$,
+\[
+\frac{\partial q_H^*}{\partial\alpha} = -\frac{\mH^2 (t\mA-Q)}{(\mA+\alpha\mH)^2} < 0,
+\qquad
+\frac{\partial q_A^*}{\partial\alpha} = q_H^* + \alpha\,\frac{\partial q_H^*}{\partial\alpha}
+= \frac{\mA\mH (t\mA-Q)}{(\mA+\alpha\mH)^2} > 0,
+\]
+where $t\mA-Q>0$ by Assumption \ref{ass:nonsat}. The direct effect on TE is
+\[
+\frac{\partial\text{TE}}{\partial\alpha}\bigg|_{\beta_H}
+= \frac{2q_A^*}{t\mA}\cdot\frac{\mA\mH (t\mA-Q)}{(\mA+\alpha\mH)^2}
++ \frac{2q_H^*}{t\mH}\cdot\!\left(-\frac{\mH^2 (t\mA-Q)}{(\mA+\alpha\mH)^2}\right)
+= \frac{2\mH (t\mA-Q)}{t(\mA+\alpha\mH)^2}(q_A^* - q_H^*).
+\]
+A short calculation gives
+\[
+q_A^* - q_H^*
+= \frac{Q(2-\delta) - (1-\alpha)\,t\,\mA\mH}{\mA + \alpha\mH},
+\]
+which is strictly positive whenever $Q(2-\delta) > (1-\alpha)\,t\,\mA\mH$.
+Under this condition, the direct
+effect on TE is strictly positive.
+
+The promotion-effect factors are $\partial\text{TE}/\partial\beta_H$
+and
+$d\beta_H^*/d\alpha = (\partial_\alpha M)/(k -
+\partial_{\beta_H}M)$, where $\partial_\alpha M$ is computed in \eqref{eq:dPhi-dalpha-Vbnd} from Corollary \ref{cor:alpha_uh}.
+\[
+\frac{\partial\text{TE}}{\partial\beta_H}
+\;=\; \frac{2}{t}\!\left[\frac{q_A^*\,\partial q_A^*/\partial\beta_H}{\mA}
++ \frac{q_H^*\,\partial q_H^*/\partial\beta_H}{\mH}\right]
+- \frac{\delta}{t}\!\left[\frac{(q_A^*)^2}{\mA^2} - \frac{(q_H^*)^2}{\mH^2}\right],
+\]
+For 
+\begin{equation}\label{eq:kbar-alpha-TE-V-bnd}
+k > \partial_{\beta_H}M
++ \bigl|\partial_\alpha M\bigr|\cdot
+\frac{\bigl|\partial\text{TE}/\partial\beta_H\bigr|}{\partial\text{TE}/\partial\alpha},
+\end{equation}
+the direct effect dominates.
+
+\medskip
+\textbf{Engagement-based.}
+\paragraph{Uncovered.}\;
+At fixed $\beta_H$, $q_H^* = \alpha Q\mH/\Gamma$ and
+$q_A^* = Q\mA\Psi/\Gamma$, with $\Psi = t\mH - 1$ and
+$\Gamma = \mA\Psi - \alpha^2\mH$.
+
+\emph{Direct effects.} Given $\partial\Gamma/\partial\alpha = -2\alpha\mH$:
+\[
+\frac{\partial q_H^*}{\partial\alpha}
+= \frac{Q\mH(\Gamma + 2\alpha^2\mH)}{\Gamma^2}=
+\frac{Q\mH(\mA\Psi +\alpha^2\mH)}{\Gamma^2}> 0,
+\qquad
+\frac{\partial q_A^*}{\partial\alpha}
+= \frac{2\alpha Q\mA\mH\Psi}{\Gamma^2} > 0,
+\]
+where positivity uses $\Gamma> 0$ from Assumption \ref{ass:concavity-E}.
+\[
+\frac{\partial\text{TE}}{\partial\alpha} = \frac{2q_A^* (\partial q_A^*/\partial \alpha)}{t\mA}
++ \frac{2q_H^* (\partial q_H^*/\partial \alpha)}{t\mH} > 0
+\]
+where positivity $t\mH-1>0$ from Assumption \ref{ass:nonsat}.
+
+\emph{Promotion-effect factors}: 
+With
+\[
+\frac{\partial\Gamma}{\partial\beta_H} = \delta(t\mH-1)-t\delta\mA +\delta \alpha^2 =  \delta[\delta t(1-2\beta_H) + \alpha^2 - 1],
+\]
+we have
+\[
+\frac{\partial q_H^*}{\partial\beta_H}
+= -\frac{\alpha Q\bigl[\delta\Gamma + \mH\,\partial\Gamma/\partial\beta_H\bigr]}{\Gamma^2},
+\qquad
+\frac{\partial q_A^*}{\partial\beta_H}
+= -\frac{\alpha^2 Q\bigl[\delta\Gamma + \mH\,\partial\Gamma/\partial\beta_H\bigr]}{\Gamma^2}
+\]
+The second promotion-effect factor is
+$d\beta_H^*/d\alpha = (\partial_\alpha M)/(k -
+\partial_{\beta_H}M)$, and  $\partial_\alpha M$ is computed in \eqref{eq:dPhi-dalpha-E} from Corollary \ref{cor:alpha_uh}.
+
+For
+\begin{equation}\label{eq:kbar-alpha-Y-E}
+k \;>\; \partial_{\beta_H}M
++ \bigl|\partial_\alpha M\bigr|\cdot
+\frac{\bigl|\partial Y/\partial\beta_H\bigr|}{\partial Y/\partial\alpha},
+\end{equation}
+the direct effect dominates and TE is increasing in $\alpha$.
+
+
+\medskip
+\paragraph{Covered.}\;
+Combining $u_P = \text{TE} - r\,q_H
+- \tfrac{k}{2}(\beta_H - \tfrac12)^2$ with $q_H = r$ and
+$u_H = (r^*)^2/2$ from Corollary~\ref{lem:uc} gives the identity
+\begin{equation}\label{eq:TE-decomp-E-cov}
+\text{TE} \;=\; u_P \;+\; 2\,u_H \;+\; \tfrac{k}{2}\bigl(\beta_H - \tfrac12\bigr)^2.
+\end{equation}
+\textit{Direct effect.}\;
+Differentiating~\eqref{eq:TE-decomp-E-cov} at fixed $\beta_H$:
+\[
+\frac{\partial\text{TE}}{\partial\alpha}\bigg|_{\beta_H}
+\;=\; \frac{\partial u_P}{\partial\alpha}\bigg|_{\beta_H}
+\;+\; 2\,\frac{\partial u_H}{\partial\alpha}\bigg|_{\beta_H}.
+\]
+From the proof of Corollary~\ref{cor:alpha_up}, using $r^* = N_c/(2\Lambda)$:
+\[
+\frac{\partial u_P}{\partial\alpha}\bigg|_{\beta_H}
+\;=\; \frac{r^*\,[\Lambda(t\mH+2Q) - (1-\alpha)N_c]}{S\,\Lambda}
+\;=\; \frac{N_c\,(t\mH + \alpha + 2Q - 1)}{2\Lambda^2}
+\;>\; 0,
+\]
+where $N_c = t(\alpha\mH + \mA) - 2(1-\alpha)Q$ and $\Lambda=t(2-\delta)-(1-\alpha)^{2}$. It is strictly positive because $t\mH > 1$ under Assumption~\ref{ass:concavity-E}.
+From the proof of Corollary~\ref{cor:alpha_uh},
+\[
+\frac{\partial u_H}{\partial\alpha}\bigg|_{\beta_H}
+\;=\; \frac{N_c\,[\Lambda(t\mH+2Q) - 2(1-\alpha)N_c]}{4\Lambda^3},
+\]
+whose sign matches that of \eqref{eq:direct-alpha-E-cov-general}.
+Combining over the common factor $N_c/(2\Lambda^3)$:
+\begin{equation}\label{eq:dTE-dalpha-E-cov}
+\frac{\partial\text{TE}}{\partial\alpha}\bigg|_{\beta_H}
+\;=\; \frac{N_c}{2\Lambda^3}\bigl[\,\Lambda\,(2t\mH + 4Q + \alpha - 1)
+\;-\; 2(1-\alpha)\,N_c\,\bigr].
+\end{equation}
+The direct effect is strictly positive whenever
+$\Lambda\,(2t\mH + 4Q + \alpha - 1) > 2(1-\alpha)\,N_c$. 
+% A simpler
+% sufficient condition is $\Lambda(t + 2Q) \geq 2(1-\alpha)N_c$ (i.e.,
+% $\partial u_H/\partial\alpha|_{\beta_H} \geq 0$): both summands
+% in~\eqref{eq:dTE-dalpha-E-cov} are then nonnegative and the direct effect is
+% strictly positive.
+
+\medskip
+\textit{Promotion effect.}\;
+Differentiating~\eqref{eq:TE-decomp-E-cov} at fixed $\alpha$ and using
+$\partial u_P/\partial\beta_H = M - k(\beta_H - \tfrac12)$:
+\begin{equation}\label{eq:dTE-dbeta-E-cov-form}
+\frac{\partial\text{TE}}{\partial\beta_H}
+\;=\; \bigl[M - k(\beta_H - \tfrac12)\bigr]
+\;+\; 2\,\frac{\partial u_H}{\partial\beta_H}
+\;+\; k\bigl(\beta_H - \tfrac12\bigr)
+\;=\;M\;+\; 2\,\frac{\partial u_H}{\partial\beta_H}.
+\end{equation}
+The two pieces are, using $\partial N_c/\partial\beta_H = t\delta(1-\alpha)$
+and $\partial\Lambda/\partial\beta_H = 0$:
+\[
+M
+\;=\; \frac{\delta}{2\Lambda (2-\delta)}\bigl[(1-\alpha)N_c - 2Q\Lambda\bigr],
+\qquad
+\frac{\partial u_H}{\partial\beta_H}
+\;=\; r^* \frac{\partial r}{\partial \beta_H} =  \frac{t\delta(1-\alpha)\,N_c}{4\Lambda^2}.
+\]
+Combining over the common denominator $2\Lambda^2 (2-\delta)$ and using
+$\Lambda + t(2-\delta) = 2t(2-\delta) - (1-\alpha)^2$:
+\begin{equation}\label{eq:dTE-dbeta-E-cov}
+\frac{\partial\text{TE}}{\partial\beta_H}
+\;=\; \frac{\delta}{2\Lambda^2 (2-\delta)}
+\bigl[\,(1-\alpha)N_c\,(2t(2-\delta) - (1-\alpha)^2) \;-\; 2Q\Lambda^2\,\bigr].
+\end{equation}
+
+The other promotion-effect factor is $d\beta_H^*/d\alpha
+= (\partial_\alpha M)/
+(k - \partial_{\beta_H}M)$, whose pieces are
+\begin{align*}
+\partial_\alpha M
+&\;=\; \frac{\delta}{2\Lambda^2 (2-\delta)}\bigl[\,(1-\alpha)(t\mH + 2Q)\,\Lambda
+   \;-\; N_c\,(t(2-\delta) + (1-\alpha)^2)\,\bigr],\quad (\text{\eqref{eq:dPhi-dalpha-E-cov} from Corollary~\ref{cor:alpha_uh}})\\[3pt]
+\partial_{\beta_H}M
+&\;=\; \frac{t\delta^2(1-\alpha)^2}{2\Lambda (2-\delta)}
+\;>\; 0
+\quad (\text{from Proposition~\ref{prop:optimal:r_beta:Eng-Based}}).
+\end{align*}
+For
+\begin{equation}\label{eq:kbar-alpha-TE-E-cov}
+k> \partial_{\beta_H}M
+\;+\; \bigl|\partial_\alpha M\bigr|\cdot
+\frac{\bigl|\partial\text{TE}/\partial\beta_H\bigr|}
+{\partial\text{TE}/\partial\alpha},
+\end{equation}
+the direct effect dominates the promotion effect. 
+
+
+\medskip
+\paragraph{Boundary.}\;
+Here the optimal rate is clamped at the saturation level
+$r^* = r_b = \mH(t\mA - Q)/(\mA+\alpha\mH)$. Since the creator's effort
+is $q_H^* = r^* = r_b$ and $q_A^* = \alpha q_H^* + Q$, the equilibrium
+quantities are exactly the same as in the view-based boundary case
+above. Total engagement, with the demands $D_A = q_A^*/(t\mA)$ and
+$D_H = q_H^*/(t\mH)$ that hold at the coverage boundary, is
+\[
+\text{TE} = \frac{(q_A^*)^2}{t\mA} + \frac{(q_H^*)^2}{t\mH},
+\]
+the same form as the view-based boundary, so the direct and promotion
+effects coincide with the ones derived there.
+
+\emph{Direct effect.} At fixed $\beta_H$,
+\[
+\frac{\partial q_H^*}{\partial\alpha}
+= -\frac{\mH^2 (t\mA-Q)}{(\mA+\alpha\mH)^2} < 0,
+\qquad
+\frac{\partial q_A^*}{\partial\alpha}
+= q_H^* + \alpha\,\frac{\partial q_H^*}{\partial\alpha}
+= \frac{\mA\mH (t\mA-Q)}{(\mA+\alpha\mH)^2} > 0,
+\]
+with $t\mA - Q > 0$ by Assumption \ref{ass:nonsat}. Hence
+\[
+\frac{\partial\text{TE}}{\partial\alpha}\bigg|_{\beta_H}
+= \frac{2\mH (t\mA-Q)}{t(\mA+\alpha\mH)^2}\,(q_A^* - q_H^*),
+\qquad
+q_A^* - q_H^* = \frac{Q(2-\delta) - (1-\alpha)\,t\,\mA\mH}{\mA+\alpha\mH},
+\]
+which is strictly positive when $Q(2-\delta) > (1-\alpha)\,t\,\mA\mH$
+and strictly negative otherwise.
+
+\emph{Promotion effect.} The promotion-effect factors are
+$\partial\text{TE}/\partial\beta_H$ and
+$d\beta_H^*/d\alpha = (\partial_\alpha M)/(k - \partial_{\beta_H}M)$,
+where $M$ is the boundary branch in Proposition
+\ref{prop:optimal:r_beta:Eng-Based} and $\partial_\alpha M$ is taken
+from the boundary case in the proof of Corollary \ref{cor:alpha_uh}.
+With
+\[
+\frac{\partial\text{TE}}{\partial\beta_H}
+= \frac{2}{t}\!\left[\frac{q_A^*\,\partial q_A^*/\partial\beta_H}{\mA}
++ \frac{q_H^*\,\partial q_H^*/\partial\beta_H}{\mH}\right]
+- \frac{\delta}{t}\!\left[\frac{(q_A^*)^2}{\mA^2} - \frac{(q_H^*)^2}{\mH^2}\right],
+\]
+the direct effect dominates whenever
+\begin{equation}\label{eq:kbar-alpha-TE-E-bnd}
+k > \partial_{\beta_H}M
++ \bigl|\partial_\alpha M\bigr|\cdot
+\frac{\bigl|\partial\text{TE}/\partial\beta_H\bigr|}{\partial\text{TE}/\partial\alpha}.
+\end{equation}
+Under this condition $d\text{TE}/d\alpha$ takes the sign of the direct
+effect, i.e., the sign of $Q(2-\delta) - (1-\alpha)\,t\,\mA\mH$.
+\hfill$\square$
+\end{proof}
+
+
+\subsection*{Proof of Corollary~\ref{cor:alpha_beta}}
+\begin{proof}
+By \eqref{eq:implicit-beta}, the sign of $d\beta_H^*/d\alpha$ matches
+that of $\partial_\alpha M$.
+
+
+\textbf{View-based.}
+\paragraph{Uncovered.} From \eqref{eq:dPhi-dalpha-V},
+\[
+\partial_\alpha M = \frac{\delta\left[\mA(\mA - \mH) - 2\alpha\mH^2\right]}{2t^2\mA^3\mH^2}
+\]
+This is positive when
+\[
+\mA(\mA-\mH) - 2\alpha\mH^2 > 0 \Longleftrightarrow \alpha < \frac{\delta\mA(2\beta_H-1)}{2\mH^2}
+\]
+
+\paragraph{Boundary.} From \eqref{eq:dPhi-dalpha-Vbnd},
+\[
+\partial_\alpha M= -\frac{2\delta\mH^2 (t\mA-Q)}{(\mA+\alpha\mH)^4}\Bigl[\,t\mH(\mA+\alpha\mH)+3t(\mA^2-\alpha\mH^2)-3Q(2-\delta)\,\Bigr]
+\]
+This is positive when
+\[
+t\mH(\mA+\alpha\mH)+3t(\mA^2-\alpha\mH^2)-3Q(2-\delta) < 0 \Longleftrightarrow Q > \frac{t}{3(2-\delta)}[\mH(\mA-2\alpha\mH)+3\mA^2]
+\]
+
+
+\textbf{Engagement-based.}
+\paragraph{Uncovered.} From \eqref{eq:dPhi-dalpha-E},
+\[
+\partial_\alpha M=
+\frac{2\alpha\delta Q^2}{t\Gamma^3}\bigl[\Gamma - 2\mH((t\mH-1)^2 - \alpha^2)\bigr]
+\]
+where $\Gamma=\mA(t\mH-1)-\alpha^{2}\mH$. This is positive when
+\[
+\Gamma - 2\mH((t\mH-1)^2 - \alpha^2) > 0 \Longleftrightarrow \alpha^2 > \frac{(t\mH-1)[2\mH(t\mH-1)-\mA]}{\mH}
+\]
+
+
+\paragraph{Covered.} From \eqref{eq:dPhi-dalpha-E-cov},
+\[
+\partial_\alpha M=
+\frac{\delta}{2(2-\delta)\Lambda^2}\Bigl[\,\Lambda\bigl[(1-\alpha)(t\mH+2Q) - N_c\bigr] - 2(1-\alpha)^2 N_c\,\Bigr]
+\]
+where $N_c = t(\alpha\mH + \mA) - 2(1-\alpha)Q$ and $\Lambda=t(2-\delta)-(1-\alpha)^{2}$.
+This is positive when
+\[
+\Lambda\bigl[(1-\alpha)(t\mH+2Q) - N_c\bigr] - 2(1-\alpha)^2 N_c>0 \;\Longleftrightarrow\;
+Q > \frac{\Lambda\bigl[\mA+(2\alpha-1)\mH\bigr] + 2(1-\alpha)^2(\mA+\alpha\mH)}{4(1-\alpha)(2-\delta)}.
+\]
+
+\paragraph{Boundary.}
+At the boundary the platform sets $r^* = r_b(\beta_h) = \mH P/N$, and $M(\beta_h)$ is
+the third branch of Proposition~\ref{prop:optimal:r_beta:Eng-Based}.
+\[
+    M = \delta\!\left[-\Bigl(2\alpha + \tfrac{2 r_b[(1-\alpha)-t\mH]}{t\mH}\Bigr)\frac{W}{N^2}
+        + t\Bigl(\tfrac{2 r_b}{t\mH}-1\Bigr)\right],
+    \qquad W := t\mA^2 - \alpha t\mH^2 - Q(2-\delta).
+\]
+Differentiate in $\alpha$ at fixed $\beta_H$ (so $\mA,\mH$ are held fixed), using
+\[
+    \frac{\partial r_b}{\partial\alpha} = -\frac{\mH^2 P}{N^2},\qquad
+    \frac{\partial N}{\partial\alpha} = \mH,\qquad
+    \frac{\partial W}{\partial\alpha} = -t\mH^2 .
+\]
+Collecting the result as a quadratic in $P = t\mA - Q$ gives
+\begin{equation}\label{eq:dPhi-dalpha-E-bnd}
+    \partial_\alpha M
+    = \frac{2\delta}{t\,N^4}\Bigl[\,c_2\,P^2 + c_1\,P + c_0\,\Bigr],
+\end{equation}
+with
+\[
+    c_2 = -(2-\delta)\bigl(3\mH\Psi + 2\alpha\mH - \mA\bigr),\quad
+    c_1 = tN\bigl[\alpha\mH(2-\delta) - \mA(\mA+3\mH) + 2\mH^2\Psi\bigr],\quad
+    c_0 = t^2\mA\mH\,N^2 .
+\]
+$2\delta/(t N^4)$ is strictly positive, so
+$\operatorname{sign}(d\beta_H^*/d\alpha) = \operatorname{sign}\!\bigl(c_2 P^2 + c_1 P + c_0\bigr)$.
+Since $c_0 = t^2\mA\mH N^2 > 0$, the derivative is positive whenever the market sits close
+to saturation ($Q$ near $t\mA$, i.e.\ $P$ near $0$); away from that edge the sign is set by
+$c_1$ and $c_2$.
+\hfill $\square$
+\end{proof}
+
+
+

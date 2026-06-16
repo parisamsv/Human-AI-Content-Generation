@@ -1,41 +1,54 @@
 """
 solver.py
 ---------
-Finds the platform's optimal algorithmic weight beta_H* by solving its
-first-order condition (FOC), clipped to [0, 1].
+Finds the platform's optimal algorithmic weight beta_H* in [0, 1].
 
-Both models (view-based and engagement-based) share the same structure
-for beta_H*:
+The platform's utility is:
 
-    beta_H* = max(0, min(1, 1/2 + M(beta_H*) / k))
+    U(beta) = U_base(beta) - (k/2) * (beta - 0.5)^2
 
-which is equivalent to the bounded FOC:
+Its derivative is the first-order condition (FOC):
 
-    M(beta_H) = k * (beta_H - 0.5)      with beta_H in [0, 1].
+    f(beta) = M(beta) - k * (beta - 0.5)       where M = dU_base/dbeta
 
-Rearranged: f(beta_H) = M(beta_H) - k*(beta_H - 0.5) = 0.
+Under Assumption 1 (k large), U is globally concave, f is strictly
+decreasing, and the unique interior root of f is a maximum.
 
-Under the large-k assumption (Assumption 1), the platform utility is
-strictly concave in beta_H, so f is strictly decreasing and the FOC has
-exactly one solution in [0, 1].  We find it with Brent's method.
+When Assumption 1 fails, U can be globally convex: f is then strictly
+increasing and any interior root is a minimum.  The maximum is then at
+one of the corners {0, 1}.
+
+Because the utility is either globally concave or globally convex, f
+has at most one interior root.  It suffices to:
+
+  1. Look for the unique root of f in (0, 1).
+  2. Check the SOC at the root.
+       M'(root) < k  →  local maximum  →  return it.
+       M'(root) ≥ k  →  local minimum  →  compare corners.
+  3. Compare corners by evaluating U directly at 0 and 1.
 """
+
 from scipy.optimize import brentq
 
+_FD_EPS = 1e-6   # step size for the central-difference estimate of M'
 
-def find_beta_star(M_func, k: float, tol: float = 1e-12) -> float:
+
+def find_beta_star(M_func, k: float, utility_func,
+                   tol: float = 1e-12) -> float:
     """
-    Solve the platform's constrained FOC for beta_H*.
+    Find beta_H* in [0, 1] that maximises the platform's utility.
 
     Parameters
     ----------
     M_func : callable
-        M_func(beta_H) returns the marginal base revenue at beta_H.
-        This is the derivative of the platform's base utility (without
-        the penalty term) with respect to beta_H.
+        M_func(beta) = dU_base/dbeta, the marginal base revenue.
     k : float
-        Algorithmic-neutrality penalty (must be positive).
+        Algorithmic-neutrality penalty (positive).
+    utility_func : callable
+        utility_func(beta) = U(beta), the full platform utility at beta.
+        Used to compare corners when the interior root is a minimum.
     tol : float
-        Absolute tolerance for the root-finder.
+        Absolute tolerance for brentq.
 
     Returns
     -------
@@ -43,20 +56,22 @@ def find_beta_star(M_func, k: float, tol: float = 1e-12) -> float:
         Optimal beta_H* in [0, 1].
     """
     def foc(b: float) -> float:
-        # Positive ↔ platform wants to increase beta_H
-        # Negative ↔ platform wants to decrease beta_H
         return M_func(b) - k * (b - 0.5)
 
-    # --- Corner solutions ---
-    # If foc(0) <= 0, the FOC is already non-positive at the left boundary,
-    # meaning the platform prefers to go left of 0 → corner at 0.
-    if foc(0.0) <= 0.0:
-        return 0.0
+    f0 = foc(0.0)
+    f1 = foc(1.0)
 
-    # If foc(1) >= 0, the platform prefers to go right of 1 → corner at 1.
-    if foc(1.0) >= 0.0:
-        return 1.0
+    # ── Step 1: look for an interior root ─────────────────────────────────
+    if f0 * f1 < 0.0:
+        root = brentq(foc, 0.0, 1.0, xtol=tol)
 
-    # --- Interior solution ---
-    # foc(0) > 0 and foc(1) < 0, so a unique root exists in (0, 1).
-    return brentq(foc, 0.0, 1.0, xtol=tol, full_output=False)
+        # ── Step 2: second-order condition ────────────────────────────────
+        # M'(root) < k  ↔  d²U/dbeta² < 0  ↔  local maximum.
+        M_prime = (M_func(root + _FD_EPS) - M_func(root - _FD_EPS)) / (2.0 * _FD_EPS)
+        if M_prime < k:
+            return root     # concave case: interior root is the global max
+
+        # M'(root) ≥ k  →  local minimum; fall through to corner comparison.
+
+    # ── Step 3: compare corners ───────────────────────────────────────────
+    return 1.0 if utility_func(1.0) > utility_func(0.0) else 0.0

@@ -49,25 +49,25 @@ def main(output_dir: str = _DEFAULT_OUT) -> None:
     t0 = time.time()
 
     # ── 1. Comparative statics: AI baseline quality Q ────────────────────────
-    print("[1/5] Comparative statics: AI baseline quality Q")
-    plot_comparative_statics(
-        "Q",
-        os.path.join(output_dir, "fig_Q_comparative_statics.pdf"),
-    )
+    # print("[1/5] Comparative statics: AI baseline quality Q")
+    # plot_comparative_statics(
+    #     "Q",
+    #     os.path.join(output_dir, "fig_Q_comparative_statics.pdf"),
+    # )
 
-    # ── 2. Comparative statics: AI learning efficiency α ────────────────────
-    print("\n[2/5] Comparative statics: AI learning efficiency α")
-    plot_comparative_statics(
-        "alpha",
-        os.path.join(output_dir, "fig_alpha_comparative_statics.pdf"),
-    )
+    # # ── 2. Comparative statics: AI learning efficiency α ────────────────────
+    # print("\n[2/5] Comparative statics: AI learning efficiency α")
+    # plot_comparative_statics(
+    #     "alpha",
+    #     os.path.join(output_dir, "fig_alpha_comparative_statics.pdf"),
+    # )
 
     # ── 3. Comparative statics: algorithmic influence δ ──────────────────────
-    print("\n[3/5] Comparative statics: algorithmic influence δ")
-    plot_comparative_statics(
-        "delta",
-        os.path.join(output_dir, "fig_delta_comparative_statics.pdf"),
-    )
+    # print("\n[3/5] Comparative statics: algorithmic influence δ")
+    # plot_comparative_statics(
+    #     "delta",
+    #     os.path.join(output_dir, "fig_delta_comparative_statics.pdf"),
+    # )
 
     # ── 4. Preference map: (Q, α) plane ──────────────────────────────────────
     print("\n[4/5] Preference map: (Q, α) plane")
@@ -76,10 +76,10 @@ def main(output_dir: str = _DEFAULT_OUT) -> None:
     )
 
     # ── 5. Preference maps: (Q, δ) and (α, δ) planes ─────────────────────────
-    print("\n[5/5] Preference maps: (Q, δ) and (α, δ) planes")
-    plot_preference_map_delta(
-        os.path.join(output_dir, "fig_preference_map_delta.pdf"),
-    )
+    # print("\n[5/5] Preference maps: (Q, δ) and (α, δ) planes")
+    # plot_preference_map_delta(
+    #     os.path.join(output_dir, "fig_preference_map_delta.pdf"),
+    # )
 
     elapsed = time.time() - t0
     print(f"\n{'─'*55}")
