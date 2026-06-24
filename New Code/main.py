@@ -74,6 +74,14 @@ def main(output_dir: str = _DEFAULT_OUT) -> None:
     plot_preference_map_Q_alpha(
         os.path.join(output_dir, "fig_preference_map_Q_alpha.pdf"),
     )
+    # print("\n[4/5] Preference map: (Q, α) plane")
+    # plot_preference_map_Q_alpha(
+    #     os.path.join(output_dir, "fig_regV_map_Q_alpha.pdf"), reg = "V"
+    # )
+    # print("\n[4/5] Preference map: (Q, α) plane")
+    # plot_preference_map_Q_alpha(
+    #     os.path.join(output_dir, "fig_regE_map_Q_alpha.pdf"), reg = "E"
+    # )
 
     # ── 5. Preference maps: (Q, δ) and (α, δ) planes ─────────────────────────
     # print("\n[5/5] Preference maps: (Q, δ) and (α, δ) planes")

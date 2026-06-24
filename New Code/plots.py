@@ -38,6 +38,7 @@ from matplotlib.colors import ListedColormap, BoundaryNorm
 from params import BASELINE, RANGES, N_POINTS, N_GRID
 from model_view import equilibrium_view
 from model_engagement import equilibrium_eng
+from common import m_A, m_H
 
 
 # ── Global style ─────────────────────────────────────────────────────────────
@@ -70,6 +71,16 @@ _RCMAP = ListedColormap(REGION_COLORS)
 _RNORM = BoundaryNorm([-0.5, 0.5, 1.5, 2.5, 3.5], _RCMAP.N)
 _RCMAP.set_bad("#d9d9d9")   # grey for masked (invalid) cells
 
+REGION_COLORS_reg = ["#97cef3", "#f1f0a7", "#f99797"]
+REGION_LABELS_reg = [
+    "Uncovered",
+    "Boundary",
+    "Covered"
+]
+_RCMAP_reg = ListedColormap(REGION_COLORS_reg)
+_RNORM_reg = BoundaryNorm([-0.1, 0.5, 1.5, 2.5], _RCMAP_reg.N)
+_RCMAP_reg.set_bad("#d9d9d9")   # grey for masked (invalid) cells
+
 
 # ── Panel specification (same order in every 6-panel figure) ─────────────────
 _PANEL_KEYS = ["beta_H", "q_H", "u_P", "u_H", "TV", "TE"]
@@ -89,7 +100,6 @@ _PARAM_LABEL = {
     "delta": r"Algorithmic influence $\delta$",
 }
 
-
 # ── Internal helpers ──────────────────────────────────────────────────────────
 
 def _safe_eq(Q, alpha, delta, t, k):
@@ -103,7 +113,6 @@ def _safe_eq(Q, alpha, delta, t, k):
         return ev, ee
     except Exception:
         return None, None
-
 
 def _run_1d(param_name: str, values: np.ndarray, baseline: dict):
     """
@@ -128,7 +137,6 @@ def _run_1d(param_name: str, values: np.ndarray, baseline: dict):
 
     return data_v, data_e
 
-
 def _pref_code(dp: float, dh: float) -> int:
     """
     Convert (Δu_P, Δu_H) = (u_P^E - u_P^V, u_H^E - u_H^V) to region code.
@@ -147,10 +155,22 @@ def _pref_code(dp: float, dh: float) -> int:
     else:
         return 0
 
+def _pref_code_reg(integer) -> int:
+    """
+        code 0  Uncovered
+        code 1  Boundary
+        code 2  Covered
+    """
+    if integer == 1:
+        return 0
+    elif integer == 2:
+        return 1
+    else:
+        return 2
 
 def _run_2d(param_x: str, param_y: str,
             range_x: tuple, range_y: tuple,
-            baseline: dict):
+            baseline: dict, reg=None):
     """
     Build a (N_GRID × N_GRID) preference-region map over the
     (param_x, param_y) plane.
@@ -172,12 +192,18 @@ def _run_2d(param_x: str, param_y: str,
             p = {**baseline, param_x: xv, param_y: yv}
             ev, ee = _safe_eq(p["Q"], p["alpha"], p["delta"], p["t"], p["k"])
             if ev is not None:
-                dp = ee["u_P"] - ev["u_P"]
-                dh = ee["u_H"] - ev["u_H"]
-                region[j, i] = _pref_code(dp, dh)
+                if reg == "V":
+                    v = int(ev["Market"]=="uncov") + 2*int(ev["Market"]=="bnd") + 3*int(ev["Market"]=="cov")
+                    region[j, i] = _pref_code_reg(v)
+                elif reg == "E":
+                    e = int(ee["Market"]=="uncov") + 2*int(ee["Market"]=="bnd") + 3*int(ee["Market"]=="cov")
+                    region[j, i] = _pref_code_reg(e)
+                else:
+                    dp = ee["u_P"] - ev["u_P"]
+                    dh = ee["u_H"] - ev["u_H"]
+                    region[j, i] = _pref_code(dp, dh)
 
     return xs, ys, region
-
 
 # ── Comparative-statics figures ───────────────────────────────────────────────
 
@@ -209,6 +235,46 @@ def plot_comparative_statics(param_name: str,
     data_v, data_e = _run_1d(param_name, values, baseline)
     print("done.")
 
+    # ------------------- thresholds
+    def Qc (setting, beta_H):
+        mA = m_A(beta_H, baseline["delta"])
+        mH = m_H(beta_H, baseline["delta"])
+        t = baseline["t"]
+        alpha = baseline["alpha"]
+        if setting == "view":
+            return t * m_A - (m_A + alpha * m_H) ** 2 / (2 * t * m_A * m_H ** 2)
+        else:
+            Gamma  = mA * (t * mH - 1.0) - alpha ** 2 * mH 
+            return t * Gamma / (t * m_H - 1 + alpha)
+    
+    def Qc_prime(beta_H):
+        mA = m_A(beta_H, baseline["delta"])
+        mH = m_H(beta_H, baseline["delta"])
+        t = baseline["t"]
+        alpha = baseline["alpha"]
+        delta = baseline["delta"]
+        Lambda = t * (2.0 - delta) - (1.0 - alpha) ** 2
+        neum = t * (2 * Lambda * mA * mH - (mA + alpha * mH) ** 2)
+        denom = 2 * (2 - delta) * (t * mH - 1 + alpha)
+        return neum / denom
+    
+    def Q_hat(setting, beta_H):
+        mA = m_A(beta_H, baseline["delta"])
+        mH = m_H(beta_H, baseline["delta"])
+        t = baseline["t"]
+        alpha = baseline["alpha"]
+        delta = baseline["delta"]
+        if setting == "engagement":
+            Psi = t * mH - 1
+            Gamma  = mA * (t * mH - 1.0) - alpha ** 2 * mH 
+            bracket = (mA + alpha * mH) ** 2 + (alpha + Psi) * (mA ** 2 - alpha * mH ** 2) + (2 - delta) * Gamma
+            return t * bracket / (2 * (2 - delta ) * (alpha + Psi))
+        else:
+            bracket = 2 * mA ** 2 + mA * mH - alpha * mH ** 2
+            return t * bracket / (2 * (2 - delta))
+
+    
+
     fig, axes = plt.subplots(2, 3, figsize=(12, 7))
     axes = axes.flatten()
 
@@ -239,17 +305,25 @@ def plot_comparative_statics(param_name: str,
     plt.close(fig)
     print(f"    Saved → {output_path}")
 
-
 # ── Preference-map helpers ────────────────────────────────────────────────────
 
 def _draw_pref_map(ax, xs, ys, region,
                    xlabel: str, ylabel: str,
-                   title: str = "") -> None:
+                   title: str = "", reg = None) -> None:
     """Render a single preference-region heatmap on `ax`."""
     masked = np.ma.masked_where(region < 0, region).astype(float)
-    ax.pcolormesh(xs, ys, masked,
-                  cmap=_RCMAP, norm=_RNORM,
-                  shading="auto", rasterized=True)
+    if reg is not None:
+        ax.pcolormesh(xs, ys, masked,
+                    cmap=_RCMAP_reg, norm=_RNORM_reg,
+                    shading="auto", rasterized=True)
+
+    else:
+        ax.contourf(
+            xs, ys, masked,
+            levels=[-0.5, 0.5, 1.5, 2.5, 3.5],
+            cmap=_RCMAP,
+            hatches=['///', '\\\\\\', '...', 'xxx']
+        )
     ax.set_xlabel(xlabel, fontsize=10)
     ax.set_ylabel(ylabel, fontsize=10)
     if title:
@@ -257,16 +331,36 @@ def _draw_pref_map(ax, xs, ys, region,
     ax.tick_params(labelsize=8.5)
 
 
-def _region_legend():
-    """Return legend-patch list for the four preference regions."""
-    return [mpatches.Patch(facecolor=c, label=l, edgecolor="white", lw=0.4)
-            for c, l in zip(REGION_COLORS, REGION_LABELS)]
+def _region_legend(reg=None):
+    hatches = ['///', '\\\\\\', '...', 'xxx']
 
+    if reg is None:
+        return [
+            mpatches.Patch(
+                facecolor=c,
+                label=l,
+                hatch=h,
+                edgecolor="black",   # hatch color comes from edgecolor
+                lw=0.4
+            )
+            for c, l, h in zip(REGION_COLORS, REGION_LABELS, hatches)
+        ]
+    else:
+        return [
+            mpatches.Patch(
+                facecolor=c,
+                label=l,
+                hatch=h,
+                edgecolor="black",
+                lw=0.4
+            )
+            for c, l, h in zip(REGION_COLORS_reg, REGION_LABELS_reg, hatches)
+        ]
 
 # ── fig_preference_map_Q_alpha ─────────────────────────────────────────────────
 
 def plot_preference_map_Q_alpha(output_path: str,
-                                 baseline: dict = None) -> None:
+                                 baseline: dict = None, reg = None) -> None:
     """
     Heatmap over (Q, α) showing the four preference regions.
     The x-axis is Q ∈ RANGES["Q"], the y-axis is α ∈ RANGES["alpha"].
@@ -282,32 +376,31 @@ def plot_preference_map_Q_alpha(output_path: str,
     print(f"    computing (Q, α) preference map ({N_GRID}×{N_GRID}) …",
           end=" ", flush=True)
     xs, ys, region = _run_2d("Q", "alpha",
-                              RANGES["Q"], RANGES["alpha"], baseline)
+                              RANGES["Q"], RANGES["alpha"], baseline, reg)
     print("done.")
 
     fig, ax = plt.subplots(figsize=(6.5, 5.5))
     _draw_pref_map(ax, xs, ys, region,
-                   xlabel=_PARAM_LABEL["Q"],
-                   ylabel=_PARAM_LABEL["alpha"])
+                xlabel=_PARAM_LABEL["Q"],
+                ylabel=_PARAM_LABEL["alpha"], reg=reg)
 
     # Mark baseline
     bQ, ba = baseline["Q"], baseline["alpha"]
     ax.plot(bQ, ba, marker="*", ms=9, color="black", zorder=5,
             label=f"Baseline $(Q,\\alpha)=({bQ},{ba})$")
 
-    ax.legend(handles=_region_legend() +
+    ax.legend(handles=_region_legend(reg) +
               [mpatches.Patch(facecolor="none", edgecolor="none",
                               label=f"$\\bigstar$ baseline $({bQ},{ba})$")],
               loc="upper left", fontsize=8, framealpha=0.9, edgecolor="#aaaaaa")
 
-    fig.suptitle(
-        r"Monetization preferences over $(Q,\,\alpha)$",
-        fontsize=11, y=1.01)
+    # fig.suptitle(
+        # r"Monetization preferences over $(Q,\,\alpha)$",
+        # fontsize=11, y=1.01)
     fig.tight_layout()
     fig.savefig(output_path, bbox_inches="tight", dpi=150)
     plt.close(fig)
     print(f"    Saved → {output_path}")
-
 
 # ── fig_preference_map_delta ───────────────────────────────────────────────────
 

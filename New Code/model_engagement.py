@@ -273,7 +273,10 @@ def equilibrium_eng(Q: float, alpha: float,
     # Creator utility: half the square of effort (Corollary lem:uc)
     u_H = 0.5 * q_H ** 2
 
+    s = _scalars(beta_H, Q, alpha, delta, t)
+    regime, _ = _regime_and_rate(s, Q, alpha)
+
     return dict(
         beta_H=beta_H, r=r, q_H=q_H, q_A=q_A,
-        D_A=D_A, D_H=D_H, u_P=u_P, u_H=u_H, TV=TV, TE=TE,
+        D_A=D_A, D_H=D_H, u_P=u_P, u_H=u_H, TV=TV, TE=TE, Market=regime
     )
