@@ -330,7 +330,6 @@ def _draw_pref_map(ax, xs, ys, region,
         ax.set_title(title, fontsize=10)
     ax.tick_params(labelsize=8.5)
 
-
 def _region_legend(reg=None):
     hatches = ['///', '\\\\\\', '...', 'xxx']
 

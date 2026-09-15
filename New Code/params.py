@@ -15,8 +15,8 @@ Assumption checks at the baseline (beta_H = 0.5 → m_A = m_H = 1 - delta/2 = 0.
 # Baseline parameter values
 # ---------------------------------------------------------------------------
 BASELINE = {
-    "Q":     1.00,   # AI baseline quality
-    "alpha": 0.40,   # AI learning efficiency
+    "Q":     0.30,   # AI baseline quality
+    "alpha": 0.30,   # AI learning efficiency
     "delta": 0.50,   # algorithmic influence
     "t":     2.50,   # consumer mismatch cost
     "k":     2.50,   # algorithmic-neutrality penalty
@@ -28,7 +28,7 @@ BASELINE = {
 RANGES = {
     "Q":     (0.05, 1.30),
     "alpha": (0.10, 0.70),
-    "delta": (0.10, 0.50),
+    "delta": (0.10, 0.57),
 }
 
 # ---------------------------------------------------------------------------

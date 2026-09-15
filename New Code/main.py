@@ -63,17 +63,17 @@ def main(output_dir: str = _DEFAULT_OUT) -> None:
     # )
 
     # ── 3. Comparative statics: algorithmic influence δ ──────────────────────
-    # print("\n[3/5] Comparative statics: algorithmic influence δ")
-    # plot_comparative_statics(
-    #     "delta",
-    #     os.path.join(output_dir, "fig_delta_comparative_statics.pdf"),
-    # )
+    print("\n[3/5] Comparative statics: algorithmic influence δ")
+    plot_comparative_statics(
+        "delta",
+        os.path.join(output_dir, "fig_delta_comparative_statics.pdf"),
+    )
 
     # ── 4. Preference map: (Q, α) plane ──────────────────────────────────────
-    print("\n[4/5] Preference map: (Q, α) plane")
-    plot_preference_map_Q_alpha(
-        os.path.join(output_dir, "fig_preference_map_Q_alpha.pdf"),
-    )
+    # print("\n[4/5] Preference map: (Q, α) plane")
+    # plot_preference_map_Q_alpha(
+    #     os.path.join(output_dir, "fig_preference_map_Q_alpha.pdf"),
+    # )
     # print("\n[4/5] Preference map: (Q, α) plane")
     # plot_preference_map_Q_alpha(
     #     os.path.join(output_dir, "fig_regV_map_Q_alpha.pdf"), reg = "V"

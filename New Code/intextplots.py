@@ -66,8 +66,8 @@ COL_VIEW = "#8f07aa"   # view-based   (matches plots.py)
 COL_ENG  = "#0f21b0"   # engagement   (matches plots.py)
 GREY     = "#666666"
 
-# three soft, neutral region tints (uncovered / boundary / covered)
-SHADE = ["#e8edf4", "#efe9f3", "#e9f1ec"]
+# three soft, neutral region tints (uncovered / boundary / covered / capped)
+SHADE = [ "#efe9f3", "#e8edf4", "#e9f1ec", "#f7f4e7"]
 
 # sign-map colours: decreasing / flat-or-clamped / increasing
 _SMCOLORS = ["#c44e63", "#e9ecef", "#3a8c5f"]
@@ -90,18 +90,21 @@ def _vb_effort_thresholds(beta, Q, alpha, delta, t):
     r1   = t * mH ** 2 * P / N                       # uncovered upper edge
     r2   = t * (mA + mH) * mH * P / ((1 - alpha) * N)  # covered lower edge
     qbar = mH * P / N                                # stall effort at coverage
-    return r1, r2, qbar
+    r_c = t * (mA+mH) * (t*mH+Q) / (1 - alpha)**2
+    return r1, r2, qbar, r_c
 
 
 def _vb_effort_of_r(r, beta, Q, alpha, delta, t):
     """View-based q_H*(r), piecewise (Prop. pro:Optimal:q_H:View-Based)."""
     mA, mH = m_A(beta, delta), m_H(beta, delta)
-    r1, r2, qbar = _vb_effort_thresholds(beta, Q, alpha, delta, t)
+    r1, r2, qbar, r_c = _vb_effort_thresholds(beta, Q, alpha, delta, t)
     if r <= r1:
         return r / (t * mH)
     if r <= r2:
         return qbar
-    return r * (1 - alpha) / (t * (mA + mH))
+    if r <= r_c:
+        return r * (1 - alpha) / (t * (mA + mH))
+    return (t*mH+Q) / (1-alpha)
 
 
 def _eng_rate_candidates(beta, Q, alpha, delta, t):
@@ -125,11 +128,12 @@ def _eng_rate_candidates(beta, Q, alpha, delta, t):
 
 
 def _shade_regions(ax, edges, xmax):
-    """Shade [0,e1],[e1,e2],[e2,xmax] with the three SHADE tints."""
-    e1, e2 = edges
+    """Shade [0,e1],[e1,e2],[e2,e3],[e3,xmax] with the four SHADE tints."""
+    e1, e2, e3 = edges
     ax.axvspan(0, e1, color=SHADE[0], zorder=0)
     ax.axvspan(e1, e2, color=SHADE[1], zorder=0)
-    ax.axvspan(e2, xmax, color=SHADE[2], zorder=0)
+    ax.axvspan(e2, e3, color=SHADE[2], zorder=0)
+    ax.axvspan(e3, xmax, color=SHADE[3], zorder=0)
     for e in edges:
         ax.axvline(e, color=GREY, ls="--", lw=0.9, zorder=1)
 
@@ -144,34 +148,39 @@ def plot_vb_effort_regions(output_path, baseline=None):
     Q, alpha, delta, t = baseline["Q"], baseline["alpha"], baseline["delta"], baseline["t"]
     beta = 0.5
 
-    r1, r2, qbar = _vb_effort_thresholds(beta, Q, alpha, delta, t)
-    rmax = r2 * 1.45
+    r1, r2, qbar, r_c = _vb_effort_thresholds(beta, Q, alpha, delta, t)
+    q_dbar = _vb_effort_of_r(r_c, beta, Q, alpha, delta, t)
+    rmax = r_c * 1.4
     rs = np.linspace(0, rmax, 600)
     q  = np.array([_vb_effort_of_r(r, beta, Q, alpha, delta, t) for r in rs])
 
     fig, ax = plt.subplots(figsize=(6.4, 4.1))
-    _shade_regions(ax, (r1, r2), rmax)
+    _shade_regions(ax, (r1, r2, r_c), rmax)
     ax.axhline(qbar, color=GREY, ls=":", lw=0.9)
+    ax.axhline(q_dbar, color=GREY, ls=":", lw=0.9)
     ax.plot(rs, q, color=COL_VIEW, lw=2.4)
 
     ymax = q.max() * 1.16
     ax.set_ylim(0, ymax)
     ax.set_xlim(0, rmax)
-    ax.text(r1 / 2, ymax * 0.94, "Uncovered\n" r"$q_H^*=\dfrac{r}{t\,m_H}$",
-            ha="center", va="top", fontsize=9.5)
-    ax.text((r1 + r2) / 2, ymax * 0.94, "Boundary\n" r"$q_H^*=\bar q_H$",
-            ha="center", va="top", fontsize=9.5)
-    ax.text((r2 + rmax) / 2, ymax * 0.94,
-            "Covered\n" r"$q_H^*=\dfrac{r(1-\alpha)}{t(m_A+m_H)}$",
-            ha="center", va="top", fontsize=9.5)
-    ax.set_xticks([r1, r2])
-    ax.set_xticklabels([r"$r_V$", r"$r_V'$"])
-    ax.set_yticks([qbar])
-    ax.set_yticklabels([r"$\bar q_H$"])
+    ax.text(r1 / 2, ymax * 0.94, "Uncovered\n",
+            ha="center", va="top", fontsize=7)
+    ax.text((r1 + r2) / 2, ymax * 0.94, "Boundary\n",
+            ha="center", va="top", fontsize=7)
+    ax.text((r2 + r_c) / 2, ymax * 0.94,
+            "Covered\n" ,
+            ha="center", va="top", fontsize=7)
+    ax.text((r_c + rmax) / 2, ymax * 0.94,
+            "Capped\n" ,
+            ha="center", va="top", fontsize=7)
+    ax.set_xticks([r1, r2, r_c])
+    ax.set_xticklabels([r"$r_1$", r"$r_2$", r"$r_3$"])
+    ax.set_yticks([qbar, _vb_effort_of_r(r_c, beta, Q, alpha, delta, t)])
+    ax.set_yticklabels([r"$\bar q_H$", r"$\bar{\bar{q}}_H$"])
     ax.set_xlabel(r"Compensation rate $r$")
     ax.set_ylabel(r"Creator effort $q_H^*$")
-    ax.set_title(r"View-based: creator best response has three regions in $r$  "
-                 r"($\beta_H=1/2$)", fontsize=11)
+    # ax.set_title(r"View-based: creator best response has three regions in $r$  "
+    #              r"($\beta_H=1/2$)", fontsize=11)
     fig.tight_layout()
     fig.savefig(output_path, bbox_inches="tight", dpi=150)
     plt.close(fig)
@@ -589,8 +598,8 @@ def main(output_dir=_DEFAULT_OUT):
     os.makedirs(output_dir, exist_ok=True)
     print(f"Output directory: {output_dir}\n")
 
-    # print("[1/8] View-based effort regions")
-    # plot_vb_effort_regions(os.path.join(output_dir, "fig_vb_effort_regions.pdf"))
+    print("[1/8] View-based effort regions")
+    plot_vb_effort_regions(os.path.join(output_dir, "fig_vb_effort_regions.pdf"))
 
     # print("[2/8] Engagement-based effort regions")
     # plot_eb_effort_regions(os.path.join(output_dir, "fig_eb_effort_regions.pdf"))
@@ -607,13 +616,13 @@ def main(output_dir=_DEFAULT_OUT):
     # print("[6/8] Total Engagement vs α)")
     # plot_cmp_te_alpha_regions(os.path.join(output_dir, "fig_cmp_te_alpha_regions.pdf"))
 
-    print("[7/8] Beta_H vs Q")
-    plot_cmp_beta_Q_regions(os.path.join(output_dir, "fig_cmp_beta_Q_regions.pdf"))
+    # print("[7/8] Beta_H vs Q")
+    # plot_cmp_beta_Q_regions(os.path.join(output_dir, "fig_cmp_beta_Q_regions.pdf"))
 
-    print("[8/8] Beta_H vs α)")
-    plot_cmp_beta_alpha_regions(os.path.join(output_dir, "fig_cmp_beta_alpha_regions.pdf"))
+    # print("[8/8] Beta_H vs α)")
+    # plot_cmp_beta_alpha_regions(os.path.join(output_dir, "fig_cmp_beta_alpha_regions.pdf"))
 
-    print(f"\n{'-'*55}\nAll region figures written to '{output_dir}'")
+    # print(f"\n{'-'*55}\nAll region figures written to '{output_dir}'")
 
 if __name__ == "__main__":
     out = sys.argv[1] if len(sys.argv) > 1 else _DEFAULT_OUT
