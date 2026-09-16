@@ -1,6 +1,4 @@
 """
-solver.py
----------
 Finds the platform's optimal algorithmic weight beta_H* in [0, 1].
 
 The platform's utility is:
