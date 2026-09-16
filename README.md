@@ -51,11 +51,6 @@ The script works in two steps:
 
 The chosen figure is saved as a PDF in the `figures/` folder.
 
-To write the figure somewhere else, pass a path:
-
-```bash
-python main.py /path/to/output_folder
-```
 
 ### Parameter prompt
 
@@ -101,16 +96,3 @@ The paper does not use one single `k` for every figure. To match a particular fi
 - Creator utility vs `alpha`: `k = 1.0`
 
 All other baseline values are as in the table above.
-
-## What the code does, step by step
-
-For a given set of parameters, each equilibrium is found by backward induction:
-
-1. **Creator's effort.** The creator picks effort from her own first-order condition: `q_H = r` under engagement-based, and `q_H = r/(t*m_H)` under view-based.
-2. **Optimal pay rate.** For a fixed algorithmic weight, the platform's best pay rate `r*` is chosen among the interior and boundary candidates in the relevant proposition.
-3. **Optimal algorithmic weight.** `solver.py` solves `M(beta_H) = k*(beta_H - 1/2)` for the weight `beta_H*`, then clips it to `[0, 1]`.
-4. **Outcomes.** Demands, platform utility, creator utility, total views, and total engagement are computed from the equilibrium values.
-
-## Citation
-
-> Moosavi, S. P., Malekian, A., and Makhdoumi, A. "Content Generation: Human Creators, AI Learning, and Platform Design.".
