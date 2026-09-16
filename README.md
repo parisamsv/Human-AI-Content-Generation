@@ -106,8 +106,5 @@ For a given set of parameters, each equilibrium is found by backward induction:
 
 ## Citation
 
-If you use this code, please cite the paper:
 
 > Moosavi, S. P., Malekian, A., and Makhdoumi, A. "Content Generation: Human Creators, AI Learning, and Platform Design." *Management Science* (forthcoming).
-
-_(Update the volume, year, and DOI once available.)_

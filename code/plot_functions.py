@@ -1,37 +1,4 @@
-"""
-Figures produced
-----------------
-fig_vb_effort_regions.pdf           View-based creator effort q_H*(r) vs r
-                                    (Figure 2)
 
-fig_eb_effort_regions.pdf           Engagement-based creator effort q_H*(=r*) vs Q
-                                    (Figure 3)
-
-fig_cmp_uH_Q_regions.pdf            Creator utility vs Q, both settings
-                                    (Figure 4)
-
-fig_cmp_uH_alpha_regions.pdf        Creator utility vs alpha, both settings
-                                    (Figure 5)
-
-fig_preference_map_Q_alpha.pdf      Heatmap over (Q, α) showing the four preference regions
-                                    (Region I: both prefer View; II: both prefer Engagement;
-                                    III: Platform→E, Creator→V; IV: Platform→V, Creator→E).
-                                    (Figure 6)
-
-fig_preference_map_delta.pdf        Two side-by-side heatmaps: (Q, δ) and (α, δ) with the same
-                                    four preference regions as above.
-                                    (Figure 7)
-
-fig_negative_TE_Q_region.pdf        Heatmap showing the length of the Q-interval where
-                                    dTE/dQ < 0 (the negative branch of Corollary cor:Q_TE) over an (alpha,delta) grid 
-                                    (Figure 8)
-
-fig_Q_comparative_statics.pdf       Six-panel: β_H*, q_H*, u_P, u_H, TV, TE  vs  AI baseline quality Q.
-                                    (Figure 9)
-                                        
-fig_alpha_comparative_statics.pdf   Six-panel: β_H*, q_H*, u_P, u_H, TV, TE  vs  AI learning efficiency α.
-                                    (Figure 10)
-"""
 
 import sys
 import os
@@ -73,8 +40,8 @@ COL_VIEW = "#8f07aa"   # pink       – view-based
 COL_ENG  = "#0f21b0"   # blue – engagement-based
 GREY     = "#666666"
 
-# Preference-region colours (Regions I–IV)
-REGION_COLORS = ["#4292c6", "#f16913", "#41ab5d", "#5d36a0"]
+# Preference-region colours (agreement first, conflict second)
+REGION_COLORS = ["#004785", "#0f8300", "#e27100", "#A80003"]
 REGION_LABELS = [
     "Region I: both prefer View",
     "Region II: both prefer Engagement",
@@ -105,19 +72,19 @@ SIGNMAP_GRID = 170
 # ── Panel specification (same order in every 6-panel figure) ─────────────────
 _PANEL_KEYS = ["beta_H", "q_H", "u_P", "u_H", "TV", "TE"]
 _PANEL_YLABELS = [
-    r"Algorithmic weight $\beta_H^*$",
-    r"Creator effort $q_H^*$",
-    r"Platform utility $u_P$",
-    r"Creator utility $u_H$",
-    r"Total views $\mathrm{TV}$",
-    r"Total engagement $\mathrm{TE}$",
+    r"Algorithmic weight ($\beta_H^*$)",
+    r"Creator effort ($q_H^*$)",
+    r"Platform utility ($u_P$)",
+    r"Creator utility ($u_H$)",
+    r"Total views ($\mathrm{TV}$)",
+    r"Total engagement ($\mathrm{TE}$)",
 ]
 
 # Axis labels for each varying parameter
 _PARAM_LABEL = {
-    "Q":     r"AI baseline quality $Q$",
-    "alpha": r"AI learning efficiency $\alpha$",
-    "delta": r"Algorithmic influence $\delta$",
+    "Q":     r"AI baseline quality ($Q$)",
+    "alpha": r"AI learning efficiency ($\alpha$)",
+    "delta": r"Algorithmic influence ($\delta$)",
 }
 
 # ==============================================================================
@@ -304,8 +271,7 @@ def _draw_pref_map(ax, xs, ys, region,
         ax.contourf(
             xs, ys, masked,
             levels=[-0.5, 0.5, 1.5, 2.5, 3.5],
-            cmap=_RCMAP,
-            hatches=['///', '\\\\\\', '...', 'xxx']
+            cmap=_RCMAP
         )
     ax.set_xlabel(xlabel, fontsize=10)
     ax.set_ylabel(ylabel, fontsize=10)
@@ -314,29 +280,23 @@ def _draw_pref_map(ax, xs, ys, region,
     ax.tick_params(labelsize=8.5)
 
 def _region_legend(reg=None):
-    hatches = ['///', '\\\\\\', '...', 'xxx']
-
     if reg is None:
         return [
             mpatches.Patch(
                 facecolor=c,
                 label=l,
-                hatch=h,
-                edgecolor="black",   # hatch color comes from edgecolor
-                lw=0.4
+                edgecolor="none"
             )
-            for c, l, h in zip(REGION_COLORS, REGION_LABELS, hatches)
+            for c, l in zip(REGION_COLORS, REGION_LABELS)
         ]
     else:
         return [
             mpatches.Patch(
                 facecolor=c,
                 label=l,
-                hatch=h,
-                edgecolor="black",
-                lw=0.4
+                edgecolor="none"
             )
-            for c, l, h in zip(REGION_COLORS_reg, REGION_LABELS_reg, hatches)
+            for c, l in zip(REGION_COLORS_reg, REGION_LABELS_reg)
         ]
 
 # ── fig_preference_map_Q_alpha ─────────────────────────────────────────────────
@@ -420,8 +380,12 @@ def plot_preference_map_delta(output_path: str,
 
     _draw_pref_map(axes[1], xs_al, ys_d2, reg_ald,
                    xlabel=_PARAM_LABEL["alpha"],
-                   ylabel=_PARAM_LABEL["delta"],
+                   ylabel="",
                    title=r"$(\alpha,\,\delta)$ space")
+    axes[1].set_xticks([
+        tick for tick in axes[1].get_xticks()
+        if not np.isclose(tick, RANGES["alpha"][0])
+    ])
 
     # Mark baselines
     for ax, bx, by in [
@@ -436,9 +400,6 @@ def plot_preference_map_delta(output_path: str,
                frameon=True, framealpha=0.9, edgecolor="#aaaaaa",
                bbox_to_anchor=(0.5, -0.12))
 
-    fig.suptitle(
-        r"Monetization preferences as algorithmic influence $\delta$ varies",
-        fontsize=11, y=1.02)
     fig.tight_layout()
     fig.savefig(output_path, bbox_inches="tight", dpi=150)
     plt.close(fig)
@@ -545,8 +506,8 @@ def plot_vb_effort_regions(output_path, baseline=None):
     ax.set_xticklabels([r"$r_1$", r"$r_2$", r"$r_3$"])
     ax.set_yticks([qbar, _vb_effort_of_r(r_c, beta, Q, alpha, delta, t)])
     ax.set_yticklabels([r"$\bar q_H$", r"$\bar{\bar{q}}_H$"])
-    ax.set_xlabel(r"Compensation rate $r$")
-    ax.set_ylabel(r"Creator effort $q_H^*$")
+    ax.set_xlabel(r"Compensation rate ($r$)")
+    ax.set_ylabel(r"Creator effort ($q_H^*$)")
     # ax.set_title(r"View-based: creator best response has three regions in $r$  "
     #              r"($\beta_H=1/2$)", fontsize=11)
     fig.tight_layout()
@@ -598,8 +559,8 @@ def plot_eb_effort_regions(output_path, baseline=None):
             ha="center", va="top", fontsize=9.5)
     ax.set_xticks([QEc, QEcp])
     ax.set_xticklabels([r"$Q_E^{c}$", r"$Q_E^{c\,\prime}$"])
-    ax.set_xlabel(r"AI baseline quality $Q$")
-    ax.set_ylabel(r"Creator effort $q_H^*\;(=r^*)$")
+    ax.set_xlabel(r"AI baseline quality ($Q$)")
+    ax.set_ylabel(r"Creator effort ($q_H^*=r^*)$")
     ax.legend(loc="lower left", fontsize=8.3, framealpha=0.92)
     fig.tight_layout()
     fig.savefig(output_path, bbox_inches="tight", dpi=150)
@@ -652,10 +613,10 @@ def plot_cmp_uH_Q_regions(output_path, baseline=None):
         for values, alpha in zip(data, alpha_values):
             ax.plot(Qs, values, lw=2.2, label=rf"$\alpha={alpha}$")
         ax.set_xlim(lo, hi)
-        ax.set_xlabel(r"AI baseline quality $Q$")
+        ax.set_xlabel(r"AI baseline quality ($Q$)")
         ax.grid(True, axis="y")
 
-    axes[0].set_ylabel(r"Creator utility $u_H^*$")
+    axes[0].set_ylabel(r"Creator utility ($u_H^*$)")
     axes[1].legend(loc="upper left", fontsize=9.5, framealpha=0.92)
     fig.tight_layout()
     fig.savefig(output_path, bbox_inches="tight", dpi=150)
@@ -693,10 +654,10 @@ def plot_cmp_uH_alpha_regions(output_path, baseline=None):
         for values, q in zip(data, q_values):
             ax.plot(alphas, values, lw=2.2, label=rf"$Q={q}$")
         ax.set_xlim(lo, hi)
-        ax.set_xlabel(r"AI Efficiency $\alpha$")
+        ax.set_xlabel(r"AI Efficiency ($\alpha$)")
         ax.grid(True, axis="y")
 
-    axes[0].set_ylabel(r"Creator utility $u_H^*$")
+    axes[0].set_ylabel(r"Creator utility ($u_H^*$)")
     axes[1].legend(loc="upper left", fontsize=9.5, framealpha=0.92)
     fig.tight_layout()
     fig.savefig(output_path, bbox_inches="tight", dpi=150)
@@ -832,8 +793,8 @@ def plot_negative_region_map(output_path, baseline=None, n_Q=400,
         Zm = np.ma.masked_invalid(Z)
         im = ax.pcolormesh(a, d, Zm, cmap=cmap, vmin=0.0, vmax=vmax,
                            shading="auto", rasterized=True)
-        ax.set_xlabel(r"AI learning efficiency $\alpha$")
-        ax.set_ylabel(r"Algorithmic influence $\delta$")
+        ax.set_xlabel(r"AI learning efficiency ($\alpha$)")
+        ax.set_ylabel(r"Algorithmic influence ($\delta$)")
         # ax.set_title(f"{titles[setting]}", fontsize=11)
     fig.subplots_adjust(right=0.88, wspace=0.28)
     fig.colorbar(im, ax=axes, location="right", fraction=0.046, pad=0.04,
