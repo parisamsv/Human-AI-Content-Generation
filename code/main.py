@@ -155,7 +155,7 @@ def main(output_dir: str = _DEFAULT_OUT) -> None:
     print(f"[{label}]")
     runner(p)
 
-    print(f"\nDone. Figures written to '{output_dir}'")
+    print(f"\nDone. Figure written to '{output_dir}'")
 
 if __name__ == "__main__":
     out = sys.argv[1] if len(sys.argv) > 1 else _DEFAULT_OUT

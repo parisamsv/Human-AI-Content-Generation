@@ -2,7 +2,7 @@
 
 Replication code for the paper **"Content Generation: Human Creators, AI Learning, and Platform Design"** by S. P. Moosavi, A. Malekian (Rotman School of Management, University of Toronto), and A. Makhdoumi (Fuqua School of Business, Duke University).
 
-This repository reproduces every figure in the paper. It solves a three-stage game between a platform, a human creator, and consumers, under two ways the platform can make money: **view-based** (revenue and pay scale with audience size) and **engagement-based** (revenue and pay scale with the quality consumed). For each set of parameters, the code computes the equilibrium under both designs and draws the comparative-statics figures.
+This repository reproduces the figures in the paper. It solves a three-stage game between a platform, a human creator, and consumers, under two ways the platform can make money: **view-based** (revenue and pay scale with audience size) and **engagement-based** (revenue and pay scale with the quality consumed). For each set of parameters, the code computes the equilibrium under both designs and draws the comparative-statics figures.
 
 ## Repository layout
 
@@ -10,7 +10,7 @@ This repository reproduces every figure in the paper. It solves a three-stage ga
 .
 ├── README.md
 ├── code/                 # all source files
-│   ├── main.py           # entry point: prompts for parameters, generates figures
+│   ├── main.py           # entry point: pick a figure, enter parameters, generate it
 │   ├── params.py         # baseline parameters and ranges (Table 1)
 │   ├── common.py         # mismatch multipliers m_A, m_H
 │   ├── solver.py         # solves for the optimal algorithmic weight beta_H*
@@ -44,9 +44,14 @@ cd code
 python main.py
 ```
 
-The script will ask you for the five model parameters. Press **Enter** on any line to keep the paper's baseline value shown in brackets. It then generates all figures and saves them as PDFs in the `figures/` folder.
+The script works in two steps:
 
-To write the figures somewhere else, pass a path:
+1. **Pick a figure.** It prints a numbered menu of the figures and asks for one number. It generates a single figure per run, so to make several figures just run it again for each one.
+2. **Enter the parameters.** It then asks for the five model parameters. Press **Enter** on any line to keep the paper's baseline value shown in brackets.
+
+The chosen figure is saved as a PDF in the `figures/` folder.
+
+To write the figure somewhere else, pass a path:
 
 ```bash
 python main.py /path/to/output_folder
@@ -54,7 +59,7 @@ python main.py /path/to/output_folder
 
 ### Parameter prompt
 
-When the script starts, you are asked for:
+After you pick a figure, you are asked for:
 
 | Symbol | Meaning                     | Baseline |
 |--------|-----------------------------|----------|
@@ -64,30 +69,32 @@ When the script starts, you are asked for:
 | `t`    | Consumer mismatch cost      | 2.50     |
 | `k`    | Algorithmic-neutrality cost | 2.50     |
 
-Before running, the code checks that your values satisfy the paper's two key assumptions over the full range being plotted:
+Before drawing, the code checks that your values satisfy the paper's two key assumptions over the full range being plotted (it checks the hardest point in the range, the largest `Q` and largest `alpha`):
 
 - **Non-saturation:** `Q < t*(1 - delta)`
 - **Concavity:** `t > alpha^2 + 1/(1 - delta)`
 
-If a value breaks either assumption, the script tells you which one and does not produce a figure with invalid settings.
+If a value breaks either assumption, the script prints which one and stops, so no figure is produced with invalid settings. Fix the parameters and run again.
 
 ## Figures produced
 
-| File                              | Content                                                        |
-|-----------------------------------|----------------------------------------------------------------|
-| `fig_vb_effort_regions.pdf`       | View-based creator effort `q_H*` as the pay rate `r` varies    |
-| `fig_eb_effort_regions.pdf`       | Engagement-based creator effort `q_H* (= r*)` as `Q` varies    |
-| `fig_cmp_uH_Q_regions.pdf`        | Creator utility vs `Q`, both designs                           |
-| `fig_cmp_uH_alpha_regions.pdf`    | Creator utility vs `alpha`, both designs                       |
-| `fig_preference_map_Q_alpha.pdf`  | Which design each party prefers over the `(Q, alpha)` plane    |
-| `fig_preference_map_delta.pdf`    | Preference maps over `(Q, delta)` and `(alpha, delta)`         |
-| `fig_negative_TE_Q_region.pdf`    | Where total engagement falls in `Q`, over an `(alpha, delta)` grid |
-| `fig_Q_comparative_statics.pdf`   | Six panels vs `Q`: `beta_H*`, `q_H*`, `u_P`, `u_H`, TV, TE     |
-| `fig_alpha_comparative_statics.pdf`| Six panels vs `alpha`: same six outcomes                      |
+The menu number is what you type at the first prompt.
+
+| Menu | File                              | Content                                                        |
+|------|-----------------------------------|----------------------------------------------------------------|
+| 2    | `fig_vb_effort_regions.pdf`       | View-based creator effort `q_H*` as the pay rate `r` varies    |
+| 3    | `fig_eb_effort_regions.pdf`       | Engagement-based creator effort `q_H* (= r*)` as `Q` varies    |
+| 4    | `fig_cmp_uH_Q_regions.pdf`        | Creator utility vs `Q`, both designs                           |
+| 5    | `fig_cmp_uH_alpha_regions.pdf`    | Creator utility vs `alpha`, both designs                       |
+| 6    | `fig_preference_map_Q_alpha.pdf`  | Which design each party prefers over the `(Q, alpha)` plane    |
+| 7    | `fig_preference_map_delta.pdf`    | Preference maps over `(Q, delta)` and `(alpha, delta)`         |
+| 8    | `fig_negative_TE_Q_region.pdf`    | Where total engagement falls in `Q`, over an `(alpha, delta)` grid |
+| 9    | `fig_Q_comparative_statics.pdf`   | Six panels vs `Q`: `beta_H*`, `q_H*`, `u_P`, `u_H`, TV, TE     |
+| 10   | `fig_alpha_comparative_statics.pdf`| Six panels vs `alpha`: same six outcomes                      |
 
 ## Reproducing specific figures
 
-The paper does not use one single `k` for every figure. If you want to match a particular figure exactly, enter the `k` from that figure's caption at the prompt:
+The paper does not use one single `k` for every figure. To match a particular figure exactly, enter the `k` from that figure's caption at the prompt:
 
 - Main comparative-statics and preference maps: `k = 2.5`
 - Creator utility vs `Q`: `k = 1.5`
@@ -106,5 +113,4 @@ For a given set of parameters, each equilibrium is found by backward induction:
 
 ## Citation
 
-
-> Moosavi, S. P., Malekian, A., and Makhdoumi, A. "Content Generation: Human Creators, AI Learning, and Platform Design." *Management Science* (forthcoming).
+> Moosavi, S. P., Malekian, A., and Makhdoumi, A. "Content Generation: Human Creators, AI Learning, and Platform Design.".
