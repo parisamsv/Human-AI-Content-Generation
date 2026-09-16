@@ -17,7 +17,7 @@ BASELINE = {
     "alpha": 0.40,   # AI learning efficiency
     "delta": 0.50,   # algorithmic influence
     "t":     2.50,   # consumer mismatch cost
-    "k":     1.50,   # algorithmic-neutrality penalty
+    "k":     2.50,   # algorithmic-neutrality penalty
 }
 
 # ---------------------------------------------------------------------------

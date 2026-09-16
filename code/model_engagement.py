@@ -263,7 +263,7 @@ def equilibrium_eng(Q: float, alpha: float,
         # D_A = x*,  D_H = 1 - x*
         m_sum = mA + mH             # = 2 - delta
         D_A = max(0.0, (t * mH + q_A - q_H) / (t * m_sum))
-        D_H = max(0.0, (t * mA - q_A + q_H) / (t * m_sum))
+        D_H = 1.0 - D_A
 
     TV  = D_A + D_H
     TE  = q_A * D_A + q_H * D_H

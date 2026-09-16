@@ -444,7 +444,6 @@ def plot_preference_map_delta(output_path: str,
     plt.close(fig)
     print(f"    Saved → {output_path}")
 
-
 # ==============================================================================
 #                                   FIGURES 2,3,4,5
 # ==============================================================================
@@ -558,8 +557,8 @@ def plot_vb_effort_regions(output_path, baseline=None):
 # Illustrative parameters chosen so all three regimes fall inside the
 # assumptions' admissible Q-range; printed on the figure.
 EB_ILLUSTRATIVE = {"alpha": 0.80, "delta": 0.40, "t": 2.40, "k": 1.00}
-def plot_eb_effort_regions(output_path, params=None):
-    p = dict(EB_ILLUSTRATIVE if params is None else params)
+def plot_eb_effort_regions(output_path, baseline=None):
+    p = dict(EB_ILLUSTRATIVE if baseline is None else baseline)
     alpha, delta, t = p["alpha"], p["delta"], p["t"]
     beta = 0.5
     Qmax = t * (1.0 - delta)                 # non-saturation bound (Assumption 2)
@@ -662,7 +661,6 @@ def plot_cmp_uH_Q_regions(output_path, baseline=None):
     fig.savefig(output_path, bbox_inches="tight", dpi=150)
     plt.close(fig)
     print(f"    Saved -> {output_path}")
-
 
 def plot_cmp_uH_alpha_regions(output_path, baseline=None):
     if baseline is None:
