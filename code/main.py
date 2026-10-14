@@ -22,15 +22,11 @@ fig_preference_map_delta.pdf        Two side-by-side heatmaps: (Q, δ) and (α, 
                                     four preference regions as above.
                                     (Figure 7)
 
-fig_negative_TE_Q_region.pdf        Heatmap showing the length of the Q-interval where
-                                    dTE/dQ < 0 (the negative branch of Corollary cor:Q_TE) over an (alpha,delta) grid 
-                                    (Figure 8)
-
 fig_Q_comparative_statics.pdf       Six-panel: β_H*, q_H*, u_P, u_H, TV, TE  vs  AI baseline quality Q.
-                                    (Figure 9)
+                                    (Figure 8)
                                         
 fig_alpha_comparative_statics.pdf   Six-panel: β_H*, q_H*, u_P, u_H, TV, TE  vs  AI learning efficiency α.
-                                    (Figure 10)
+                                    (Figure 9)
 """
 import sys
 import os
@@ -46,8 +42,7 @@ from plot_functions import (
     plot_vb_effort_regions,
     plot_eb_effort_regions,
     plot_cmp_uH_Q_regions,
-    plot_cmp_uH_alpha_regions,
-    plot_negative_region_map
+    plot_cmp_uH_alpha_regions
 )
 
 
@@ -66,7 +61,7 @@ def prompt_figure(figures):
             return choice
         SystemExit("Not a valid choice, try again.")
 
-def prompt_baseline(fig, defaults=BASELINE):
+def prompt_baseline(defaults=BASELINE):
     """Ask the user for parameters for one figure. Enter keeps the default."""
     print("Press Enter to keep the value in [brackets].")
     chosen = {}
@@ -81,7 +76,7 @@ def prompt_baseline(fig, defaults=BASELINE):
                 break
             except ValueError:
                 print(f"    '{raw}' is not a number, try again.")
-    ok, problems = check_assumptions(chosen, fig=fig)
+    ok, problems = check_assumptions(chosen)
     if ok:
         return chosen
     print("  Assumptions violated:")
@@ -89,18 +84,7 @@ def prompt_baseline(fig, defaults=BASELINE):
         print(f"    - {msg}")
     raise SystemExit("Fix the parameters and run again.")
 
-def check_assumptions(p, fig):
-    # fig = str(fig)
-    # if fig == "2":
-    #     Q = p["Q"]
-    #     alpha = p["alpha"]
-    # elif fig == "3":
-    #     Q = RANGES["Q"][1]
-    #     alpha = p["alpha"]
-    # elif fig == "5":
-    #     Q = 0.9
-    #     alpha = RANGES["alpha"][1]
-    # else:
+def check_assumptions(p):
     Q = RANGES["Q"][1]
     alpha = RANGES["alpha"][1]
     delta = p["delta"]
@@ -136,20 +120,16 @@ def main(output_dir: str = _DEFAULT_OUT) -> None:
         "7":  ("Preference maps (Q, delta) and (alpha, delta)",
                lambda p: plot_preference_map_delta(
                    os.path.join(output_dir, "fig_preference_map_delta.pdf"), baseline=p)),
-        "8":  ("Negative-TE region map",
-               lambda p: plot_negative_region_map(
-                   os.path.join(output_dir, "fig_negative_TE_Q_region.pdf"),
-                   baseline=p, use_fraction=True)),
-        "9":  ("Comparative statics in Q",
+        "8":  ("Comparative statics in Q",
                lambda p: plot_comparative_statics(
                    "Q", os.path.join(output_dir, "fig_Q_comparative_statics.pdf"), baseline=p)),
-        "10": ("Comparative statics in alpha",
+        "9": ("Comparative statics in alpha",
                lambda p: plot_comparative_statics(
                    "alpha", os.path.join(output_dir, "fig_alpha_comparative_statics.pdf"), baseline=p)),
     }
     
     choice = prompt_figure(figures)
-    p = prompt_baseline(fig=choice)
+    p = prompt_baseline()
 
     label, runner = figures[choice]
     print(f"[{label}]")

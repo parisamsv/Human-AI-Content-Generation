@@ -64,7 +64,7 @@ After you pick a figure, you are asked for:
 | `t`    | Consumer mismatch cost      | 2.50     |
 | `k`    | Algorithmic-neutrality cost | 2.50     |
 
-Before drawing, the code checks that your values satisfy the paper's two key assumptions over the full range being plotted (it checks the hardest point in the range, the largest `Q` and largest `alpha`):
+Before drawing, the code checks the paper’s two key assumptions at the maximum configured `Q` and `alpha` values in params.py.
 
 - **Non-saturation:** `Q < t*(1 - delta)`
 - **Concavity:** `t > alpha^2 + 1/(1 - delta)`
@@ -83,9 +83,8 @@ The menu number is what you type at the first prompt.
 | 5    | `fig_cmp_uH_alpha_regions.pdf`    | Creator utility vs `alpha`, both designs                       |
 | 6    | `fig_preference_map_Q_alpha.pdf`  | Which design each party prefers over the `(Q, alpha)` plane    |
 | 7    | `fig_preference_map_delta.pdf`    | Preference maps over `(Q, delta)` and `(alpha, delta)`         |
-| 8    | `fig_negative_TE_Q_region.pdf`    | Where total engagement falls in `Q`, over an `(alpha, delta)` grid |
-| 9    | `fig_Q_comparative_statics.pdf`   | Six panels vs `Q`: `beta_H*`, `q_H*`, `u_P`, `u_H`, TV, TE     |
-| 10   | `fig_alpha_comparative_statics.pdf`| Six panels vs `alpha`: same six outcomes                      |
+| 8    | `fig_Q_comparative_statics.pdf`   | Six panels vs `Q`: `beta_H*`, `q_H*`, `u_P`, `u_H`, TV, TE     |
+| 9   | `fig_alpha_comparative_statics.pdf`| Six panels vs `alpha`: same six outcomes                      |
 
 ## Reproducing specific figures
 
