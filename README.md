@@ -84,7 +84,7 @@ The menu number is what you type at the first prompt.
 | 6    | `fig_preference_map_Q_alpha.pdf`  | Which design each party prefers over the `(Q, alpha)` plane    |
 | 7    | `fig_preference_map_delta.pdf`    | Preference maps over `(Q, delta)` and `(alpha, delta)`         |
 | 8    | `fig_Q_comparative_statics.pdf`   | Six panels vs `Q`: `beta_H*`, `q_H*`, `u_P`, `u_H`, TV, TE     |
-| 9   | `fig_alpha_comparative_statics.pdf`| Six panels vs `alpha`: same six outcomes                      |
+| 9    | `fig_alpha_comparative_statics.pdf`| Six panels vs `alpha`: same six outcomes                      |
 
 ## Reproducing specific figures
 
